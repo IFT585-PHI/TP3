@@ -21,13 +21,21 @@ namespace Phi_Box
     public partial class Login : Page
     {
 
+        private MainWindow mainWindow;
+
         private bool IsLogging = true;
 
-        public Login()
+        public Login(MainWindow m)
         {
-            Application.Current.MainWindow.Height = 550;
-            Application.Current.MainWindow.Width = 525;
+            mainWindow = m;
             InitializeComponent();
+        }
+        
+
+        private void Enter_Shortcut(object sender, RoutedEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.Enter))
+                Submit_Click(sender, e);
         }
 
         private void Register_Click(object sender, RoutedEventArgs e)
@@ -79,6 +87,7 @@ namespace Phi_Box
                 errormessage.Text = "User is registering";
                 //Register process here
             }
+            mainWindow.Navigate(new Dashboard(mainWindow));
         }
 
         private void ResetField()

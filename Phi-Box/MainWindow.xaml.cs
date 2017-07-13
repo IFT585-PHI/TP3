@@ -24,7 +24,12 @@ namespace Phi_Box
         {
             InitializeComponent();
             //Start a login page
-            frame.NavigationService.Navigate(new Login());
+            Navigate(new Login(this));
+        }
+
+        public void Navigate(Page page)
+        {
+            frame.NavigationService.Navigate(page);
         }
 
 
