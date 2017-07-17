@@ -16,22 +16,16 @@ using System.Windows.Shapes;
 namespace Phi_Box
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Dashboard.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Dashboard : Page
     {
-        public MainWindow()
+        private MainWindow mainWindow;
+
+        public Dashboard(MainWindow m)
         {
+            mainWindow = m;
             InitializeComponent();
-            //Start a login page
-            frame.NavigationService.Navigate(new Login());
-        }
-
-
-        //Don't mind that, need it to change pages
-        private void frame_Navigated(object sender, NavigationEventArgs e)
-        {
-
         }
     }
 }

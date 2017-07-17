@@ -1,0 +1,22 @@
+﻿<Page x:Class="Phi_Box.Dashboard"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Phi_Box"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1080"
+      Title="Dashboard">
+
+    <Grid  Height="720" Width="1080" Background="#FFCECECE">
+        <Image x:Name="image1" HorizontalAlignment="Left" Height="150" Margin="340,10,0,0" VerticalAlignment="Top" Width="400" Source="images/phibbox_red.png"/>
+        <Grid HorizontalAlignment="Left" Height="525" Margin="61,156,0,0" VerticalAlignment="Top" Width="274" Background="#FFF9F9F9">
+            <Grid HorizontalAlignment="Left" Height="86" VerticalAlignment="Top" Width="274" Background="#FFEEEEEE">
+                <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" TextAlignment="Center" Text="Users" VerticalAlignment="Center" Height="86" Width="274" Padding="15" FontSize="36" FontWeight="Bold"/>
+            </Grid>
+
+        </Grid>
+
+
+    </Grid>
+</Page>

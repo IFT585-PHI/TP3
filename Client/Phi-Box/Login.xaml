@@ -5,10 +5,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Phi_Box"
       mc:Ignorable="d" 
-      d:DesignHeight="550" d:DesignWidth="525"
+      d:DesignHeight="720" d:DesignWidth="1080"
       Title="Login">
 
-    <Grid  Height="550" Width="525" Background="#FFCECECE">
+    <Grid  Height="720" Width="1080" Background="#FFCECECE">
         <!--Button as a Link button using style-->
         <!--end Button as a Link button using style-->
         <Grid Background="Red" Height="312" VerticalAlignment="Center" HorizontalAlignment="Center" Width="380">
@@ -21,10 +21,8 @@
             <TextBlock Height="23" HorizontalAlignment="Left" Margin="0,150,0,0" Name="textBlockPassword" Text="Password:" VerticalAlignment="Top" Width="140" FontSize="18" FontWeight="Bold" Foreground="White" TextAlignment="Right" />
 
             <TextBox Height="28" HorizontalAlignment="Left" Margin="145,108,0,0" Name="textBoxUsername" VerticalAlignment="Top" Width="175" FontSize="14" />
-
-            <PasswordBox Height="28" HorizontalAlignment="Left" Margin="145,151,0,0" Name="passwordBox" VerticalAlignment="Top" Width="175" FontSize="14" />
-            <!--For password-->
-            <Button Content="Login" Height="23" HorizontalAlignment="Center" Margin="0,253,0,0" Name="Submit" VerticalAlignment="Top" Width="70" Click="Submit_Click" />
+            <PasswordBox Height="28" HorizontalAlignment="Left" Margin="145,151,0,0" Name="passwordBox" VerticalAlignment="Top" Width="175" FontSize="14" KeyDown="Enter_Shortcut" />
+                     
             <Button Name="RegisterLink" HorizontalAlignment="Center" Margin="0,184,0,105" Content="Register" Cursor="Hand" Click="Register_Click" Background="White" BorderBrush="White" Foreground="White" FontSize="14" RenderTransformOrigin="0.2,1.475">
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -44,6 +42,7 @@
                     </Style>
                 </Button.Style>
             </Button>
+            <Button Content="Login" Height="23" HorizontalAlignment="Center" Margin="0,253,0,0" Name="Submit" VerticalAlignment="Top" Width="70" Click="Submit_Click" />
             <Image x:Name="image" Margin="42,0,38,238" HorizontalAlignment="Center" Source="images/phibbox_white.png"/>
         </Grid>
     </Grid>
