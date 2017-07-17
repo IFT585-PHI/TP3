@@ -13,7 +13,7 @@ namespace Serveur
         DateTime _lastSynchronized;
 
         Dictionary<int, ShareFolder> _groups;   //int = groupID
-        List<int> _pendingInvitations;           //int = groupID
+        List<int> _pendingInvitations;          //int = groupID
 
         public User(int id, string name)
             : base(id)
@@ -22,23 +22,22 @@ namespace Serveur
             _lastSynchronized = DateTime.Now;
         }
 
-        public User(int id, string name, Dictionary<int, ShareFolder> groups, List<int> pendingInvitations)
+        public User(int id, string name, DateTime lastSynchronized, Dictionary<int, ShareFolder> groups, List<int> pendingInvitations)
             : base(id)
         {
             _name = name;
+            _lastSynchronized = lastSynchronized;
             _groups = groups;
             _pendingInvitations = pendingInvitations;
         }
 
         public void CreateGroup(string groupName, string description)
         {
-            int lastIndex = _groups.Count;
-            Group group = new Group(lastIndex, groupName, description, _id);
-            Server.getGroupManager().AddGroup(lastIndex, group);
+            Server.GetGroupManager().AddGroup(_groups.Count, new Group(_groups.Count, groupName, description, _id));
         }
         public void ApplyGroup(int idGroup)
         {
-            Server.getGroupManager().GetGroupById(idGroup).AddPendingInvitation(_id);
+            Server.GetGroupManager().GetGroupById(idGroup).AddPendingInvitation(_id);
         }
 
         public void AddPendingInvitation(int groupId)
@@ -51,7 +50,7 @@ namespace Serveur
             if (!DoesPendingInvitationExists(groupId))
                 return false;
 
-            Server.getGroupManager().AddUserToGroup(groupId, _id);
+            Server.GetGroupManager().AddUserToGroup(groupId, _id);
             _pendingInvitations.Remove(groupId);
             return true;
         }
@@ -61,7 +60,7 @@ namespace Serveur
             if (!DoesPendingInvitationExists(groupId))
                 return false;
 
-            Server.getGroupManager().RemoveUserFromGroup(groupId, _id);
+            Server.GetGroupManager().RemoveUserFromGroup(groupId, _id);
             _pendingInvitations.Remove(groupId);
             return true;
         }
@@ -72,6 +71,11 @@ namespace Serveur
 
 
             _lastSynchronized = DateTime.Now;
+        }
+
+        private bool DoesPendingInvitationExists(int groupId)
+        {
+            return _pendingInvitations.Contains(groupId);
         }
 
         public List<int> getGroups()
@@ -92,11 +96,6 @@ namespace Serveur
         public String GetName()
         {
             return _name;
-        }
-
-        private bool DoesPendingInvitationExists(int groupId)
-        {
-            return _pendingInvitations.Contains(groupId);
         }
     }
 }

@@ -22,24 +22,29 @@ namespace Serveur
             _name = name;
             _description = description;
             _admin = new Admin(id, userId);
+            _members = new List<int>();
+            _pendingInvitations = new List<int>();
+            _filesVersion = new Dictionary<int, int>();
         }
 
-        public Group(int id, string name, string description, Admin admin, List<int> members, Dictionary<int, int> filesVersion)
+        public Group(int id, string name, string description, Admin admin, List<int> members, List<int> pendingInvitations, Dictionary<int, int> filesVersion)
             : base(id)
         {
             _name = name;
             _description = description;
             _admin = admin;
             _members = members;
+            _pendingInvitations = pendingInvitations;
             _filesVersion = filesVersion;
         }
 
         public bool AddMember(int userId)
         {
-            if (DoesMemberExists(userId))
-                return false; ;
+            if (DoesMemberExists(userId) || !DoesPendingInvitationExists(userId))
+                return false;
 
             _members.Add(userId);
+            _pendingInvitations.Remove(userId);
             return true;
         }
 
@@ -66,6 +71,7 @@ namespace Serveur
             if (!DoesFileExists(fileId))
                 return false;
 
+            //do something with file content?
             _filesVersion[fileId] += 1;
             return true;
         }
@@ -78,22 +84,6 @@ namespace Serveur
             _filesVersion.Remove(fileId);
             return true;
         }
-
-        private bool DoesMemberExists(int userId)
-        {
-            return _members.Contains(userId);
-        }
-
-        private bool DoesFileExists(int fileId)
-        {
-            return _filesVersion.Keys.Contains(fileId);
-        }
-
-        public void SetAdmin(int userId)
-        {
-            _admin.SetUserId(userId);
-        }
-
         public bool AddPendingInvitation(int userId)
         {
             if (DoesPendingInvitationExists(userId))
@@ -112,9 +102,23 @@ namespace Serveur
             return true;
         }
 
+        private bool DoesMemberExists(int userId)
+        {
+            return _members.Contains(userId);
+        }
+
+        private bool DoesFileExists(int fileId)
+        {
+            return _filesVersion.Keys.Contains(fileId);
+        }
+
         private bool DoesPendingInvitationExists(int userId)
         {
             return _pendingInvitations.Contains(userId);
+        }
+        public void SetAdmin(int userId)
+        {
+            _admin.SetUserId(userId);
         }
     }
 }

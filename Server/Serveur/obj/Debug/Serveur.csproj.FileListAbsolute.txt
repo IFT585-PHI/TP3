@@ -4,3 +4,9 @@ C:\Users\Ian\Documents\Visual Studio 2017\Projects\Serveur\Serveur\bin\Debug\Ser
 C:\Users\Ian\Documents\Visual Studio 2017\Projects\Serveur\Serveur\bin\Debug\Serveur.pdb
 C:\Users\Ian\Documents\Visual Studio 2017\Projects\Serveur\Serveur\obj\Debug\Serveur.exe
 C:\Users\Ian\Documents\Visual Studio 2017\Projects\Serveur\Serveur\obj\Debug\Serveur.pdb
+C:\Users\Ian\Desktop\Github\TP3\Server\Serveur\obj\Debug\Serveur.csprojResolveAssemblyReference.cache
+C:\Users\Ian\Desktop\Github\TP3\Server\Serveur\obj\Debug\Serveur.exe
+C:\Users\Ian\Desktop\Github\TP3\Server\Serveur\obj\Debug\Serveur.pdb
+C:\Users\Ian\Desktop\Github\TP3\Server\Serveur\bin\Debug\Serveur.exe.config
+C:\Users\Ian\Desktop\Github\TP3\Server\Serveur\bin\Debug\Serveur.exe
+C:\Users\Ian\Desktop\Github\TP3\Server\Serveur\bin\Debug\Serveur.pdb

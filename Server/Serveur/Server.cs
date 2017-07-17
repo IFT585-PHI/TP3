@@ -25,12 +25,12 @@ namespace Serveur
             userManager.Initialize();
         }
 
-        static public void receiveFiles()
+        static public void ReceiveFiles()
         {
 
         }
 
-        static public void sendFile(File file)
+        static public void SendFile(File file)
         {
 
         }
@@ -42,17 +42,17 @@ namespace Serveur
             //...
         }
 
-        static public GroupManager getGroupManager()
+        static public GroupManager GetGroupManager()
         {
             return groupManager;
         }
 
-        static public LoginManager getLoginManager()
+        static public LoginManager GetLoginManager()
         {
             return loginManager;
         }
 
-        static public UserManager getUserManager()
+        static public UserManager GetUserManager()
         {
             return userManager;
         }

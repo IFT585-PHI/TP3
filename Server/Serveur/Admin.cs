@@ -28,29 +28,27 @@ namespace Serveur
 
         public void Invite(int userId)
         {
-            Server.getUserManager().SendInvitation(_groupId, userId);
+            Server.GetUserManager().SendInvitation(_groupId, userId);
         }
 
         public void Remove(int userId)
         {
-            Server.getGroupManager().RemoveUserFromGroup(_groupId, userId);
+            Server.GetGroupManager().RemoveUserFromGroup(_groupId, userId);
         }
 
         public void Delegate(int userId)
         {
-            Server.getGroupManager().SetNewAdmin(_groupId, userId);
+            Server.GetGroupManager().SetNewAdmin(_groupId, userId);
         }
 
         public void Accept(int userId)
         {
-            Group group = Server.getGroupManager().GetGroupById(_groupId);
-            group.AddMember(userId);
-            group.RemovePendingInvitation(userId);
+            Server.GetGroupManager().GetGroupById(_groupId).AddMember(userId);
         }
 
         public void Deny(int userId)
         {
-            Server.getGroupManager().GetGroupById(_groupId).RemovePendingInvitation(userId);
+            Server.GetGroupManager().GetGroupById(_groupId).RemovePendingInvitation(userId);
         }
 
         public void SetUserId(int userId)

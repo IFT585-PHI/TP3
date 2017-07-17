@@ -28,7 +28,7 @@ namespace Serveur
             {
                 if(entry.Key == userName && entry.Value == password)
                 {
-                    User user = Server.getUserManager().GetUserByName(userName);
+                    User user = Server.GetUserManager().GetUserByName(userName);
                     user.SetIsConnected(true);
                     connectedUsers.Add(user);
                     return true;
@@ -45,7 +45,7 @@ namespace Serveur
 
         public List<User> GetNotConnectedUsers()
         {
-            List<User> notConnectedUsers = Server.getUserManager().GetListExistingUsers();
+            List<User> notConnectedUsers = Server.GetUserManager().GetListExistingUsers();
 
             foreach(User u in connectedUsers)
             {
@@ -59,13 +59,13 @@ namespace Serveur
         {
             userAuthentification.Add(userName, password);
 
-            Server.getUserManager().AddNewUser(userName);
+            Server.GetUserManager().AddNewUser(userName);
         }
 
         //Synchronize connectedUsers
         public void Synchronize()
         {
-            List<User> existingUsers = Server.getUserManager().GetListExistingUsers();
+            List<User> existingUsers = Server.GetUserManager().GetListExistingUsers();
 
             foreach (User u in connectedUsers)
             {

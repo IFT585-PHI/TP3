@@ -28,10 +28,7 @@ namespace Serveur
                     return false;
             }
 
-            int lastIndex = existingUsers.Count;
-            User user = new User(lastIndex, userName);
-            existingUsers.Add(lastIndex, user);
-
+            existingUsers.Add(existingUsers.Count, new User(existingUsers.Count, userName));
             return true;
         }
 

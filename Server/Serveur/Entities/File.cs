@@ -29,5 +29,15 @@ namespace Serveur
             _fileName.extension = extension;
             _path = path;
         }
+
+        public int getVersion()
+        {
+            return _version;
+        }
+
+        public void getVersion(int version)
+        {
+            _version = version;
+        }
     }
 }

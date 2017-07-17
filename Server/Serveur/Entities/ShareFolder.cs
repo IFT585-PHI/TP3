@@ -10,12 +10,20 @@ namespace Serveur
     {
         String _root;
 
-        Dictionary<File, int> files; // int = version
+        Dictionary<File, int> _files; // int = version
 
-        public ShareFolder(int id, string root):
-            base(id)
+        public ShareFolder(int id, string root)
+            : base(id)
         {
             _root = root;
+            _files = new Dictionary<File, int>();
+        }
+
+        public ShareFolder(int id, string root, Dictionary<File, int> files)
+            : base(id)
+        {
+            _root = root;
+            _files = files;
         }
     }
 }
