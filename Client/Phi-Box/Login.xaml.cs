@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net;
+using System.Net.Cache;
+using System.IO;
 
 namespace Phi_Box
 {
@@ -61,7 +64,7 @@ namespace Phi_Box
             errormessage.Text = "";
 
             string username = textBoxUsername.Text;
-            int password = passwordBox.GetHashCode();
+            string password = passwordBox.Password;
 
             if (username.Length == 0)
             {
@@ -71,23 +74,74 @@ namespace Phi_Box
             }
             else if (passwordBox.Password.Length == 0)
             {
-                errormessage.Text = "Enter password.";
+                errormessage.Text = "Enter a password.";
                 passwordBox.Focus();
                 return;
             }
 
+            User currUser = new User(username, password);
 
             if (IsLogging)
             {
-                errormessage.Text = "User is logging";
-                //Logging process here
+                if (!Log_In_User(currUser)) return;
+                //TODO: Tell server user is loggedIn
             }
             else
             {
-                errormessage.Text = "User is registering";
-                //Register process here
+                if (!Register_User(currUser)) return;
+                mainWindow.AddUser(currUser);
+                //TODO: Tell server there's a new user, and he's loggedIn
             }
+
+            mainWindow.LoggedInUser = currUser;
             mainWindow.Navigate(new Dashboard(mainWindow));
+        }
+
+        private bool Log_In_User(User user)
+        {
+            bool userIsPresent = false;
+            bool success = false;
+
+            foreach (User u in mainWindow.Users)
+            {
+                if(u.username == user.username)
+                {
+                    userIsPresent = true;
+                    errormessage.Text = "Wrong password!";
+
+                    if (u.password == user.password)
+                        success = true;
+
+                    break;
+                }
+            }
+
+            if(!userIsPresent)
+                errormessage.Text = "User doesn't exist!";
+
+            return success;
+        }
+        private bool Register_User(User user)
+        {
+            bool userExist = false;
+            bool success = true;
+
+            foreach (User u in mainWindow.Users)
+            {
+                if (u.username == user.username)
+                {
+                    userExist = true;
+                    success = false;
+                    errormessage.Text = "Username already exist!";
+
+                    break;
+                }
+            }
+
+            if (!userExist)
+                mainWindow.Users.Add(user); 
+
+            return success;
         }
 
         private void ResetField()
@@ -96,5 +150,7 @@ namespace Phi_Box
             passwordBox.Password = "";
             errormessage.Text = "";
         }
+        
+
     }
 }

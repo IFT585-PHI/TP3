@@ -8,7 +8,7 @@
         ResizeMode="CanMinimize"
         Title="MainWindow" Height="720" Width="1080">
     <Grid>
-        <Frame x:Name="frame" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Navigated="frame_Navigated"/>
+        <Frame x:Name="frame" Content="" NavigationUIVisibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Navigated="frame_Navigated"/>
 
     </Grid>
 </Window>
