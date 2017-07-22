@@ -148,6 +148,8 @@
     <ClInclude Include="File.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="GroupManager.h" />
+    <ClInclude Include="JsonReader.h" />
+    <ClInclude Include="JsonWriter.h" />
     <ClInclude Include="ISynchronize.h" />
     <ClInclude Include="LoginManager.h" />
     <ClInclude Include="Server.h" />
@@ -162,6 +164,8 @@
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="GroupManager.cpp" />
+    <ClCompile Include="JsonReader.cpp" />
+    <ClCompile Include="JsonWriter.cpp" />
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ShareFolder.cpp" />
@@ -169,7 +173,17 @@
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserManager.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\rapidjson.1.0.2\build\native\rapidjson.targets" Condition="Exists('..\packages\rapidjson.1.0.2\build\native\rapidjson.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\rapidjson.1.0.2\build\native\rapidjson.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\rapidjson.1.0.2\build\native\rapidjson.targets'))" />
+  </Target>
 </Project>

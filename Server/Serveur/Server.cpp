@@ -20,7 +20,7 @@ void Server::receiveFiles() {
 }
 
 void Server::sendFile(File file) {
-
+    
 }
 
 void Server::synchronize() {

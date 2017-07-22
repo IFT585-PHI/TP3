@@ -21,6 +21,12 @@
     <Filter Include="Source Files\Manager">
       <UniqueIdentifier>{cc13f73e-39b8-44ef-a450-4e180945cd5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\JsonModule">
+      <UniqueIdentifier>{33249130-9466-4d98-bccf-92e970de5d17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\JsonModule">
+      <UniqueIdentifier>{ce97bec1-4b48-4e98-8e73-e110e5f75b53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -58,6 +64,12 @@
     </ClInclude>
     <ClInclude Include="Server.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonWriter.h">
+      <Filter>Header Files\JsonModule</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonReader.h">
+      <Filter>Header Files\JsonModule</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -97,5 +109,14 @@
     <ClCompile Include="Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="JsonReader.cpp">
+      <Filter>Source Files\JsonModule</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonWriter.cpp">
+      <Filter>Source Files\JsonModule</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
