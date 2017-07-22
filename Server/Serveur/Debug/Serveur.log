@@ -1,0 +1,30 @@
+﻿  UserManager.cpp
+c:\users\simon\desktop\tp3\server\serveur\usermanager.h(30): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
+c:\users\simon\desktop\tp3\server\serveur\usermanager.cpp(90): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
+  User.cpp
+c:\users\simon\desktop\tp3\server\serveur\groupmanager.h(26): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
+c:\users\simon\desktop\tp3\server\serveur\user.cpp(56): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
+  Source.cpp
+  ShareFolder.cpp
+  Server.cpp
+c:\users\simon\desktop\tp3\server\serveur\groupmanager.h(26): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
+c:\users\simon\desktop\tp3\server\serveur\loginmanager.h(29): warning C4091: 'static ': ignored on left of 'LoginManager' when no variable is declared
+c:\users\simon\desktop\tp3\server\serveur\usermanager.h(30): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
+  LoginManager.cpp
+c:\users\simon\desktop\tp3\server\serveur\loginmanager.h(29): warning C4091: 'static ': ignored on left of 'LoginManager' when no variable is declared
+c:\users\simon\desktop\tp3\server\serveur\usermanager.h(30): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
+  GroupManager.cpp
+c:\users\simon\desktop\tp3\server\serveur\groupmanager.h(26): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
+c:\users\simon\desktop\tp3\server\serveur\groupmanager.cpp(60): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
+  Group.cpp
+c:\users\simon\desktop\tp3\server\serveur\group.cpp(76): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\simon\desktop\tp3\server\serveur\group.cpp(80): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\simon\desktop\tp3\server\serveur\group.cpp(84): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
+  File.cpp
+  Entity.cpp
+  Authentificator.cpp
+  Admin.cpp
+c:\users\simon\desktop\tp3\server\serveur\groupmanager.h(26): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
+c:\users\simon\desktop\tp3\server\serveur\usermanager.h(30): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
+  Generating Code...
+  Serveur.vcxproj -> C:\Users\Simon\Desktop\TP3\Server\Debug\Serveur.exe
