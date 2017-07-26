@@ -21,6 +21,7 @@ public:
     static void synchronize();
 	std::string readRequest(tcp::socket & socket);
 	void sendResponse(tcp::socket & socket, const std::string& str);
+	std::string sendResponse(tcp::socket & socket, const std::string& str);
 	void start_accept();
 };
 
