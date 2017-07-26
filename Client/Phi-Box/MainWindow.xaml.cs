@@ -29,15 +29,11 @@ namespace Phi_Box
     public partial class MainWindow : Window
     {
 
-        public List<Group> Groups;
-        public List<User> Users;
-
-        public User LoggedInUser;
-
+        public Client client;
 
         public MainWindow()
         {
-            Update_Lists();
+            client = new Client();
 
             InitializeComponent();
 
@@ -49,64 +45,11 @@ namespace Phi_Box
         {
             frame.NavigationService.Navigate(page);
         }
-
-        public void Update_Lists()
-        {
-            //Update Groups list
-            GetGroups();
-
-            //Update Users list
-            GetUsers();
-
-        }
-
-
+        
         //Don't mind that, need it to change pages
         private void frame_Navigated(object sender, NavigationEventArgs e)
         {
 
-        }
-
-        public void GetGroups()
-        {
-            Groups = new List<Group>();
-            JArray a = JArray.Parse(File.ReadAllText("../../groups.json"));
-            foreach (JObject o in a.Children<JObject>())
-            {
-                string name = o.First.Last.ToString();
-                string description = o.First.Next.Last.ToString();
-                int status = (int)o.Last.Last;
-                Groups.Add(new Group(name, description, status));
-            }
-        }
-        public void GetUsers()
-        {
-            Users = new List<User>();
-            JArray a =  JArray.Parse(File.ReadAllText("../../users.json"));
-            foreach (JObject o in a.Children<JObject>())
-            {
-                string name = o.First.Last.ToString();
-                string password = o.Last.Last.ToString();
-                Users.Add(new User(name, password));
-            }
-        }
-        public void AddGroup(Group group)
-        {
-            //TODO: SEND GROUP TO SERVER
-            GetGroups();
-            //TEMPORARY ADD IT HERE, USUALLY GetGroups will have the new one
-            Groups.Add(group);
-            string json = JsonConvert.SerializeObject(Groups.ToArray());
-            System.IO.File.WriteAllText("../../groups.json", json);
-        }
-        public void AddUser(User user)
-        {
-            //TODO: SEND Users TO SERVER
-            GetUsers();
-            //TEMPORARY ADD IT HERE, USUALLY GetUsers will have the new one
-            Users.Add(user);
-            string json = JsonConvert.SerializeObject(Users.ToArray());
-            System.IO.File.WriteAllText("../../users.json", json);
         }
 
 

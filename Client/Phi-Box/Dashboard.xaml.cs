@@ -28,41 +28,34 @@ namespace Phi_Box
         {
             mainWindow = m;
             InitializeComponent();
-            Update_Dashboard();
-        }
 
-        public void Update_Dashboard()
-        {
-            groups_list.Children.Clear();
-            foreach (Group g in mainWindow.Groups)
-                Add_Group(g);
+            DisplayGroups();
+            DisplayUsers();
 
-            users_list.Children.Clear();
-            foreach (User u in mainWindow.Users)
-            {
-                if(!mainWindow.LoggedInUser.Equals(u))
-                    Add_User(u);
-            }
         }
 
         private void Create_Group(object sender, RoutedEventArgs e)
         {
-            string groupName = NewGroupName.Text;
+            string name = NewGroupName.Text;
             string description = NewGroupDescription.Text;
 
-            if (groupName.Length == 0)
+            if (name.Length == 0)
             {
                 NewGroupName.Focus();
                 return;
             }
 
-            Group group = new Group(groupName, description, (int)GroupStatus.IN);
+            Group group = mainWindow.client.CreateGroup(name, description);
 
-            mainWindow.AddGroup(group);
-            Update_Dashboard();
+            if(group.name == null)
+            {
+                //DISPLAY ERROR MESSAGE
+                return;
+            }
+            AddGroup(group);
         }
 
-        private void Add_Group(Group group)
+        private void AddGroup(Group group)
         {
             //<Grid Height="85" Width="720">
             Grid grid = new Grid ();
@@ -83,20 +76,22 @@ namespace Phi_Box
             {
                 //<Button x:Name="Join_group" Content="Join" Margin="504,14,126,37" FontSize="18"/>
                 Button button = new Button();
-                button.Name = "Join_group"; button.Content = "Join"; button.Margin = new Thickness(504, 14, 126, 37);
+                button.Name = "Join_group"; button.Content = "Join"; button.Margin = new Thickness(610, 14, 20, 37);
                 button.FontSize = 18;
 
                 if (group.status == (int)GroupStatus.PENDING)
                     button.IsEnabled = false;
 
                 grid.Children.Add(button);
+            }
+            else
+            {
+                //<Button x:Name="See_group" Content="Details" Margin="610,14,20,37" FontSize="18"/>
+                Button button2 = new Button();
+                button2.Name = "See_group"; button2.Content = "Details"; button2.Margin = new Thickness(610, 14, 20, 37);
+                button2.FontSize = 18; button2.Click += new RoutedEventHandler(Go_To_Details);
+                grid.Children.Add(button2);
             }            
-
-            //<Button x:Name="See_group" Content="Details" Margin="610,14,20,37" FontSize="18"/>
-            Button button2 = new Button();
-            button2.Name = "See_group"; button2.Content = "Details"; button2.Margin = new Thickness(610, 14, 20, 37);
-            button2.FontSize = 18;
-            grid.Children.Add(button2);
 
             //<TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="15,54,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="28" Width="685" FontSize="14" />
             TextBlock textBlock2 = new TextBlock();
@@ -107,7 +102,7 @@ namespace Phi_Box
 
             groups_list.Children.Add(grid);
         }
-        private void Add_User(User user)
+        private void AddUser(User user)
         {
             //<Grid Height="52">
             Grid grid = new Grid();
@@ -131,6 +126,27 @@ namespace Phi_Box
             grid.Children.Add(label);
 
             users_list.Children.Add(grid);
+        }
+
+        private void DisplayGroups()
+        {
+            foreach (Group g in mainWindow.client.GetGroups())
+            {
+                AddGroup(g);
+            }
+        }
+        private void DisplayUsers()
+        {
+            foreach (User g in mainWindow.client.GetOnlineUsers())
+            {
+                AddUser(g);
+            }
+        }
+
+
+        private void Go_To_Details(object sender, RoutedEventArgs e)
+        {
+            mainWindow.Navigate(new GroupView(mainWindow));
         }
     }
 }

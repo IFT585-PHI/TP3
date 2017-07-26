@@ -32,6 +32,7 @@ namespace Phi_Box
         {
             mainWindow = m;
             InitializeComponent();
+            textBoxUsername.Focus();
         }
         
 
@@ -78,70 +79,23 @@ namespace Phi_Box
                 passwordBox.Focus();
                 return;
             }
-
-            User currUser = new User(username, password);
-
+            
             if (IsLogging)
             {
-                if (!Log_In_User(currUser)) return;
-                //TODO: Tell server user is loggedIn
+                if (!mainWindow.client.LogIn(username, password)){
+                    //DISPLAY ERROR MESSAGE
+                    return;
+                }
             }
             else
             {
-                if (!Register_User(currUser)) return;
-                mainWindow.AddUser(currUser);
-                //TODO: Tell server there's a new user, and he's loggedIn
+                if (!mainWindow.client.Register(username, password)){
+                    //DISPLAY ERROR MESSAGE
+                    return;
+                }
             }
-
-            mainWindow.LoggedInUser = currUser;
+            
             mainWindow.Navigate(new Dashboard(mainWindow));
-        }
-
-        private bool Log_In_User(User user)
-        {
-            bool userIsPresent = false;
-            bool success = false;
-
-            foreach (User u in mainWindow.Users)
-            {
-                if(u.username == user.username)
-                {
-                    userIsPresent = true;
-                    errormessage.Text = "Wrong password!";
-
-                    if (u.password == user.password)
-                        success = true;
-
-                    break;
-                }
-            }
-
-            if(!userIsPresent)
-                errormessage.Text = "User doesn't exist!";
-
-            return success;
-        }
-        private bool Register_User(User user)
-        {
-            bool userExist = false;
-            bool success = true;
-
-            foreach (User u in mainWindow.Users)
-            {
-                if (u.username == user.username)
-                {
-                    userExist = true;
-                    success = false;
-                    errormessage.Text = "Username already exist!";
-
-                    break;
-                }
-            }
-
-            if (!userExist)
-                mainWindow.Users.Add(user); 
-
-            return success;
         }
 
         private void ResetField()

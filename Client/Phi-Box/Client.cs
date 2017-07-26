@@ -41,11 +41,15 @@ namespace Phi_Box
         /// <returns></returns>
         public bool LogIn(string username, string password)
         {
-            bool connIsSuccesfull = false;
+            bool isSuccesfull = true;
 
             //Connection user in server
 
-            return connIsSuccesfull;
+
+            int id = 0; //Temporary, normallly, get all informations from results
+            connectedUser = new User(id, username);
+
+            return isSuccesfull;
         }
 
         /// <summary>
@@ -53,12 +57,17 @@ namespace Phi_Box
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        public void Register(string username, string password)
+        /// <returns></returns>
+        public bool Register(string username, string password)
         {
+            bool isSuccesfull = true;
+
             //Send User to Server
 
             int id = 0; //Temporary, normallly, get all informations from results
             connectedUser = new User(id, username);
+
+            return isSuccesfull;
         }
 
         /// <summary>
@@ -89,8 +98,10 @@ namespace Phi_Box
 
             foreach (JObject o in ReadJSONFile("users.json").Children<JObject>())
             {
-                string username = o.First.Last.ToString();
-                int id = Int32.Parse(o.Last.Last.ToString());
+                var elem = o.ToObject<Dictionary<string, object>>();
+
+                int id = Int32.Parse(elem["id"].ToString());
+                string username = elem["username"].ToString();
 
                 //Usually would compare with id
                 if(username != connectedUser.username)
@@ -161,11 +172,8 @@ namespace Phi_Box
             List<Group> groups = new List<Group>();
             foreach (JObject o in ReadJSONFile("groups.json").Children<JObject>())
             {
-                string name = o.First.Last.ToString();
-                string description = o.First.Next.Last.ToString();
-                int status = (int)o.Last.Last;
-                int id = 0;
-                groups.Add(new Group(id, name, description, status));
+                var elem = o.ToObject<Dictionary<string, object>>();                
+                groups.Add(new Group(Int32.Parse(elem["id"].ToString()), elem["name"].ToString(), elem["description"].ToString(), Int32.Parse(elem["status"].ToString())));
             }
 
             return groups;
