@@ -2,13 +2,11 @@
 #include "LoginManager.h"
 #include "UserManager.h"
 #include "Server.h"
-#include "ServerConnection.h"
 #include <boost/asio.hpp>
 
 using boost::asio::ip::tcp;
 string Server::address = "127.0.0.1";
 Server::Server(boost::asio::io_service& io_service):acceptor(io_service, tcp::endpoint(tcp::v4(), 13)), socket(io_service) {
-	start_accept();
 }
 
 void Server::initializeManager() {
@@ -51,7 +49,7 @@ std::string Server::readRequest(tcp::socket & socket) {
 	return data;
 }
 
-std::string Server::sendResponse(tcp::socket & socket, const std::string& str) {
+void Server::sendResponse(tcp::socket & socket, const std::string& str) {
 	const std::string msg = str + "\n";
 	boost::asio::write(socket, boost::asio::buffer(msg));
 }

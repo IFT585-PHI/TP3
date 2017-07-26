@@ -20,9 +20,7 @@ public:
     static void sendFile(File file);
     static void synchronize();
 	std::string readRequest(tcp::socket & socket);
-	std::string sendResponse(tcp::socket & socket, const std::string& str);
-
-private:
+	void sendResponse(tcp::socket & socket, const std::string& str);
 	void start_accept();
 };
 
