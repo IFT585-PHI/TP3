@@ -8,31 +8,14 @@ namespace Phi_Box
 {
     public class User
     {
-        private int id { get; }
-
+        public int id;
         public string username;
-        public string password;
 
-        public User(int i, string u)
+        public User(int _id, string _username)
         {
-            id = i;
-            username = u;
+            id = _id;
+            username = _username;
         }
-
-        public User(string u, string p)
-        {
-            username = u;
-            password = p;
-        }
-
-        
-        public bool Equals(User user)
-        {
-            if (this.username == user.username && this.password == user.password)
-                return true;
-            return false;
-        }
-
 
     }
 }
