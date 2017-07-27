@@ -9,14 +9,31 @@
       Title="Dashboard">
 
     <Grid  Height="720" Width="1080" Background="#FFCECECE">
-        <Image x:Name="image1" HorizontalAlignment="Left" Height="150" Margin="340,10,0,0" VerticalAlignment="Top" Width="400" Source="images/phibbox_red.png"/>
-        <Grid HorizontalAlignment="Left" Height="525" Margin="61,156,0,0" VerticalAlignment="Top" Width="274" Background="#FFF9F9F9">
-            <Grid HorizontalAlignment="Left" Height="86" VerticalAlignment="Top" Width="274" Background="#FFEEEEEE">
-                <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" TextAlignment="Center" Text="Users" VerticalAlignment="Center" Height="86" Width="274" Padding="15" FontSize="36" FontWeight="Bold"/>
+        <Image x:Name="image1" HorizontalAlignment="Center" Height="78" VerticalAlignment="Top" Width="270" Source="images/phibbox_red.png"/>
+        <Grid HorizontalAlignment="Left" Height="573" Margin="0,83,0,0" VerticalAlignment="Top" Width="738" Background="White">
+            <Grid HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Width="738" Background="WhiteSmoke">
+                <Label x:Name="label1" Content="Groups" HorizontalAlignment="Left" VerticalAlignment="Center" Height="70" Width="738" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="36" FontWeight="Bold"/>
+            </Grid>
+            <ScrollViewer HorizontalAlignment="Left" Height="381" Margin="0,70,0,0" VerticalAlignment="Top" Width="738" HorizontalScrollBarVisibility="Auto">
+                <StackPanel x:Name="groups_list" Orientation="Vertical" />
+            </ScrollViewer>
+            <Grid HorizontalAlignment="Left" Height="117" Margin="0,456,0,0" VerticalAlignment="Top" Width="738" Background="WhiteSmoke">
+                <Label x:Name="label2" Content="Add group" HorizontalAlignment="Left" VerticalAlignment="Top" Height="44" Width="154" FontSize="24" FontWeight="Bold" Padding="25,0,0,0" Margin="0,8,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <Label x:Name="label3" Content="Name:" HorizontalAlignment="Left" Margin="173,11,0,0" VerticalAlignment="Top" Height="43" Width="122" FontSize="22"/>
+                <TextBox x:Name="NewGroupName" HorizontalAlignment="Left" Height="41" Margin="256,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="316" FontSize="22"/>
+                <Label x:Name="label4" Content="Description:" HorizontalAlignment="Left" Margin="20,61,0,0" VerticalAlignment="Top" Height="41" Width="134" FontSize="22"/>
+                <TextBox x:Name="NewGroupDescription" HorizontalAlignment="Left" Height="41" Margin="154,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="418" FontSize="22"/>
+                <Button x:Name="NewGroupButton" Content="Create" HorizontalAlignment="Left" Margin="625,65,0,0" VerticalAlignment="Top" Width="80" Height="37" Click="Create_Group" FontWeight="Bold" FontSize="20"/>
             </Grid>
 
         </Grid>
-
-
+        <Grid HorizontalAlignment="Left" Height="573" Margin="761,83,0,0" VerticalAlignment="Top" Width="319" Background="White">
+            <Grid HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Width="319" Background="WhiteSmoke">
+                <Label x:Name="label" Content="Users" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70" Width="319" FontSize="36" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            </Grid>
+            <ScrollViewer HorizontalAlignment="Left" Height="503" Margin="0,70,0,0" VerticalAlignment="Top" Width="319">
+                <StackPanel Height="504" Width="300" x:Name="users_list" Orientation="Vertical" />
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Page>

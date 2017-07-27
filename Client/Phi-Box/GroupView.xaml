@@ -1,0 +1,31 @@
+﻿<Page x:Class="Phi_Box.GroupView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Phi_Box"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1080"
+      Title="GroupView">
+
+    <Grid  Height="720" Width="1080" Background="#FFCECECE">
+        <Image x:Name="image1" HorizontalAlignment="Center" Height="78" VerticalAlignment="Top" Width="270" Source="images/phibbox_red.png"/>
+        <Grid HorizontalAlignment="Left" Height="573" Margin="0,83,0,0" VerticalAlignment="Top" Width="738" Background="White">
+            <ScrollViewer HorizontalAlignment="Left" Height="451" VerticalAlignment="Top" Width="738" HorizontalScrollBarVisibility="Auto">
+                <StackPanel x:Name="files_list" Orientation="Vertical" />
+            </ScrollViewer>
+            <Grid HorizontalAlignment="Left" Height="117" Margin="0,456,0,0" VerticalAlignment="Top" Width="738" Background="WhiteSmoke">
+                <!-- Files shenanigans HERE?-->
+            </Grid>
+
+        </Grid>
+        <Grid HorizontalAlignment="Left" Height="573" Margin="761,83,0,0" VerticalAlignment="Top" Width="319" Background="White">
+            <Grid HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Width="319" Background="WhiteSmoke">
+                <Label x:Name="label" Content="Users" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70" Width="319" FontSize="36" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            </Grid>
+            <ScrollViewer HorizontalAlignment="Left" Height="503" Margin="0,70,0,0" VerticalAlignment="Top" Width="319">
+                <StackPanel Height="504" Width="300" x:Name="users_list" Orientation="Vertical" />
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Page>

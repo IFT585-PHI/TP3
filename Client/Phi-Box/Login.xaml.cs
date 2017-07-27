@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net;
+using System.Net.Cache;
+using System.IO;
 
 namespace Phi_Box
 {
@@ -29,6 +32,7 @@ namespace Phi_Box
         {
             mainWindow = m;
             InitializeComponent();
+            textBoxUsername.Focus();
         }
         
 
@@ -61,7 +65,7 @@ namespace Phi_Box
             errormessage.Text = "";
 
             string username = textBoxUsername.Text;
-            int password = passwordBox.GetHashCode();
+            string password = passwordBox.Password;
 
             if (username.Length == 0)
             {
@@ -71,22 +75,26 @@ namespace Phi_Box
             }
             else if (passwordBox.Password.Length == 0)
             {
-                errormessage.Text = "Enter password.";
+                errormessage.Text = "Enter a password.";
                 passwordBox.Focus();
                 return;
             }
-
-
+            
             if (IsLogging)
             {
-                errormessage.Text = "User is logging";
-                //Logging process here
+                if (!mainWindow.client.LogIn(username, password)){
+                    //DISPLAY ERROR MESSAGE
+                    return;
+                }
             }
             else
             {
-                errormessage.Text = "User is registering";
-                //Register process here
+                if (!mainWindow.client.Register(username, password)){
+                    //DISPLAY ERROR MESSAGE
+                    return;
+                }
             }
+            
             mainWindow.Navigate(new Dashboard(mainWindow));
         }
 
@@ -96,5 +104,7 @@ namespace Phi_Box
             passwordBox.Password = "";
             errormessage.Text = "";
         }
+        
+
     }
 }

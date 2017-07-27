@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,22 +8,36 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json.Linq;
 
 namespace Phi_Box
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
+    enum GroupStatus : int
+    {
+        OUT,
+        PENDING,
+        IN
+    }
+
     public partial class MainWindow : Window
     {
+
+        public Client client;
+
         public MainWindow()
         {
+            client = new Client();
+
             InitializeComponent();
-            //Start a login page
+
+            //Start at login page
             Navigate(new Login(this));
         }
 
@@ -31,12 +45,13 @@ namespace Phi_Box
         {
             frame.NavigationService.Navigate(page);
         }
-
-
+        
         //Don't mind that, need it to change pages
         private void frame_Navigated(object sender, NavigationEventArgs e)
         {
 
         }
+
+
     }
 }
