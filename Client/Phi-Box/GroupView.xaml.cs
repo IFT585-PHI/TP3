@@ -20,41 +20,88 @@ namespace Phi_Box
     /// </summary>
     public partial class GroupView : Page
     {
+        private int groupId;
 
         private MainWindow mainWindow;
 
-        public GroupView(MainWindow m)
+        public GroupView(MainWindow m, int id)
         {
             mainWindow = m;
+            groupId = id;
             InitializeComponent();
+            DisplayUsers();
         }
 
 
 
         private void AddUser(User user)
         {
-            //<Grid Height="52">
+            /*
+            <Grid Height="55" Width="300" VerticalAlignment="Top">
+                <Border BorderBrush="Gray" BorderThickness="1" />
+                <Ellipse Fill="#FF17FF00" Stroke="Black" Margin="10,12,0,11" Height="32" VerticalAlignment="Center" HorizontalAlignment="Left" Width="32"/>
+                <Label x:Name="label6" Content="Username 1" HorizontalAlignment="Left" Margin="49,0,0,0" Width="251" FontSize="16" VerticalAlignment="Top"/>
+                <Button x:Name="Prmote" Content="Promote" Margin="56,31,160,3" Click="Promote_Click"/>
+                <Button x:Name="Kick" Content="Remove" Margin="175,31,41,3" Click="Remove_Click"/>
+            </Grid>
+
+            */
+
+            //<Grid Height="55" Width="300" VerticalAlignment="Top">
             Grid grid = new Grid();
-            grid.Height = 44; grid.Width = 300;
+            grid.Height = 55; grid.Width = 300; grid.VerticalAlignment = VerticalAlignment.Top;
 
             //<Border BorderBrush="Gray" BorderThickness="1"/>
             grid.Children.Add(new Border { BorderBrush = Brushes.Gray, BorderThickness = new Thickness(1) });
 
-            //<Ellipse Fill="#FF17FF00" Stroke="Black" Margin="10,0,0,10" Height="32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="32"/>
+            //<Ellipse Fill="#FF17FF00" Stroke="Black" Margin="10,12,0,11" Height="32" VerticalAlignment="Center" HorizontalAlignment="Left" Width="32"/>
             Ellipse ell = new Ellipse();
             ell.Fill = Brushes.Lime; ell.Margin = new Thickness(10, 0, 0, 10); ell.Height = 25; ell.Width = 25;
             ell.VerticalAlignment = VerticalAlignment.Bottom; ell.HorizontalAlignment = HorizontalAlignment.Left;
             ell.Stroke = Brushes.Black;
             grid.Children.Add(ell);
 
-            //<Label x:Name="label6" Content="Username 1" HorizontalAlignment="Left" Margin="61,10,0,10" Width="229" VerticalContentAlignment="Center" FontSize="14"/>
+            //<Label x:Name="label6" Content="Username 1" HorizontalAlignment="Left" Margin="49,0,0,0" Width="251" FontSize="16" VerticalAlignment="Top"/>
             Label label = new Label();
-            label.Content = user.username; label.Height = 30; label.Width = 229; label.FontSize = 16;
-            label.HorizontalAlignment = HorizontalAlignment.Left; label.VerticalAlignment = VerticalAlignment.Center;
-            label.Margin = new Thickness(50, 10, 0, 10); label.Name = "label";
+            label.Content = user.username; label.Height = 25; label.Width = 229; label.FontSize = 16;
+            label.HorizontalAlignment = HorizontalAlignment.Left; label.VerticalAlignment = VerticalAlignment.Top;
+            label.Margin = new Thickness(61, 10, 0, 10); label.Name = "label";
             grid.Children.Add(label);
 
+            //<Button x:Name="Prmote" Content="Promote" Margin="56,31,160,3" Click="Promote_Click"/>
+            Button button = new Button();
+            button.Name = "Promote"; button.Content = "Promote"; button.Margin = new Thickness(56, 31, 160, 3);
+            button.Click += new RoutedEventHandler(Promote_Click);
+            grid.Children.Add(button);
+
+            //<Button x:Name="Remove" Content="Remove" Margin="175,31,41,3" Click="Remove_Click"/>
+            Button button2 = new Button();
+            button2.Name = "Remove"; button2.Content = "Remove"; button2.Margin = new Thickness(175, 31, 41, 3);
+            button2.Click += new RoutedEventHandler(Remove_Click);
+            grid.Children.Add(button2);
+
             users_list.Children.Add(grid);
+        }
+
+        private void DisplayUsers()
+        {
+            foreach (User g in mainWindow.client.GetGroupUsers(groupId))
+            {
+                AddUser(g);
+            }
+        }
+        private void DisplayFiles()
+        {
+
+        }
+
+        private void Promote_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void Remove_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

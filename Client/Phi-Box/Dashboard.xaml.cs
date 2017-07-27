@@ -77,7 +77,7 @@ namespace Phi_Box
                 //<Button x:Name="Join_group" Content="Join" Margin="504,14,126,37" FontSize="18"/>
                 Button button = new Button();
                 button.Name = "Join_group"; button.Content = "Join"; button.Margin = new Thickness(610, 14, 20, 37);
-                button.FontSize = 18;
+                button.FontSize = 18; button.DataContext = group.id;
 
                 if (group.status == (int)GroupStatus.PENDING)
                     button.IsEnabled = false;
@@ -89,7 +89,7 @@ namespace Phi_Box
                 //<Button x:Name="See_group" Content="Details" Margin="610,14,20,37" FontSize="18"/>
                 Button button2 = new Button();
                 button2.Name = "See_group"; button2.Content = "Details"; button2.Margin = new Thickness(610, 14, 20, 37);
-                button2.FontSize = 18; button2.Click += new RoutedEventHandler(Go_To_Details);
+                button2.FontSize = 18; button2.Click += new RoutedEventHandler(Go_To_Details); button2.DataContext = group.id;
                 grid.Children.Add(button2);
             }            
 
@@ -104,7 +104,7 @@ namespace Phi_Box
         }
         private void AddUser(User user)
         {
-            //<Grid Height="52">
+            //<Grid Height="44" Width="300">
             Grid grid = new Grid();
             grid.Height = 44; grid.Width = 300;
 
@@ -118,7 +118,7 @@ namespace Phi_Box
             ell.Stroke = Brushes.Black;
             grid.Children.Add(ell);
 
-            //<Label x:Name="label6" Content="Username 1" HorizontalAlignment="Left" Margin="61,10,0,10" Width="229" VerticalContentAlignment="Center" FontSize="14"/>
+            //<Label x:Name="label6" Content="Username 1" HorizontalAlignment="Left" Margin="61,10,0,10" Width="229" VerticalContentAlignment="Center" FontSize="16"/>
             Label label = new Label();
             label.Content = user.username; label.Height = 30; label.Width = 229; label.FontSize = 16;
             label.HorizontalAlignment = HorizontalAlignment.Left; label.VerticalAlignment = VerticalAlignment.Center;
@@ -146,7 +146,8 @@ namespace Phi_Box
 
         private void Go_To_Details(object sender, RoutedEventArgs e)
         {
-            mainWindow.Navigate(new GroupView(mainWindow));
+            int groupId = (int)((Button)sender).DataContext;
+            mainWindow.Navigate(new GroupView(mainWindow, groupId));
         }
     }
 }

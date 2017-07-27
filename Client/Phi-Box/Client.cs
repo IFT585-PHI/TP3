@@ -119,8 +119,8 @@ namespace Phi_Box
         public List<User> GetGroupUsers(int groupId)
         {
             //Request the users that are in a group
-
-            return new List<User>();
+            return GetOnlineUsers();
+            //return new List<User>();
         }
 
         /// <summary>

@@ -15,7 +15,7 @@
                 <StackPanel x:Name="files_list" Orientation="Vertical" />
             </ScrollViewer>
             <Grid HorizontalAlignment="Left" Height="117" Margin="0,456,0,0" VerticalAlignment="Top" Width="738" Background="WhiteSmoke">
-                <!-- Files shenanigans HERE?-->    
+                <!-- Files shenanigans HERE?-->
             </Grid>
 
         </Grid>
