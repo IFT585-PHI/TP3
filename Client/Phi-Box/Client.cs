@@ -170,7 +170,8 @@ namespace Phi_Box
         {
             //Request the users that are pending
 
-            return new List<User>();
+            return GetOnlineUsers();
+            //return new List<User>();
         }
 
 
