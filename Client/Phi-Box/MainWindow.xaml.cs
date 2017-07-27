@@ -25,6 +25,7 @@ namespace Phi_Box
         PENDING,
         IN
     }
+    
 
     public partial class MainWindow : Window
     {
@@ -36,7 +37,7 @@ namespace Phi_Box
             client = new Client();
 
             InitializeComponent();
-
+            
             //Start at login page
             Navigate(new Login(this));
         }

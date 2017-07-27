@@ -58,6 +58,8 @@ namespace Phi_Box
             }
         }
 
+       
+
         /********************************************
          *          TEMPORARY SECTION 
          ********************************************/
@@ -224,7 +226,7 @@ namespace Phi_Box
         /// <param name="groupId"></param>
         public void JoinGroup(int groupId)
         {
-
+            Console.WriteLine("Asking to join the group " + groupId);
         }
 
         /// <summary>
@@ -233,7 +235,7 @@ namespace Phi_Box
         /// <param name="groupId"></param>
         public void LeaveGroup(int groupId)
         {
-
+            Console.WriteLine("Leaving the group " + groupId);
         }
 
         /// <summary>
@@ -242,7 +244,7 @@ namespace Phi_Box
         /// <param name="groupId"></param>
         public void DeleteGroup(int groupId)
         {
-
+            Console.WriteLine("Deleting the group " + groupId);
         }        
 
         /// <summary>
@@ -252,7 +254,7 @@ namespace Phi_Box
         /// <param name="userId"></param>
         public void KickUser(int groupId, int userId)
         {
-
+            Console.WriteLine("Kicking the userId " + userId + " in the group:" + groupId);
         }
 
         /// <summary>
@@ -262,7 +264,7 @@ namespace Phi_Box
         /// <param name="userId"></param>
         public void PromoteUser(int groupId, int userId)
         {
-
+            Console.WriteLine("Promoting the userId " + userId + " in the group:" + groupId);
         }
 
         /// <summary>
@@ -272,7 +274,7 @@ namespace Phi_Box
         /// <param name="username"></param>
         public void InviteUser(int groupId, string username)
         {
-
+            Console.WriteLine("Inviting " + username + " in the group:" + groupId);
         }
 
         /// <summary>
@@ -282,7 +284,7 @@ namespace Phi_Box
         /// <param name="userId"></param>
         public void DeclineRequest(int groupId, int userId)
         {
-
+            Console.WriteLine("Declining request for userId:" + userId + " in the group:" + groupId);
         }
 
         /// <summary>
@@ -292,9 +294,18 @@ namespace Phi_Box
         /// <param name="userId"></param>
         public void ApproveRequest(int groupId, int userId)
         {
+            Console.WriteLine("Approving request for userId:" + userId + " in the group:" + groupId);
+        }
 
-        }        
+        
 
-
+        /// <summary>
+        /// Get the list of groups
+        /// </summary>
+        /// <returns></returns>
+        public void GetFiles(int groupId)
+        {
+            //How files are going to look like????
+        }
     }
 }

@@ -30,26 +30,14 @@ namespace Phi_Box
             mainWindow = m;
             groupId = id;
             InitializeComponent();
-            isAdmin = true;
+            isAdmin = true; //Ask if admin
             DisplayGroupUsers();
             DisplayPendingUsers();
         }
-
-
+        
 
         private void AddGroupUser(User user)
         {
-            /*
-            <Grid Height="55" Width="300" VerticalAlignment="Top">
-                <Border BorderBrush="Gray" BorderThickness="1" />
-                <Ellipse Fill="#FF17FF00" Stroke="Black" Margin="10,12,0,11" Height="32" VerticalAlignment="Center" HorizontalAlignment="Left" Width="32"/>
-                <Label x:Name="label6" Content="Username 1" HorizontalAlignment="Left" Margin="49,0,0,0" Width="251" FontSize="16" VerticalAlignment="Top"/>
-                <Button x:Name="Prmote" Content="Promote" Margin="56,31,160,3" Click="Promote_Click"/>
-                <Button x:Name="Kick" Content="Remove" Margin="175,31,41,3" Click="Remove_Click"/>
-            </Grid>
-
-            */
-
             //<Grid Height="55" Width="300" VerticalAlignment="Top">
             Grid grid = new Grid();
             grid.Height = 55; grid.Width = 300; grid.VerticalAlignment = VerticalAlignment.Top;
@@ -76,13 +64,13 @@ namespace Phi_Box
                 //<Button x:Name="Prmote" Content="Promote" Margin="56,31,160,3" Click="Promote_Click"/>
                 Button button = new Button();
                 button.Name = "Promote"; button.Content = "Promote"; button.Margin = new Thickness(56, 31, 160, 3);
-                button.Click += new RoutedEventHandler(Promote_Click);
+                button.Click += new RoutedEventHandler(Promote_Click); button.DataContext = user.id;
                 grid.Children.Add(button);
 
                 //<Button x:Name="Remove" Content="Remove" Margin="175,31,41,3" Click="Remove_Click"/>
                 Button button2 = new Button();
                 button2.Name = "Remove"; button2.Content = "Remove"; button2.Margin = new Thickness(175, 31, 41, 3);
-                button2.Click += new RoutedEventHandler(Remove_Click);
+                button2.Click += new RoutedEventHandler(Remove_Click); button2.DataContext = user.id;
                 grid.Children.Add(button2);
             }
 
@@ -109,13 +97,13 @@ namespace Phi_Box
             //<Button x:Name="Prmote" Content="Promote" Margin="56,31,160,3" Click="Promote_Click"/>
             Button button = new Button();
             button.Name = "Approve"; button.Content = "Approve"; button.Margin = new Thickness(56, 31, 160, 3);
-            button.Click += new RoutedEventHandler(Approve_Click);
+            button.Click += new RoutedEventHandler(Approve_Click); button.DataContext = user.id;
             grid.Children.Add(button);
 
             //<Button x:Name="Remove" Content="Remove" Margin="175,31,41,3" Click="Remove_Click"/>
             Button button2 = new Button();
             button2.Name = "Decline"; button2.Content = "Decline"; button2.Margin = new Thickness(175, 31, 41, 3);
-            button2.Click += new RoutedEventHandler(Decline_Click);
+            button2.Click += new RoutedEventHandler(Decline_Click); button2.DataContext = user.id;
             grid.Children.Add(button2);
 
             pending_list.Children.Add(grid);
@@ -123,6 +111,7 @@ namespace Phi_Box
 
         private void DisplayGroupUsers()
         {
+            users_list.Children.Clear();
             foreach (User g in mainWindow.client.GetGroupUsers(groupId))
             {
                 AddGroupUser(g);
@@ -130,6 +119,7 @@ namespace Phi_Box
         }
         private void DisplayPendingUsers()
         {
+            pending_list.Children.Clear();
             foreach (User g in mainWindow.client.GetGroupPendingUsers(groupId))
             {
                 AddPendingUser(g);
@@ -141,24 +131,34 @@ namespace Phi_Box
 
         private void DisplayFiles()
         {
-
+            files_list.Children.Clear();
         }
 
         private void Promote_Click(object sender, RoutedEventArgs e)
         {
-
+            int userId = (int)((Button)sender).DataContext;
+            mainWindow.client.PromoteUser(groupId, userId);
         }
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-
+            int userId = (int)((Button)sender).DataContext;
+            mainWindow.client.KickUser(groupId, userId);
         }
         private void Approve_Click(object sender, RoutedEventArgs e)
         {
-
+            int userId = (int)((Button)sender).DataContext;
+            mainWindow.client.ApproveRequest(groupId, userId);
         }
         private void Decline_Click(object sender, RoutedEventArgs e)
         {
+            int userId = (int)((Button)sender).DataContext;
+            mainWindow.client.DeclineRequest(groupId, userId);
+        }
 
+        private void Add_Member_Click(object sender, RoutedEventArgs e)
+        {
+            string username = AddMember.Text;
+            mainWindow.client.InviteUser(groupId, username);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Phi_Box
 
             Group group = mainWindow.client.CreateGroup(name, description);
 
-            if(group.name == null)
+            if(!group.IsValid())
             {
                 //DISPLAY ERROR MESSAGE
                 return;

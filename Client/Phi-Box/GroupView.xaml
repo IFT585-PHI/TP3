@@ -34,7 +34,8 @@
             </ScrollViewer>
             <Grid HorizontalAlignment="Left" Height="97" Margin="0,476,0,0" VerticalAlignment="Top" Width="319" Background="WhiteSmoke">
                 <Label x:Name="label3" Content="Add Member:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="34" Width="196" FontSize="24" FontWeight="Bold" Padding="25,0,0,0" Margin="0,10,0,0" />
-                <TextBox x:Name="AddMember" HorizontalAlignment="Left" Height="41" Margin="25,49,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="264" FontSize="22"/>
+                <TextBox x:Name="AddMember" HorizontalAlignment="Left" Height="41" Margin="25,49,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="199" FontSize="22"/>
+                <Button x:Name="button" Content="Add" HorizontalAlignment="Left" Margin="243,49,0,0" VerticalAlignment="Top" Width="52" Height="41" FontSize="14" Click="Add_Member_Click"/>
 
             </Grid>
         </Grid>

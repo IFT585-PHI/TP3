@@ -23,5 +23,10 @@ namespace Phi_Box
             status = _status;
         }
 
+        public bool IsValid()
+        {
+            return name != null;
+        }
+
     }
 }
