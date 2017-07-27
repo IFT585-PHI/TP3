@@ -11,7 +11,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net;
 using System.Net.Cache;
-using System.IO;
 
 namespace Phi_Box
 {
@@ -97,35 +96,7 @@ namespace Phi_Box
 
         private void Submit_TCP_Request(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                TcpClient client = new TcpClient();
-                Console.WriteLine("Connection started ...");
-
-                client.Connect("192.168.0.113", 13);
-                Console.WriteLine("Connected");
-
-                Console.WriteLine("Transmition of the request : Test.");
-
-                string str = "Test.";
-                NetworkStream ns = client.GetStream();
-                StreamWriter sw = new StreamWriter(ns);
-
-                sw.Write(str);
-                sw.Flush();
-
-                StreamReader sr = new StreamReader(ns);
-                string response = sr.ReadLine();
-                Console.WriteLine("The reponse from the server :" + response);
-                sr.Close();
-                
-                client.Close();
-                Console.WriteLine("Connection closed");
-
-            } catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            mainWindow.client.Submit_TCP_Request();
         }
 
         private void ResetField()

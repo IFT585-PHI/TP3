@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Linq;
+using System.Net.Sockets;
+using System.Net;
+using System.Net.Cache;
+using System.Windows;
 
 namespace Phi_Box
 {
@@ -18,6 +22,40 @@ namespace Phi_Box
         {
             //TODO: Create Connection to Server
             
+        }
+
+        public void Submit_TCP_Request()
+        {
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.171", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                string str = "Test.";
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(str);
+                sw.Flush();
+
+                StreamReader sr = new StreamReader(ns);
+                string response = sr.ReadLine();
+                Console.WriteLine("The reponse from the server :" + response);
+                sr.Close();
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         /********************************************
