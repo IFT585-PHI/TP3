@@ -6,7 +6,7 @@
 
 using boost::asio::ip::tcp;
 string Server::address = "127.0.0.1";
-Server::Server(boost::asio::io_service& io_service):acceptor(io_service, tcp::endpoint(tcp::v4(), 13)), socket(io_service) {
+Server::Server(boost::asio::io_service& io_service):acceptor(io_service, tcp::endpoint(tcp::v4(), 13)), socket(io_service){
 }
 
 void Server::initializeManager() {
@@ -30,19 +30,22 @@ void Server::synchronize() {
 }
 
 void Server::start_accept() {
-	acceptor.accept(socket);
+	boost::asio::io_service io_service;
 	while (true) {
+		tcp::socket socket(io_service);
+		acceptor.accept(socket);
 		std::string str = readRequest(socket);
+		std::cout << "Resquest received: " << std::endl;
 		std::cout << str << std::endl;
 
-		sendResponse(socket, "Test Réussi");
-		std::cout << "sent Test Réussi" << std::endl;
+		sendResponse(socket, "The resquest " + str + " was successfully received by the server");
+		std::cout << "Response Sent." << std::endl;
 	}
 }
 
 std::string Server::readRequest(tcp::socket & socket) {
 	boost::asio::streambuf buf;
-	boost::asio::read_until(socket, buf, "\n");
+	boost::asio::read_until(socket, buf, ".");
 
 	std::string data = boost::asio::buffer_cast<const char*>(buf.data());
 	data.erase(--data.end());

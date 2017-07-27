@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System;
+using System.Net.Sockets;
+using System.IO;
+using System.Text;
 
 namespace Phi_Box
 {
@@ -88,6 +81,39 @@ namespace Phi_Box
                 //Register process here
             }
             mainWindow.Navigate(new Dashboard(mainWindow));
+        }
+
+        private void Submit_TCP_Request(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.113", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                string str = "Test.";
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(str);
+                sw.Flush();
+
+                StreamReader sr = new StreamReader(ns);
+                string response = sr.ReadLine();
+                Console.WriteLine("The reponse from the server :" + response);
+                sr.Close();
+                
+                client.Close();
+                Console.WriteLine("Connection closed");
+
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void ResetField()

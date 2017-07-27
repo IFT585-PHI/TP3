@@ -45,5 +45,6 @@
             <Button Content="Login" Height="23" HorizontalAlignment="Center" Margin="0,253,0,0" Name="Submit" VerticalAlignment="Top" Width="70" Click="Submit_Click" />
             <Image x:Name="image" Margin="42,0,38,238" HorizontalAlignment="Center" Source="images/phibbox_white.png"/>
         </Grid>
+        <Button Content="TCPTest" Height="23" HorizontalAlignment="Center" Margin="631,458,379,0" x:Name="Submit_Copy" VerticalAlignment="Top" Width="70" Click="Submit_TCP_Request" />
     </Grid>
 </Page>
