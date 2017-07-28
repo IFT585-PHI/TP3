@@ -44,7 +44,7 @@ namespace Phi_Box
 
         public void Navigate(Page page)
         {
-            frame.NavigationService.Navigate(page);
+            frame.NavigationService.Navigate(page);            
         }
         
         //Don't mind that, need it to change pages

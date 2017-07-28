@@ -1,1 +1,30 @@
-[{"id":0,"name":"Group 1","description":"This is group 1, not in","status":0},{"id":1,"name":"Group 2","description":"This is group 2, pending","status":1},{"id":2,"name":"Group 3","description":"This is group 3, in","status":2},{"id":3,"name":"test1","description":"test1","status":2}]
+[
+  {
+    "admin": 0,
+    "description": "This is group 1, not in",
+    "id": 0,
+    "name": "Group 1",
+    "status": 0
+  },
+  {
+    "admin": 1,
+    "id": 1,
+    "name": "Group 2",
+    "description": "This is group 2, pending",
+    "status": 1
+  },
+  {
+    "admin": 2,
+    "id": 2,
+    "name": "Group 3",
+    "description": "This is group 3, in",
+    "status": 2
+  },
+  {
+    "admin": 3,
+    "id": 3,
+    "name": "test1",
+    "description": "test1",
+    "status": 2
+  }
+]

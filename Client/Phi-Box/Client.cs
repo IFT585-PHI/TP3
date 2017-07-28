@@ -10,13 +10,18 @@ using System.Net.Sockets;
 using System.Net;
 using System.Net.Cache;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 
 namespace Phi_Box
 {
     public class Client
     {
 
-        private User connectedUser;        
+        public User connectedUser;
+        public Window popup;
 
         public Client()
         {
@@ -24,41 +29,10 @@ namespace Phi_Box
             
         }
 
-        public void Submit_TCP_Request()
+        private void DisplayError(string message)
         {
-            try
-            {
-                TcpClient client = new TcpClient();
-                Console.WriteLine("Connection started ...");
-
-                client.Connect("192.168.0.171", 13);
-                Console.WriteLine("Connected");
-
-                Console.WriteLine("Transmition of the request : Test.");
-
-                string str = "Test.";
-                NetworkStream ns = client.GetStream();
-                StreamWriter sw = new StreamWriter(ns);
-
-                sw.Write(str);
-                sw.Flush();
-
-                StreamReader sr = new StreamReader(ns);
-                string response = sr.ReadLine();
-                Console.WriteLine("The reponse from the server :" + response);
-                sr.Close();
-
-                client.Close();
-                Console.WriteLine("Connection closed");
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            MessageBox.Show(message);
         }
-
-       
 
         /********************************************
          *          TEMPORARY SECTION 
@@ -86,7 +60,7 @@ namespace Phi_Box
             //Connection user in server
 
 
-            int id = 0; //Temporary, normallly, get all informations from results
+            int id = 2; //Temporary, normallly, get all informations from results
             connectedUser = new User(id, username);
 
             return isSuccesfull;
@@ -147,7 +121,6 @@ namespace Phi_Box
                 if(username != connectedUser.username)
                     users.Add(new User(id, username));
             }
-
             return users;
         }        
 
@@ -193,7 +166,7 @@ namespace Phi_Box
             //Send Group to Server
 
             int id = 0; //Temporary, normallly, get all informations from results
-            Group group = new Group(id, name, description, (int)GroupStatus.IN);
+            Group group = new Group(id, name, description, (int)GroupStatus.IN, connectedUser.id);
             List<Group> groups = GetGroups();
             groups.Add(group);
             string json = JsonConvert.SerializeObject(groups.ToArray());
@@ -213,8 +186,11 @@ namespace Phi_Box
             List<Group> groups = new List<Group>();
             foreach (JObject o in ReadJSONFile("groups.json").Children<JObject>())
             {
-                var elem = o.ToObject<Dictionary<string, object>>();                
-                groups.Add(new Group(Int32.Parse(elem["id"].ToString()), elem["name"].ToString(), elem["description"].ToString(), Int32.Parse(elem["status"].ToString())));
+                var elem = o.ToObject<Dictionary<string, object>>();
+                int id = Int32.Parse(elem["id"].ToString());
+                int status = Int32.Parse(elem["status"].ToString());
+                int adminId = Int32.Parse(elem["admin"].ToString());
+                groups.Add(new Group( id, elem["name"].ToString(), elem["description"].ToString(), status, adminId));
             }
 
             return groups;

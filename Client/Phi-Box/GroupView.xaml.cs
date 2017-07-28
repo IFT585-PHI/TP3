@@ -25,14 +25,31 @@ namespace Phi_Box
 
         private MainWindow mainWindow;
 
-        public GroupView(MainWindow m, int id)
+        public GroupView(MainWindow m, int id, int adminId)
         {
             mainWindow = m;
             groupId = id;
+            isAdmin = adminId == mainWindow.client.connectedUser.id;
+
             InitializeComponent();
-            isAdmin = true; //Ask if admin
+
             DisplayGroupUsers();
+
+            if (isAdmin)
+                DisplayAdminView();
+            else
+                DisplayUserView();
+        }
+
+        private void DisplayAdminView()
+        {
             DisplayPendingUsers();
+        }
+        private void DisplayUserView()
+        {
+            Users.Children.Remove(PendingSection);
+            UsersScroll.Height = 535;
+            dashboard.Children.Remove(delete);
         }
         
 
@@ -126,9 +143,7 @@ namespace Phi_Box
             }
         }
 
-
-
-
+        
         private void DisplayFiles()
         {
             files_list.Children.Clear();
@@ -138,6 +153,7 @@ namespace Phi_Box
         {
             int userId = (int)((Button)sender).DataContext;
             mainWindow.client.PromoteUser(groupId, userId);
+            mainWindow.Navigate(new GroupView(mainWindow, groupId, userId));
         }
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
@@ -159,6 +175,23 @@ namespace Phi_Box
         {
             string username = AddMember.Text;
             mainWindow.client.InviteUser(groupId, username);
+        }
+
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindow.client.LogOut();
+            mainWindow.Navigate(new Login(mainWindow));
+        }
+
+        private void Prev_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindow.Navigate(new Dashboard(mainWindow));
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindow.client.DeleteGroup(groupId);
+            mainWindow.Navigate(new Dashboard(mainWindow));
         }
     }
 }
