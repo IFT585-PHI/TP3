@@ -15,7 +15,6 @@ UserManager* UserManager::getInstance() {
 }
 
 void UserManager::initialize() {
-    // Build existingUsers from file parser
 }
 
 bool UserManager::addNewUser(string userName) {

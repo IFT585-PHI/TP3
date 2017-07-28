@@ -29,7 +29,7 @@ namespace Phi_Box
             mainWindow = m;
             InitializeComponent();
 
-            DisplayGroups();
+          //  DisplayGroups();
             DisplayUsers();
 
         }

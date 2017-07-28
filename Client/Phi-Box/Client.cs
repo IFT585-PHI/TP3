@@ -460,7 +460,8 @@ namespace Phi_Box
 
                 Console.WriteLine("Reception of the request...");
                 StreamReader sr = new StreamReader(ns);
-                response = sr.ReadLine();
+                response = sr.ReadToEnd();
+
 
                 client.Close();
                 Console.WriteLine("Connection closed");

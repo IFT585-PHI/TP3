@@ -40,7 +40,6 @@ void Server::run() {
 		acceptor.accept(socket);
 
 		std::string json = readRequest(socket);
-		json.pop_back();
 		//JSON PARSE ^
 
 		std::cout << "Resquest received: " << std::endl;
@@ -48,7 +47,7 @@ void Server::run() {
 		//sendResponse(socket, json);
 
 		//TEST
-		sendResponse(socket, std::to_string(10));
+		sendResponse(socket, LookUpClientFunction(json));
 
 		std::cout << "Response Sent." << std::endl;
 	}

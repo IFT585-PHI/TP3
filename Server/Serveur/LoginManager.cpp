@@ -24,7 +24,6 @@ bool LoginManager::validateUserLogin(string userName, string password) {
         if (entry.first == userName && entry.second == password)
         {
             User user = UserManager::getInstance()->getUserByName(userName);
-            connectedUsers.push_back(user);
             return true;
         }
     }
