@@ -180,6 +180,7 @@ string ReaderFromClient::getOnlineUsersResponse(MessageMap messages) {
     writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
 
     if (status == SUCCESS) {
+        writer.String("users");
         writer.StartArray();
         for (auto user : connectedUsers) {
             writer.StartObject();
@@ -238,6 +239,7 @@ string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
     writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
 
     if (status == SUCCESS) {
+        writer.String("members");
         writer.StartArray();
         for (auto userId : group.members) {
             writer.StartObject();
@@ -297,6 +299,7 @@ string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages) {
     writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
 
     if (status == SUCCESS) {
+        writer.String("pending");
         writer.StartArray();
         for (auto userId : group.pendingInvitations) {
             writer.StartObject();
