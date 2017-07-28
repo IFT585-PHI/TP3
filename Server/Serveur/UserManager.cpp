@@ -29,14 +29,6 @@ bool UserManager::addNewUser(string userName) {
     return true;
 }
 
-bool UserManager::sendInvitation(unsigned int userId, unsigned int groupId) {
-    if (!existingUsers.count(userId))
-        return false;
-
-    existingUsers[userId].addPendingInvitation(groupId);
-    return true;
-}
-
 set<unsigned int> UserManager::getAllGroupIdFor(unsigned int id) {
     if (existingUsers.count(id))
         return existingUsers[id].getGroups();

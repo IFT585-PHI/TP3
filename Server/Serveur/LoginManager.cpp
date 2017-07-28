@@ -24,7 +24,6 @@ bool LoginManager::validateUserLogin(string userName, string password) {
         if (entry.first == userName && entry.second == password)
         {
             User user = UserManager::getInstance()->getUserByName(userName);
-            user.setIsConnected(true);
             connectedUsers.push_back(user);
             return true;
         }
@@ -58,17 +57,7 @@ void LoginManager::addUser(string userName, string password) {
 
 void LoginManager::synchronize() {
 	vector<User> existingUsers = UserManager::getInstance()->getListExistingUsers();
-
-    for(auto u : connectedUsers)
-    {
-        if (!u.getIsConnected())
-        {
-			u.setIsConnected(true);
-            std::vector<User>::iterator it = find(connectedUsers.begin(), connectedUsers.end(), u);
-            if (it != connectedUsers.end())
-                connectedUsers.erase(it);
-        }
-    }
+    
 }
 
 bool LoginManager::doesUsernameExists(string userName) {
@@ -95,8 +84,7 @@ bool LoginManager::addConnectedUser(User newUser) {
 bool LoginManager::removeConnectedUser(User user) {
     for (auto u : connectedUsers) {
         if (user == u) {
-            user.setIsConnected(false);
-            std::vector<User>::iterator it = find(connectedUsers.begin(), connectedUsers.end(), user);
+            std::vector<User>::iterator it = find(connectedUsers.begin(), connectedUsers.end(), u);
             if (it != connectedUsers.end())
                 connectedUsers.erase(it);
             return true;

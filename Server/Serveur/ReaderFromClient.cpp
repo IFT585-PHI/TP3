@@ -45,7 +45,7 @@ string ReaderFromClient::getRegisterResponse(MessageMap& messages) {
     if (!loginMan->doesUsernameExists(username->second)) {
         loginMan->addUser(username->second, password->second);
         userMan->addNewUser(username->second);
-        status = "Success";
+        status = SUCCESS;
     }
     else {
         errorMsg = "User already exists";
@@ -83,17 +83,16 @@ string ReaderFromClient::getLogInResponse(MessageMap messages) {
         user = userMan->getUserByName(username->second);
 
         if (loginMan->addConnectedUser(user)) {
-            user.setIsConnected(true);
-            status = "Success";
+            status = SUCCESS;
         }
         else {
             errorMsg = "User already logged in";
-            status = "Failed";
+            status = FAILED;
         }
     }
     else {
         errorMsg = "Invalid user";
-        status = "Failed";
+        status = FAILED;
     }
 
     rapidjson::StringBuffer sb;
@@ -106,7 +105,7 @@ string ReaderFromClient::getLogInResponse(MessageMap messages) {
     writer.String("errorInfo");
     writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
 
-    if (status == "Success") {
+    if (status == SUCCESS) {
         writer.String("userId");
         writer.Uint(user.getId());
     }
@@ -130,12 +129,11 @@ string ReaderFromClient::getLogOutResponse(MessageMap messages) {
     user = userMan->getUserById(atoi(userId->second.c_str()));
 
     if (loginMan->removeConnectedUser(user)) {
-        user.setIsConnected(false);
-        status = "Success";
+        status = SUCCESS;
     }
     else {
         errorMsg = "User failed to logout";
-        status = "Failed";
+        status = FAILED;
     }
 
     rapidjson::StringBuffer sb;
@@ -155,9 +153,100 @@ string ReaderFromClient::getLogOutResponse(MessageMap messages) {
     return sb.GetString();
 }
 
-/*string ReaderFromClient::getOnlineUsersResponse(MessageMap messages);
-string ReaderFromClient::getGroupUsersResponse(MessageMap messages);
-string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages);
+string ReaderFromClient::getOnlineUsersResponse(MessageMap messages) {
+    LoginManager* loginMan = LoginManager::getInstance();
+    UserManager* userMan = UserManager::getInstance();
+    string errorMsg{};
+    string status{};
+
+    vector<User>connectedUsers = loginMan->getConnectedUsers();
+
+    if (!connectedUsers.empty()) {
+        status = SUCCESS;
+    }
+    else {
+        errorMsg = "No user connected";
+        status = FAILED;
+    }
+
+    rapidjson::StringBuffer sb;
+    PrettyWriter<StringBuffer> writer(sb);
+
+    writer.StartObject();
+    writer.String("status");
+    writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+    writer.String("errorInfo");
+    writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+    if (status == SUCCESS) {
+        writer.StartArray();
+        for (auto user : connectedUsers) {
+            writer.StartObject();
+
+            writer.String("userId");
+            writer.Uint(user.getId());
+            
+            writer.String("username");
+            writer.String(user.getName().c_str(), static_cast<SizeType>(user.getName().length()));
+
+            writer.EndObject();
+        }
+        writer.EndArray();
+    }
+
+    writer.EndObject();
+
+    puts(sb.GetString());
+
+    return sb.GetString();
+}
+
+string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
+    UserManager* userMan = UserManager::getInstance();
+    GroupManager* groupMan = GroupManager::getInstance();
+    string errorMsg{};
+    string status{};
+
+    MessageMap::iterator groupId = messages.find("groupId");
+
+    Group group = groupMan->getGroupById(atoi(groupId->second.c_str()));
+
+    rapidjson::StringBuffer sb;
+    PrettyWriter<StringBuffer> writer(sb);
+
+    writer.StartObject();
+    writer.String("status");
+    writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+    writer.String("errorInfo");
+    writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+    if (status == SUCCESS) {
+        writer.StartArray();
+        for (auto userId : group.members) {
+            writer.StartObject();
+
+            writer.String("userId");
+            writer.Uint(userId);
+
+            /*writer.String("username");
+
+            writer.String(user.getName().c_str(), static_cast<SizeType>(user.getName().length()));*/
+
+            writer.EndObject();
+        }
+        writer.EndArray();
+    }
+
+    writer.EndObject();
+
+    puts(sb.GetString());
+
+    return sb.GetString();
+}
+
+/*string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages);
 string ReaderFromClient::getGroupsResponse(MessageMap messages);
 string ReaderFromClient::getLeaveGroupResponse(MessageMap messages);
 string ReaderFromClient::getJoinGroupsResponse(MessageMap messages);

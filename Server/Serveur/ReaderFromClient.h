@@ -68,10 +68,13 @@ struct MessageHandler
     std::string name_;
 };
 
+const string SUCCESS{ "Success" };
+const string FAILED{ "Failed" };
 
 class ReaderFromClient
 {
 public:
+
     ReaderFromClient()=delete;
     ~ReaderFromClient()=delete;
     static void ParseMessages(const char* json, MessageMap& messages);
@@ -80,10 +83,11 @@ public:
     static string getRegisterResponse(MessageMap& messages);
     static string getLogInResponse(MessageMap messages);
     static string getLogOutResponse(MessageMap messages);
-    /*static string getOnlineUsersResponse(MessageMap messages);
+    static string getOnlineUsersResponse(MessageMap messages);
     static string getGroupUsersResponse(MessageMap messages);
-    static string getGroupPendingUsersResponse(MessageMap messages);
+    /*static string getGroupPendingUsersResponse(MessageMap messages);
     static string getGroupsResponse(MessageMap messages);
+    static string createGroup();
     static string getJoinGroupsResponse(MessageMap messages);
     static string getLeaveGroupResponse(MessageMap messages);
     static string getDeleteGroupResponse(MessageMap messages);

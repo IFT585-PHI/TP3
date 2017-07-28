@@ -1,17 +1,9 @@
-﻿  Source.cpp
+﻿  Admin.cpp
 c:\users\simon\desktop\tp3\tp3\server\serveur\readerfromclient.h(22): warning C4018: '<': signed/unsigned mismatch
   Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
   - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
   - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
   Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
-  Server.cpp
 c:\users\simon\desktop\tp3\tp3\server\serveur\groupmanager.h(26): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
-c:\users\simon\desktop\tp3\tp3\server\serveur\loginmanager.h(32): warning C4091: 'static ': ignored on left of 'LoginManager' when no variable is declared
-c:\users\simon\desktop\tp3\tp3\server\serveur\usermanager.h(30): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
-c:\users\simon\desktop\tp3\tp3\server\serveur\readerfromclient.h(22): warning C4018: '<': signed/unsigned mismatch
-  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
-  - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
-  - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
-  Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
-  Generating Code...
+c:\users\simon\desktop\tp3\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
   Serveur.vcxproj -> C:\Users\Simon\Desktop\TP3\TP3\Server\Debug\Serveur.exe

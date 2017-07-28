@@ -15,7 +15,7 @@ Admin::Admin(unsigned int _userId, unsigned int _groupId, set<unsigned int> _pen
 }
 
 void Admin::Invite(unsigned int _userId) {
-    UserManager::getInstance()->sendInvitation(groupId, _userId);
+    GroupManager::getInstance()->addUserToGroup(groupId, _userId);
 }
 
 void Admin::Remove(unsigned int _userId) {
