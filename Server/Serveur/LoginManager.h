@@ -22,6 +22,9 @@ private:
 public:
     void initialize();
     bool validateUserLogin(string userName, string password);
+    bool doesUsernameExists(string username);
+    bool addConnectedUser(User user);
+    bool removeConnectedUser(User user);
     vector<User> getConnectedUsers();
     vector<User> getNotConnectedUsers();
     void addUser(string userName, string password);

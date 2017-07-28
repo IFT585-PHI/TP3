@@ -87,3 +87,58 @@ bool Group::doesPendingInvitationExists(unsigned int userId) {
 void Group::setAdmin(unsigned int userId) {
     admin.SetUserId(userId);
 }
+
+void Group::serialize(PrettyWriter<StringBuffer>& writer) const {
+    writer.StartObject();
+
+    Entity::serialize(writer);
+
+    writer.String("Name");
+    writer.String(name.c_str(), static_cast<SizeType>(name.length()));
+    writer.String("Description");
+    writer.String(description.c_str(), static_cast<SizeType>(description.length()));
+    
+    writer.String("Admin");
+    admin.serialize(writer);
+
+    writer.String("Members");
+    writer.StartArray();
+    if (!members.empty()) {
+        for (auto member : members)
+            writer.Uint(member);
+    }
+    else
+        writer.Null();
+
+    writer.EndArray();
+
+    writer.String("PerndingInvitations");
+    writer.StartArray();
+    if (!pendingInvitations.empty()) {
+        for (auto pending : pendingInvitations)
+            writer.Uint(pending);
+    }
+    else
+        writer.Null();
+
+    writer.EndArray();
+
+    writer.String("FilesVersion");
+    writer.StartArray();
+    if (!filesVersion.empty()) {
+        for (auto file : filesVersion) {
+            writer.StartObject();
+            writer.String("FileId");
+            writer.Uint(file.first);
+            writer.String("FileVersion");
+            writer.Uint(file.second);
+            writer.EndObject();
+        }
+    }
+    else
+        writer.Null();
+
+    writer.EndArray();
+
+    writer.EndObject();
+}

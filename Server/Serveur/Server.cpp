@@ -54,75 +54,97 @@ void Server::run() {
 	}
 }
 
-string Server::LookUpClientFunction(ClientFunction cf, string json) {
+string Server::LookUpClientFunction(string json) {
 	string result;
+
+    MessageMap messages = ReaderFromClient::getMessageMapFromJson(json);
+    ClientFunction cf = ReaderFromClient::getFunctionId(messages);
 
 	switch (cf) 
 	{
 		case ClientFunction::Register:
 		{
-			break;
+            return ReaderFromClient::getRegisterResponse(messages);
+            break;
 		}
 		case ClientFunction::LogIn:
 		{
-			break;
+            return ReaderFromClient::getLogInResponse(messages);
+            break;
 		}
 		case ClientFunction::LogOut:
 		{
-			break;
+            return ReaderFromClient::getLogOutResponse(messages);
+            break;
 		}
-		case ClientFunction::GetOnlineUsers:
+		/*case ClientFunction::GetOnlineUsers:
 		{
-			break;
+            return ReaderFromClient::getOnlineUsersResponse(messages);
+            break;
 		}
 		case ClientFunction::GetGroupUsers:
 		{
+            return ReaderFromClient::getGroupUsersResponse(messages);
 			break;
 		}
 		case ClientFunction::GetGroupPendingUsers:
 		{
+            return ReaderFromClient::getGroupPendingUsersResponse(messages);
 			break;
 		}
 		case ClientFunction::GetGroups:
 		{
+            return ReaderFromClient::getGroupsResponse(messages);
 			break;
 		}
 		case ClientFunction::JoinGroup:
 		{
+            return ReaderFromClient::getJoinGroupsResponse(messages);
 			break;
 		}
 		case ClientFunction::LeaveGroup:
 		{
+            return ReaderFromClient::getLeaveGroupResponse(messages);
 			break;
 		}
 		case ClientFunction::DeleteGroup:
 		{
+            return ReaderFromClient::getDeleteGroupResponse(messages);
 			break;
 		}
 		case ClientFunction::KickUser:
 		{
+            return ReaderFromClient::getKickUserResponse(messages);
 			break;
 		}
 		case ClientFunction::PromoteUser:
 		{
+            return ReaderFromClient::getPromoteUserResponse(messages);
 			break;
 		}
 		case ClientFunction::InviteUser:
 		{
+            return ReaderFromClient::getInviteUserResponse(messages);
 			break;
 		}
 		case ClientFunction::DeclineRequest:
 		{
+            return ReaderFromClient::getDeclineRequestResponse(messages);
 			break;
 		}
 		case ClientFunction::ApproveRequest:
 		{
+            return ReaderFromClient::getApproveRequestResponse(messages);
 			break;
-		}
+		}*/
 		case ClientFunction::GetFiles:
 		{
 			break;
 		}
+        case ClientFunction::Error:
+        {
+            break;
+        }
 		default:
 			break;
 	}

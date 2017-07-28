@@ -10,7 +10,7 @@ using namespace std::chrono;
 
 class Server;
 
-class User : Entity, ISynchronize
+class User : public Entity, ISynchronize
 {
 public:
     User() = default;
@@ -42,6 +42,7 @@ public:
     bool getIsConnected();
     void setIsConnected(bool isConnected);
     string getName();
+    void serialize(PrettyWriter<StringBuffer>& writer) const;
 };
 
 #endif // !USER_H

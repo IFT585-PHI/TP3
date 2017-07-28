@@ -37,3 +37,25 @@ void Admin::Deny(unsigned int _userId) {
 void Admin::SetUserId(unsigned int _userId) {
     userId = _userId;
 }
+
+void Admin::serialize(PrettyWriter<StringBuffer>& writer) const {
+    writer.StartObject();
+
+    writer.String("UserId");
+    writer.Uint(userId);
+    writer.String("GroupId");
+    writer.Uint(groupId);
+
+    writer.String("PerndingInvitations");
+    writer.StartArray();
+    if (!pendingInvitations.empty()) {
+        for (std::set<unsigned int>::iterator pendingItr = pendingInvitations.begin(); pendingItr != pendingInvitations.end(); ++pendingItr)
+            writer.Uint(*pendingItr);
+    }
+    else
+        writer.Null();
+
+    writer.EndArray();
+
+    writer.EndObject();
+}

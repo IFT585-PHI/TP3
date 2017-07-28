@@ -2,11 +2,10 @@
 #define SERVER_H
 
 #include "File.h"
+#include "ReaderFromClient.h"
 #include <boost/asio.hpp>
 
 using boost::asio::ip::tcp;
-
-enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles };
 
 class Server
 {
@@ -28,8 +27,8 @@ public:
 	void sendResponse(tcp::socket & socket, const std::string& str);
 	void run();
 
-private:
-	string LookUpClientFunction(ClientFunction cf, string json);
+//private:
+	static string LookUpClientFunction(string json);
 };
 
 
