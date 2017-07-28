@@ -24,11 +24,14 @@ public:
 public:
     bool addMember(unsigned int userId);
     bool removeMember(unsigned int userId);
+
     bool addFile(unsigned int fileId);
     bool updateFile(unsigned int fileId);
     bool removeFile(unsigned int fileId);
+
     bool addPendingInvitation(unsigned int userId);
     bool removePendingInvitation(unsigned int userId);
+
     bool doesMemberExists(unsigned int userId);
     bool doesFileExists(unsigned int fileId);
     bool doesPendingInvitationExists(unsigned int userId);

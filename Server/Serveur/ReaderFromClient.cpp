@@ -252,7 +252,112 @@ string ReaderFromClient::getLeaveGroupResponse(MessageMap messages);
 string ReaderFromClient::getJoinGroupsResponse(MessageMap messages);
 string ReaderFromClient::getDeleteGroupResponse(MessageMap messages);
 string ReaderFromClient::getKickUserResponse(MessageMap messages);
-string ReaderFromClient::getPromoteUserResponse(MessageMap messages);
-string ReaderFromClient::getInviteUserResponse(MessageMap messages);
-string ReaderFromClient::getDeclineRequestResponse(MessageMap messages);
-string ReaderFromClient::getApproveRequestResponse(MessageMap messages);*/
+string ReaderFromClient::getPromoteUserResponse(MessageMap messages);*/
+string ReaderFromClient::getInviteUserResponse(MessageMap messages)
+{
+	UserManager* userMan = UserManager::getInstance();
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int userId = (atoi(messages.find("userId")->second.c_str()));
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+
+	if (groupMan->addUserToGroup(groupId, userId))
+	{
+		status = "Success";
+	}
+	else {
+		status = "Failed";
+		errorMsg = "User/Group doesn't exist or the user was already in the group";
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getDeclineRequestResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int userId = (atoi(messages.find("userId")->second.c_str()));
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+
+	if (groupMan->removeUserPending(groupId, userId))
+	{
+		status = "Success";
+	}
+	else
+	{
+		status = "Failed";
+		errorMsg = "User/Group doesn't exist or the user was not in the group pending invitation";
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getApproveRequestResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int userId = (atoi(messages.find("userId")->second.c_str()));
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+
+	if (groupMan->removeUserPending(groupId, userId))
+	{
+		groupMan->addUserToGroup(groupId, userId);
+		status = "Success";
+	}
+	else
+	{
+		status = "Failed";
+		errorMsg = "User/Group doesn't exist or the user was not in the group pending invitation";
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}

@@ -1,7 +1,6 @@
 #ifndef READERFROMCLIENT_H
 #define READERFROMCLIENT_H
 
-#include "rapidjson.h"
 #include "rapidjson/reader.h"
 #include "rapidjson/error/en.h"
 #include "rapidjson/prettywriter.h"
@@ -92,10 +91,10 @@ public:
     static string getLeaveGroupResponse(MessageMap messages);
     static string getDeleteGroupResponse(MessageMap messages);
     static string getKickUserResponse(MessageMap messages);
-    static string getPromoteUserResponse(MessageMap messages);
+    static string getPromoteUserResponse(MessageMap messages);*/
     static string getInviteUserResponse(MessageMap messages);
     static string getDeclineRequestResponse(MessageMap messages);
-    static string getApproveRequestResponse(MessageMap messages);*/
+    static string getApproveRequestResponse(MessageMap messages);
     //static string getGetFilesResponse(MessageMap messages);
     
         //status , errorInfo ==empty si pas d'erreur, retour 

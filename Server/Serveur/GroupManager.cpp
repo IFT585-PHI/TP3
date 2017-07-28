@@ -41,6 +41,13 @@ bool GroupManager::removeUserFromGroup(unsigned int groupId, unsigned int userId
     return true;
 }
 
+bool GroupManager::removeUserPending(unsigned int groupId, unsigned int userId) {
+	if (!doesGroupExists(groupId) && !doesUserPendingExists(groupId, userId))
+		return false;
+
+	getGroupById(groupId).removePendingInvitation(userId);
+}
+
 bool GroupManager::setNewAdmin(unsigned int groupId, unsigned int userId) {
     if (!doesGroupExists(groupId))
         return false;
@@ -58,4 +65,17 @@ Group GroupManager::getGroupById(unsigned int groupId) {
 
 bool GroupManager::doesGroupExists(unsigned int groupId) {
     return groups.count(groupId);
+}
+
+bool GroupManager::doesUserPendingExists(unsigned int groupId, unsigned int userId) {
+	if (!doesGroupExists(groupId))
+		throw exception{ "No group exist for this id" };
+
+	for (int id : getGroupById(groupId).pendingInvitations)
+	{
+		if (id == userId)
+			return true;
+	}
+
+	return false;
 }

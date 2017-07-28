@@ -1,7 +1,6 @@
 #ifndef ADMIN_H
 #define ADMIN_H
 
-#include "rapidjson.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 #include <cstdio>
