@@ -3,25 +3,33 @@
 
 #include "File.h"
 #include <boost/asio.hpp>
+
 using boost::asio::ip::tcp;
+
+enum ClientFunction { LogIn };
+
 class Server
 {
 public:
-    Server();
+	Server(boost::asio::io_service* io_service);
     ~Server() = default;
     static string address;
+
+	boost::asio::io_service* service;
 	tcp::acceptor acceptor;
 	tcp::socket socket;
-
-	Server(boost::asio::io_service & io_service);
 
 	static void initializeManager();
     static void receiveFiles();
     static void sendFile(File file);
+
     static void synchronize();
 	std::string readRequest(tcp::socket & socket);
 	void sendResponse(tcp::socket & socket, const std::string& str);
-	void start_accept();
+	void run();
+
+private:
+	string LookUpClientFunction(ClientFunction cf, string json);
 };
 
 

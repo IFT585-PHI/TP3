@@ -19,7 +19,7 @@ namespace Phi_Box
     /// Interaction logic for MainWindow.xaml
     /// </summary>
 
-    enum GroupStatus : int
+    public enum GroupStatus : int
     {
         OUT,
         PENDING,

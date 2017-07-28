@@ -10,12 +10,12 @@ using System.Net.Sockets;
 using System.Net;
 using System.Net.Cache;
 using System.Windows;
+using System.Runtime.Serialization;
 
-namespace Phi_Box
+namespace Phi_Box 
 {
     public class Client
     {
-
         private User connectedUser;        
 
         public Client()
@@ -31,7 +31,7 @@ namespace Phi_Box
                 TcpClient client = new TcpClient();
                 Console.WriteLine("Connection started ...");
 
-                client.Connect("192.168.0.171", 13);
+                client.Connect("192.168.0.100", 13);
                 Console.WriteLine("Connected");
 
                 Console.WriteLine("Transmition of the request : Test.");
@@ -54,7 +54,7 @@ namespace Phi_Box
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("ERROR: " + ex.Message);
             }
         }
 
@@ -79,15 +79,52 @@ namespace Phi_Box
         /// <returns></returns>
         public bool LogIn(string username, string password)
         {
-            bool isSuccesfull = true;
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.LogIn.ToString());
+            dict.Add("username", username);
+            dict.Add("password", password);
 
-            //Connection user in server
+            string json = JsonConvert.SerializeObject(dict);
+            int userId;
 
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
 
-            int id = 0; //Temporary, normallly, get all informations from results
-            connectedUser = new User(id, username);
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
 
-            return isSuccesfull;
+                Console.WriteLine("Transmision of the request : LogIn.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.IdResponse res = JsonConvert.DeserializeObject<Parser.IdResponse>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                    userId = res.id;
+                else
+                    throw new Exception(res.errorInfo);
+                 
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+                return false;
+            }
+
+            connectedUser = new User(userId, username, true);
+
+            return true;
         }
 
         /// <summary>
@@ -98,14 +135,48 @@ namespace Phi_Box
         /// <returns></returns>
         public bool Register(string username, string password)
         {
-            bool isSuccesfull = true;
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.Register.ToString());
+            dict.Add("username", username);
+            dict.Add("password", password);
 
-            //Send User to Server
+            string json = JsonConvert.SerializeObject(dict);
 
-            int id = 0; //Temporary, normallly, get all informations from results
-            connectedUser = new User(id, username);
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
 
-            return isSuccesfull;
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                { }
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+                return false;
+            }
+
+            return LogIn(username, password);
         }
 
         /// <summary>
@@ -113,9 +184,35 @@ namespace Phi_Box
         /// </summary>
         public void LogOut()
         {
-            //Tell server User is disconnecting
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.LogOut.ToString());
+            dict.Add("userId", connectedUser.id.ToString());
 
-            //Go back to login page
+            string json = JsonConvert.SerializeObject(dict);
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
         }
 
 
@@ -130,20 +227,43 @@ namespace Phi_Box
         /// <returns></returns>
         public List<User> GetOnlineUsers()
         {
-            //Request Online Users from server
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.GetOnlineUsers.ToString());
 
+            string json = JsonConvert.SerializeObject(dict);
             List<User> users = new List<User>();
 
-            foreach (JObject o in ReadJSONFile("users.json").Children<JObject>())
+            try
             {
-                var elem = o.ToObject<Dictionary<string, object>>();
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
 
-                int id = Int32.Parse(elem["id"].ToString());
-                string username = elem["username"].ToString();
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
 
-                //Usually would compare with id
-                if(username != connectedUser.username)
-                    users.Add(new User(id, username));
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                    users = res.userList;
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
             }
 
             return users;
@@ -156,9 +276,46 @@ namespace Phi_Box
         /// <returns></returns>
         public List<User> GetGroupUsers(int groupId)
         {
-            //Request the users that are in a group
-            return GetOnlineUsers();
-            //return new List<User>();
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.GetGroupUsers.ToString());
+
+            string json = JsonConvert.SerializeObject(dict);
+            List<User> users = new List<User>();
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                    users = res.userList;
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
+
+            return users;
         }
 
         /// <summary>
@@ -168,9 +325,47 @@ namespace Phi_Box
         /// <returns></returns>
         public List<User> GetGroupPendingUsers(int groupId)
         {
-            //Request the users that are pending
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.GetGroupPendingUsers.ToString());
+            dict.Add("groupId", groupId.ToString());
 
-            return new List<User>();
+            string json = JsonConvert.SerializeObject(dict);
+            List<User> users = new List<User>();
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                    users = res.userList;
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
+
+            return users;
         }
 
 
@@ -187,14 +382,52 @@ namespace Phi_Box
         /// <returns></returns>
         public Group CreateGroup(string name, string description)
         {
-            //Send Group to Server
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.GetGroupPendingUsers.ToString());
+            dict.Add("name", name);
+            dict.Add("description", description);
+            dict.Add("adminId", connectedUser.id.ToString());
 
-            int id = 0; //Temporary, normallly, get all informations from results
-            Group group = new Group(id, name, description, (int)GroupStatus.IN);
+            string json = JsonConvert.SerializeObject(dict);
+            int groupId = -1;
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.IdResponse res = JsonConvert.DeserializeObject<Parser.IdResponse>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                    groupId = res.id;
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
+
+            Group group = new Group(groupId, name, description, connectedUser.id, GroupStatus.IN);
+
             List<Group> groups = GetGroups();
             groups.Add(group);
-            string json = JsonConvert.SerializeObject(groups.ToArray());
-            System.IO.File.WriteAllText("../../groups.json", json);
             
             return group;
         }
@@ -205,13 +438,53 @@ namespace Phi_Box
         /// <returns></returns>
         public List<Group> GetGroups()
         {
-            //Request Groups from server
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.GetGroups.ToString());
+            dict.Add("userId", connectedUser.id.ToString());
 
+            string json = JsonConvert.SerializeObject(dict);
             List<Group> groups = new List<Group>();
-            foreach (JObject o in ReadJSONFile("groups.json").Children<JObject>())
+
+            try
             {
-                var elem = o.ToObject<Dictionary<string, object>>();                
-                groups.Add(new Group(Int32.Parse(elem["id"].ToString()), elem["name"].ToString(), elem["description"].ToString(), Int32.Parse(elem["status"].ToString())));
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.TripleListsGroupsForUserResponse res = JsonConvert.DeserializeObject<Parser.TripleListsGroupsForUserResponse>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                {
+                    foreach (Group g in res.inList)
+                        groups.Add(new Group(g.id, g.name, g.description, g.adminId, GroupStatus.IN));
+
+                    foreach (Group g in res.pendingList)
+                        groups.Add(new Group(g.id, g.name, g.description, g.adminId, GroupStatus.PENDING));
+
+                    foreach (Group g in res.outList)
+                        groups.Add(new Group(g.id, g.name, g.description, g.adminId, GroupStatus.OUT));
+                }
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
             }
 
             return groups;
@@ -223,7 +496,45 @@ namespace Phi_Box
         /// <param name="groupId"></param>
         public void JoinGroup(int groupId)
         {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.JoinGroup.ToString());
+            dict.Add("userId", connectedUser.id.ToString());
+            dict.Add("groupId", groupId.ToString());
 
+            string json = JsonConvert.SerializeObject(dict);
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                {}
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -232,7 +543,45 @@ namespace Phi_Box
         /// <param name="groupId"></param>
         public void LeaveGroup(int groupId)
         {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.LeaveGroup.ToString());
+            dict.Add("userId", connectedUser.id.ToString());
+            dict.Add("groupId", groupId.ToString());
 
+            string json = JsonConvert.SerializeObject(dict);
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                { }
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -241,7 +590,44 @@ namespace Phi_Box
         /// <param name="groupId"></param>
         public void DeleteGroup(int groupId)
         {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.DeleteGroup.ToString());
+            dict.Add("groupId", groupId.ToString());
 
+            string json = JsonConvert.SerializeObject(dict);
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                { }
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
         }        
 
         /// <summary>
@@ -251,7 +637,45 @@ namespace Phi_Box
         /// <param name="userId"></param>
         public void KickUser(int groupId, int userId)
         {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.KickUser.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("userId", userId.ToString());
 
+            string json = JsonConvert.SerializeObject(dict);
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                { }
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -261,7 +685,45 @@ namespace Phi_Box
         /// <param name="userId"></param>
         public void PromoteUser(int groupId, int userId)
         {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.PromoteUser.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("userId", userId.ToString());
 
+            string json = JsonConvert.SerializeObject(dict);
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                { }
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -271,7 +733,45 @@ namespace Phi_Box
         /// <param name="username"></param>
         public void InviteUser(int groupId, string username)
         {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.InviteUser.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("userId", username);
 
+            string json = JsonConvert.SerializeObject(dict);
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                { }
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -281,7 +781,45 @@ namespace Phi_Box
         /// <param name="userId"></param>
         public void DeclineRequest(int groupId, int userId)
         {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.DeclineRequest.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("userId", userId.ToString());
 
+            string json = JsonConvert.SerializeObject(dict);
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                { }
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -291,9 +829,45 @@ namespace Phi_Box
         /// <param name="userId"></param>
         public void ApproveRequest(int groupId, int userId)
         {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.ApproveRequest.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("userId", userId.ToString());
 
+            string json = JsonConvert.SerializeObject(dict);
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started ...");
+
+                client.Connect("192.168.0.100", 13);
+                Console.WriteLine("Connected");
+
+                Console.WriteLine("Transmition of the request : Test.");
+
+                NetworkStream ns = client.GetStream();
+                StreamWriter sw = new StreamWriter(ns);
+
+                sw.Write(json + ".");
+                sw.Flush();
+
+                // NOT TESTED
+                StreamReader sr = new StreamReader(ns);
+                Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(sr.ReadLine());
+
+                if (res.status == Status.Success)
+                { }
+                else
+                    throw new Exception(res.errorInfo);
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
         }        
-
-
     }
 }

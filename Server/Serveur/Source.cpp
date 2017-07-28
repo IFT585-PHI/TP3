@@ -4,10 +4,10 @@
 #include <boost/asio.hpp>
 
 int main() {
-	boost::asio::io_service io_service;
+	boost::asio::io_service* io_service = new boost::asio::io_service();
 	Server *server = new Server(io_service);
-	server->start_accept();
-    Server::initializeManager();
+	Server::initializeManager();
+	server->run();
 
     while (true) {
         Server::synchronize();

@@ -10,11 +10,13 @@ namespace Phi_Box
     {
         public int id;
         public string username;
+        public bool isConnected;
 
-        public User(int _id, string _username)
+        public User(int _id, string _username, bool _isConnected)
         {
             id = _id;
             username = _username;
+            isConnected = _isConnected;
         }
 
     }
