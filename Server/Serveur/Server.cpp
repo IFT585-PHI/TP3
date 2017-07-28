@@ -77,7 +77,7 @@ string Server::LookUpClientFunction(string json) {
             return ReaderFromClient::getLogOutResponse(messages);
             break;
 		}
-		/*case ClientFunction::GetOnlineUsers:
+		case ClientFunction::GetOnlineUsers:
 		{
             return ReaderFromClient::getOnlineUsersResponse(messages);
             break;
@@ -92,14 +92,19 @@ string Server::LookUpClientFunction(string json) {
             return ReaderFromClient::getGroupPendingUsersResponse(messages);
 			break;
 		}
-		case ClientFunction::GetGroups:
+		/*case ClientFunction::GetGroups:
 		{
             return ReaderFromClient::getGroupsResponse(messages);
 			break;
-		}
+		}*/
+        case ClientFunction::CreateGroup:
+        {
+            return ReaderFromClient::getCreateGroupResponse(messages);
+            break;
+        }
 		case ClientFunction::JoinGroup:
 		{
-            return ReaderFromClient::getJoinGroupsResponse(messages);
+            return ReaderFromClient::getJoinGroupResponse(messages);
 			break;
 		}
 		case ClientFunction::LeaveGroup:
@@ -136,7 +141,7 @@ string Server::LookUpClientFunction(string json) {
 		{
             return ReaderFromClient::getApproveRequestResponse(messages);
 			break;
-		}*/
+		}
 		case ClientFunction::GetFiles:
 		{
 			break;

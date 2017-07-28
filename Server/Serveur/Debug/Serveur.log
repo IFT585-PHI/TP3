@@ -1,9 +1,42 @@
-﻿  Admin.cpp
-c:\users\simon\desktop\tp3\tp3\server\serveur\readerfromclient.h(22): warning C4018: '<': signed/unsigned mismatch
+﻿  Server.cpp
+c:\users\simon\desktop\tp3\tp3\server\serveur\groupmanager.h(34): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
+c:\users\simon\desktop\tp3\tp3\server\serveur\loginmanager.h(32): warning C4091: 'static ': ignored on left of 'LoginManager' when no variable is declared
+c:\users\simon\desktop\tp3\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
+c:\users\simon\desktop\tp3\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
   Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
   - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
   - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
   Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
-c:\users\simon\desktop\tp3\tp3\server\serveur\groupmanager.h(26): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
+  Generating Code...
+  Compiling...
+  User.cpp
+c:\users\simon\desktop\tp3\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
+  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
+  - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
+  - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
+  Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+c:\users\simon\desktop\tp3\tp3\server\serveur\groupmanager.h(34): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
+c:\users\simon\desktop\tp3\tp3\server\serveur\user.cpp(63): warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\time.h(475): note: see declaration of 'ctime'
+  Source.cpp
+c:\users\simon\desktop\tp3\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
+  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
+  - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
+  - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
+  Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+  ReaderFromClient.cpp
 c:\users\simon\desktop\tp3\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
+c:\users\simon\desktop\tp3\tp3\server\serveur\groupmanager.h(34): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
+c:\users\simon\desktop\tp3\tp3\server\serveur\loginmanager.h(32): warning C4091: 'static ': ignored on left of 'LoginManager' when no variable is declared
+c:\users\simon\desktop\tp3\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
+  Admin.cpp
+c:\users\simon\desktop\tp3\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
+  Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
+  - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
+  - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
+  Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+c:\users\simon\desktop\tp3\tp3\server\serveur\groupmanager.h(34): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
+c:\users\simon\desktop\tp3\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
+  Generating Code...
+c:\users\simon\desktop\tp3\tp3\server\serveur\readerfromclient.h(24): warning C4715: 'getEnumFromText': not all control paths return a value
   Serveur.vcxproj -> C:\Users\Simon\Desktop\TP3\TP3\Server\Debug\Serveur.exe

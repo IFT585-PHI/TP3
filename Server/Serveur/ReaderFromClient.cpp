@@ -205,12 +205,27 @@ string ReaderFromClient::getOnlineUsersResponse(MessageMap messages) {
 string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
     UserManager* userMan = UserManager::getInstance();
     GroupManager* groupMan = GroupManager::getInstance();
+    Group group{};
     string errorMsg{};
     string status{};
 
     MessageMap::iterator groupId = messages.find("groupId");
 
-    Group group = groupMan->getGroupById(atoi(groupId->second.c_str()));
+    try
+    {
+        group = groupMan->getGroupById(atoi(groupId->second.c_str()));
+        status = SUCCESS;
+    }
+    catch (std::exception& e)
+    {
+        status = FAILED;
+        errorMsg = e.what();
+    }
+
+    if (group.members.empty()) {
+        status = FAILED;
+        errorMsg = "No members in group";
+    }
 
     rapidjson::StringBuffer sb;
     PrettyWriter<StringBuffer> writer(sb);
@@ -230,9 +245,9 @@ string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
             writer.String("userId");
             writer.Uint(userId);
 
-            /*writer.String("username");
-
-            writer.String(user.getName().c_str(), static_cast<SizeType>(user.getName().length()));*/
+            writer.String("username");
+            User user = userMan->getUserById(userId);
+            writer.String(user.getName().c_str(), static_cast<SizeType>(user.getName().length()));
 
             writer.EndObject();
         }
@@ -246,8 +261,65 @@ string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
     return sb.GetString();
 }
 
-/*string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages);
-string ReaderFromClient::getGroupsResponse(MessageMap messages);*/
+string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages) {
+    UserManager* userMan = UserManager::getInstance();
+    GroupManager* groupMan = GroupManager::getInstance();
+    Group group{};
+    string errorMsg{};
+    string status{};
+
+    MessageMap::iterator groupId = messages.find("groupId");
+    
+    try
+    {
+        group = groupMan->getGroupById(atoi(groupId->second.c_str()));
+        status = SUCCESS;
+    }
+    catch (std::exception& e)
+    {
+        status = FAILED;
+        errorMsg = e.what();
+    }
+
+    if (group.pendingInvitations.empty()) {
+        status = FAILED;
+        errorMsg = "No pending invitation in this group";
+    }
+
+    rapidjson::StringBuffer sb;
+    PrettyWriter<StringBuffer> writer(sb);
+
+    writer.StartObject();
+    writer.String("status");
+    writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+    writer.String("errorInfo");
+    writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+    if (status == SUCCESS) {
+        writer.StartArray();
+        for (auto userId : group.pendingInvitations) {
+            writer.StartObject();
+
+            writer.String("userId");
+            writer.Uint(userId);
+
+            writer.String("username");
+            User user = userMan->getUserById(userId);
+            writer.String(user.getName().c_str(), static_cast<SizeType>(user.getName().length()));
+
+                writer.EndObject();
+        }
+        writer.EndArray();
+    }
+
+    writer.EndObject();
+
+    puts(sb.GetString());
+
+    return sb.GetString();
+}
+
 
 string ReaderFromClient::getJoinGroupResponse(MessageMap messages)
 {
