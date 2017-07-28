@@ -85,13 +85,13 @@ public:
     static string getOnlineUsersResponse(MessageMap messages);
     static string getGroupUsersResponse(MessageMap messages);
     /*static string getGroupPendingUsersResponse(MessageMap messages);
-    static string getGroupsResponse(MessageMap messages);
-    static string createGroup();
-    static string getJoinGroupsResponse(MessageMap messages);
+    static string getGroupsResponse(MessageMap messages);*/
+    static string getJoinGroupResponse(MessageMap messages);
     static string getLeaveGroupResponse(MessageMap messages);
+	static string getCreateGroupResponse(MessageMap messages);
     static string getDeleteGroupResponse(MessageMap messages);
     static string getKickUserResponse(MessageMap messages);
-    static string getPromoteUserResponse(MessageMap messages);*/
+    static string getPromoteUserResponse(MessageMap messages);
     static string getInviteUserResponse(MessageMap messages);
     static string getDeclineRequestResponse(MessageMap messages);
     static string getApproveRequestResponse(MessageMap messages);

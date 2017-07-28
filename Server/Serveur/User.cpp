@@ -16,7 +16,8 @@ User::User(unsigned int _id, string _name, system_clock::time_point _lastSynchro
 }
 
 void User::createGroup(string groupName, string description) {
-	GroupManager::getInstance()->addGroup(groups.size(), Group(groups.size(), groupName, description, id));
+	int id = GroupManager::getInstance()->createNewGroupId();
+	GroupManager::getInstance()->addGroup(id, Group(id, groupName, description, id));
 }
 
 void User::applyGroup(unsigned int groupId) {

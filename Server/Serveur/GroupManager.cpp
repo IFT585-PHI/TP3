@@ -18,11 +18,19 @@ void GroupManager::initialize() {
 }
 
 bool GroupManager::addGroup(unsigned int groupId, Group group) {
-    if (groups.count(groupId))
+    if (doesGroupExists(groupId))
         return false;
 
     groups.insert(make_pair(groupId, group));
     return true;
+}
+
+bool GroupManager::removeGroup(unsigned int groupId) {
+	if (!doesGroupExists(groupId))
+		return false;
+
+	groups.erase(groupId);
+	return true;
 }
 
 bool GroupManager::addUserToGroup(unsigned int groupId, unsigned int userId) {
@@ -46,6 +54,10 @@ bool GroupManager::removeUserPending(unsigned int groupId, unsigned int userId) 
 		return false;
 
 	getGroupById(groupId).removePendingInvitation(userId);
+}
+
+int GroupManager::createNewGroupId() {
+	return groups.size();
 }
 
 bool GroupManager::setNewAdmin(unsigned int groupId, unsigned int userId) {

@@ -247,15 +247,223 @@ string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
 }
 
 /*string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages);
-string ReaderFromClient::getGroupsResponse(MessageMap messages);
-string ReaderFromClient::getLeaveGroupResponse(MessageMap messages);
-string ReaderFromClient::getJoinGroupsResponse(MessageMap messages);
-string ReaderFromClient::getDeleteGroupResponse(MessageMap messages);
-string ReaderFromClient::getKickUserResponse(MessageMap messages);
-string ReaderFromClient::getPromoteUserResponse(MessageMap messages);*/
+string ReaderFromClient::getGroupsResponse(MessageMap messages);*/
+
+string ReaderFromClient::getJoinGroupResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+	int userId = (atoi(messages.find("userId")->second.c_str()));
+
+	if (groupMan->getGroupById(groupId).addMember(userId))
+	{
+		status = "Success";
+	}
+	else {
+		status = "Failed";
+		errorMsg = "User/Group doesn't exist or the user wasn't in the group";
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getLeaveGroupResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+	int userId = (atoi(messages.find("userId")->second.c_str()));
+
+	if (groupMan->getGroupById(groupId).removeMember(userId))
+	{
+		status = "Success";
+	}
+	else {
+		status = "Failed";
+		errorMsg = "User/Group doesn't exist or the user wasn't in the group";
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getCreateGroupResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	string name = messages.find("name")->second.c_str();
+	string description = messages.find("description")->second.c_str();
+	int userId = atoi(messages.find("adminId")->second.c_str());
+	int groupId = groupMan->createNewGroupId();
+
+	Group group = Group(groupId, name, description, userId);
+
+	if (groupMan->addGroup(groupMan->createNewGroupId(), group))
+	{
+		status = "Success";
+	}
+	else {
+		status = "Failed";
+		errorMsg = "GroupID already exists";
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getDeleteGroupResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+
+	if (groupMan->removeGroup(groupId))
+	{
+		status = "Success";
+	}
+	else {
+		status = "Failed";
+		errorMsg = "Group doesn't exist";
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getKickUserResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int userId = (atoi(messages.find("userId")->second.c_str()));
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+
+	if (groupMan->removeUserFromGroup(groupId, userId))
+	{
+		status = "Success";
+	}
+	else {
+		status = "Failed";
+		errorMsg = "User/Group doesn't exist or the user wasn't in the group";
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getPromoteUserResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int userId = (atoi(messages.find("userId")->second.c_str()));
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+
+	if (groupMan->setNewAdmin(groupId, userId))
+	{
+		status = "Success";
+	}
+	else {
+		status = "Failed";
+		errorMsg = "User/Group doesn't exist";
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
 string ReaderFromClient::getInviteUserResponse(MessageMap messages)
 {
-	UserManager* userMan = UserManager::getInstance();
 	GroupManager* groupMan = GroupManager::getInstance();
 	string errorMsg{};
 	string status{};

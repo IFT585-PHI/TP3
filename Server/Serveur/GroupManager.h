@@ -18,12 +18,14 @@ private:
 public:
     void initialize();
     bool addGroup(unsigned int groupId, Group group);
+	bool removeGroup(unsigned int groupId);
 
     bool addUserToGroup(unsigned int groupId, unsigned int userId);
     bool removeUserFromGroup(unsigned int groupId, unsigned int userId);
 
 	bool removeUserPending(unsigned int groupId, unsigned int userId);
 
+	int createNewGroupId();
     bool setNewAdmin(unsigned int groupId, unsigned int userId);
     Group getGroupById(unsigned int groupId);
 
