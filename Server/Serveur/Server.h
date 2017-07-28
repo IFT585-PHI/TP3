@@ -6,7 +6,7 @@
 
 using boost::asio::ip::tcp;
 
-enum ClientFunction { LogIn };
+enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles };
 
 class Server
 {

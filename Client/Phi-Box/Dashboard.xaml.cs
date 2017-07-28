@@ -72,14 +72,14 @@ namespace Phi_Box
             label.Margin = new Thickness(10, 10, 0, 0); label.VerticalAlignment = VerticalAlignment.Top;
             grid.Children.Add(label);
 
-            if(group.status != (int)GroupStatus.IN)
+            if(group.status != GroupStatus.IN)
             {
                 //<Button x:Name="Join_group" Content="Join" Margin="504,14,126,37" FontSize="18"/>
                 Button button = new Button();
                 button.Name = "Join_group"; button.Content = "Join"; button.Margin = new Thickness(610, 14, 20, 37);
                 button.FontSize = 18; button.DataContext = group.id;
 
-                if (group.status == (int)GroupStatus.PENDING)
+                if (group.status == GroupStatus.PENDING)
                     button.IsEnabled = false;
 
                 grid.Children.Add(button);

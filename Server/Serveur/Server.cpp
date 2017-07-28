@@ -43,16 +43,13 @@ void Server::run() {
 		json.pop_back();
 		//JSON PARSE ^
 
-		//TEST
-		ClientFunction cf = ClientFunction::LogIn;
-
-		string result = LookUpClientFunction(cf, json);
-
 		std::cout << "Resquest received: " << std::endl;
 		std::cout << json << std::endl;
 		//sendResponse(socket, json);
 
-		sendResponse(socket, result);
+		//TEST
+		sendResponse(socket, std::to_string(10));
+
 		std::cout << "Response Sent." << std::endl;
 	}
 }
@@ -62,20 +59,68 @@ string Server::LookUpClientFunction(ClientFunction cf, string json) {
 
 	switch (cf) 
 	{
+		case ClientFunction::Register:
+		{
+			break;
+		}
 		case ClientFunction::LogIn:
 		{
-			int userId = LoginManager::getInstance()->validateUserLogin("", "");
-
-			if (userId == -1) {
-				//result = std::to_string(userId);
-				result = std::to_string(1);
-				//				JSON PARSE ^
-				sendResponse(socket, result);
-			}
-			else {
-				//ERROR
-			}
-
+			break;
+		}
+		case ClientFunction::LogOut:
+		{
+			break;
+		}
+		case ClientFunction::GetOnlineUsers:
+		{
+			break;
+		}
+		case ClientFunction::GetGroupUsers:
+		{
+			break;
+		}
+		case ClientFunction::GetGroupPendingUsers:
+		{
+			break;
+		}
+		case ClientFunction::GetGroups:
+		{
+			break;
+		}
+		case ClientFunction::JoinGroup:
+		{
+			break;
+		}
+		case ClientFunction::LeaveGroup:
+		{
+			break;
+		}
+		case ClientFunction::DeleteGroup:
+		{
+			break;
+		}
+		case ClientFunction::KickUser:
+		{
+			break;
+		}
+		case ClientFunction::PromoteUser:
+		{
+			break;
+		}
+		case ClientFunction::InviteUser:
+		{
+			break;
+		}
+		case ClientFunction::DeclineRequest:
+		{
+			break;
+		}
+		case ClientFunction::ApproveRequest:
+		{
+			break;
+		}
+		case ClientFunction::GetFiles:
+		{
 			break;
 		}
 		default:
