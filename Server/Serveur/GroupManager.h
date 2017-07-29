@@ -17,7 +17,7 @@ private:
 	GroupManager();
 	static GroupManager* gm;
 
-    map<unsigned int, Group> groups; // int = groupId
+    map<unsigned int, Group*> groups; // int = groupId
 
 public:
     void initialize();
@@ -31,7 +31,7 @@ public:
 
 	int createNewGroupId();
     bool setNewAdmin(unsigned int groupId, unsigned int userId);
-    Group getGroupById(unsigned int groupId);
+    Group *getGroupById(unsigned int groupId);
 
     bool doesGroupExists(unsigned int groupId);
 	bool doesUserPendingExists(unsigned int groupId, unsigned int userId);

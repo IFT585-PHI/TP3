@@ -207,7 +207,7 @@ string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
 	LoginManager* loginMan = LoginManager::getInstance();
     UserManager* userMan = UserManager::getInstance();
     GroupManager* groupMan = GroupManager::getInstance();
-    Group group{};
+    Group* group;
     string errorMsg{};
     string status{};
 
@@ -224,7 +224,7 @@ string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
         errorMsg = e.what();
     }
 
-    if (group.members.empty()) {
+    if (group->members.empty()) {
         status = FAILED;
         errorMsg = "No members in group";
     }
@@ -242,7 +242,7 @@ string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
     if (status == SUCCESS) {
         writer.String("users");
         writer.StartArray();
-        for (auto userId : group.members) {
+        for (auto userId : group->members) {
             writer.StartObject();
 
             writer.String("userId");
@@ -270,7 +270,7 @@ string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
 string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages) {
     UserManager* userMan = UserManager::getInstance();
     GroupManager* groupMan = GroupManager::getInstance();
-    Group group{};
+    Group* group;
     string errorMsg{};
     string status{};
 
@@ -287,7 +287,7 @@ string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages) {
         errorMsg = e.what();
     }
 
-    if (group.pendingInvitations.empty()) {
+    if (group->pendingInvitations.empty()) {
         status = FAILED;
         errorMsg = "No pending invitation in this group";
     }
@@ -305,7 +305,7 @@ string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages) {
     if (status == SUCCESS) {
         writer.String("users");
         writer.StartArray();
-        for (auto userId : group.pendingInvitations) {
+        for (auto userId : group->pendingInvitations) {
             writer.StartObject();
 
             writer.String("userId");
@@ -448,7 +448,7 @@ string ReaderFromClient::getJoinGroupResponse(MessageMap messages)
 	int groupId = (atoi(messages.find("groupId")->second.c_str()));
 	int userId = (atoi(messages.find("userId")->second.c_str()));
 
-	if (groupMan->getGroupById(groupId).addPendingInvitation(userId))
+	if (groupMan->getGroupById(groupId)->addPendingInvitation(userId))
 	{
 		status = SUCCESS;
 	}
@@ -483,7 +483,7 @@ string ReaderFromClient::getLeaveGroupResponse(MessageMap messages)
 	int groupId = (atoi(messages.find("groupId")->second.c_str()));
 	int userId = (atoi(messages.find("userId")->second.c_str()));
 
-	if (groupMan->getGroupById(groupId).removeMember(userId))
+	if (groupMan->getGroupById(groupId)->removeMember(userId))
 	{
 		status = SUCCESS;
 	}
