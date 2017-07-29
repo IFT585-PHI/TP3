@@ -27,11 +27,11 @@ void Admin::Delegate(unsigned int _userId) {
 }
 
 void Admin::Accept(unsigned int _userId) {
-	GroupManager::getInstance()->getGroupById(groupId).addMember(_userId);
+	GroupManager::getInstance()->getGroupById(groupId)->addMember(_userId);
 }
 
 void Admin::Deny(unsigned int _userId) {
-	GroupManager::getInstance()->getGroupById(groupId).removePendingInvitation(_userId);
+	GroupManager::getInstance()->getGroupById(groupId)->removePendingInvitation(_userId);
 }
 
 void Admin::SetUserId(unsigned int _userId) {
