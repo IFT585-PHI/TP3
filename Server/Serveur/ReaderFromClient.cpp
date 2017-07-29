@@ -362,15 +362,15 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 
 			writer.String("groupId");
 			writer.Uint(group.getId());
-
-            writer.String("adminId");
-            writer.Uint(group.admin.getUserId());
-
+                        
 			writer.String("name");
 			writer.String(group.name.c_str(), static_cast<SizeType>(group.name.length()));
 
 			writer.String("description");
 			writer.String(group.description.c_str(), static_cast<SizeType>(group.description.length()));
+
+            writer.String("adminId");
+            writer.Uint(group.admin.getUserId());
 
 			writer.EndObject();
 		}
@@ -384,14 +384,14 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 			writer.String("groupId");
 			writer.Uint(group.getId());
 
-            writer.String("adminId");
-            writer.Uint(group.admin.getUserId());
-
-			writer.String("name");
+            writer.String("name");
 			writer.String(group.name.c_str(), static_cast<SizeType>(group.name.length()));
 
 			writer.String("description");
 			writer.String(group.description.c_str(), static_cast<SizeType>(group.description.length()));
+
+            writer.String("adminId");
+            writer.Uint(group.admin.getUserId());
 
 			writer.EndObject();
 		}
@@ -405,14 +405,14 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 			writer.String("groupId");
 			writer.Uint(group.getId());
 
-            writer.String("adminId");
-            writer.Uint(group.admin.getUserId());
-
 			writer.String("name");
 			writer.String(group.name.c_str(), static_cast<SizeType>(group.name.length()));
 
 			writer.String("description");
 			writer.String(group.description.c_str(), static_cast<SizeType>(group.description.length()));
+
+            writer.String("adminId");
+            writer.Uint(group.admin.getUserId());
 
 			writer.EndObject();
 		}
