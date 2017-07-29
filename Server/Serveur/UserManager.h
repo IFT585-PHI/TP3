@@ -19,7 +19,6 @@ private:
 public:
     void initialize();
     bool addNewUser(string userName);
-    bool sendInvitation(unsigned int userId, unsigned int groupId);
     set<unsigned int> getAllGroupIdFor(unsigned int id);
     void synchronize();
     vector<User> getListExistingUsers();

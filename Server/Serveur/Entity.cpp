@@ -7,3 +7,8 @@ Entity::Entity(unsigned int _id) {
 unsigned int Entity::getId(){
     return id;
 }
+
+void Entity::serialize(PrettyWriter<StringBuffer>& writer) const {
+    writer.String("id");
+    writer.Uint(id);
+}

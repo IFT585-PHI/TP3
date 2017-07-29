@@ -15,7 +15,6 @@ UserManager* UserManager::getInstance() {
 }
 
 void UserManager::initialize() {
-    // Build existingUsers from file parser
 }
 
 bool UserManager::addNewUser(string userName) {
@@ -26,14 +25,6 @@ bool UserManager::addNewUser(string userName) {
     }
 
     existingUsers.insert(make_pair(existingUsers.size(), User{ existingUsers.size(), userName }));
-    return true;
-}
-
-bool UserManager::sendInvitation(unsigned int userId, unsigned int groupId) {
-    if (!existingUsers.count(userId))
-        return false;
-
-    existingUsers[userId].addPendingInvitation(groupId);
     return true;
 }
 

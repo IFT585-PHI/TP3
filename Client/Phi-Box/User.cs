@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Phi_Box
 {
     public class User
     {
-        public int id;
+        [JsonProperty("userId")]
+        public uint id;
+        [JsonProperty("username")]
         public string username;
-        public bool isOnline;      //Status: 0 Offline, 1 Online
+        [JsonProperty("isConnected")]
+        public bool isConnected;
 
-        public User(int _id, string _username)
+        public User(uint _id, string _username, bool _isConnected)
         {
             id = _id;
             username = _username;
-        }
-
-        public User(int _id, string _username, bool _status)
-        {
-            id = _id;
-            username = _username;
-            isOnline = _status;
+            isConnected = _isConnected;
         }
 
     }

@@ -82,6 +82,7 @@
     <Compile Include="GroupView.xaml.cs">
       <DependentUpon>GroupView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Parser.cs" />
     <Compile Include="User.cs" />
     <Page Include="Dashboard.xaml">
       <SubType>Designer</SubType>

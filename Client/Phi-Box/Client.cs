@@ -14,8 +14,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Runtime.Serialization;
 
-namespace Phi_Box
+namespace Phi_Box 
 {
     public class Client
     {
@@ -25,21 +26,50 @@ namespace Phi_Box
 
         public Client()
         {
-            //TODO: Create Connection to Server
-            
         }
+
+        /********************************************
+         *          UTILITY REQUESTS SECTION 
+         ********************************************/
 
         private void DisplayError(string message)
         {
             MessageBox.Show(message);
         }
 
-        /********************************************
-         *          TEMPORARY SECTION 
-         ********************************************/
-        private JArray ReadJSONFile(string fileName)
+        string RequestToServer(string json)
         {
-            return JArray.Parse(File.ReadAllText("../../" + fileName));
+            string response = string.Empty;
+
+            try
+            {
+                TcpClient client = new TcpClient();
+                Console.WriteLine("Connection started...");
+
+                client.Connect("192.168.0.171", 13);
+                Console.WriteLine("Connected");
+
+                NetworkStream ns = client.GetStream();
+
+                Console.WriteLine("Transmition of the request...");
+                StreamWriter sw = new StreamWriter(ns);
+                sw.Write(json + ".");
+                sw.Flush();
+
+                Console.WriteLine("Reception of the request...");
+                StreamReader sr = new StreamReader(ns);
+                response = sr.ReadToEnd();
+
+
+                client.Close();
+                Console.WriteLine("Connection closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
+
+            return response;
         }
 
 
@@ -55,15 +85,25 @@ namespace Phi_Box
         /// <returns></returns>
         public bool LogIn(string username, string password)
         {
-            bool isSuccesfull = true;
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.LogIn.ToString());
+            dict.Add("username", username);
+            dict.Add("password", password);
+            string json = JsonConvert.SerializeObject(dict);
 
-            //Connection user in server
+            Parser.IdResponse res = JsonConvert.DeserializeObject<Parser.IdResponse>(RequestToServer(json)); 
+            if (res.status == Status.Success)
+            {
+                uint userId = uint.Parse(res.id);
+                connectedUser = new User(userId, username, true);
+            }
+            else
+            {
+                Console.WriteLine("ERROR: " + res.errorInfo);
+                return false;
+            }
 
-
-            int id = 2; //Temporary, normallly, get all informations from results
-            connectedUser = new User(id, username);
-
-            return isSuccesfull;
+            return true;
         }
 
         /// <summary>
@@ -74,14 +114,23 @@ namespace Phi_Box
         /// <returns></returns>
         public bool Register(string username, string password)
         {
-            bool isSuccesfull = true;
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.Register.ToString());
+            dict.Add("username", username);
+            dict.Add("password", password);
+            string json = JsonConvert.SerializeObject(dict);
 
-            //Send User to Server
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
 
-            int id = 0; //Temporary, normallly, get all informations from results
-            connectedUser = new User(id, username);
+            if (res.status == Status.Success)
+            {}
+            else
+            {
+                Console.WriteLine("ERROR: " + res.errorInfo);
+                return false;
+            }
 
-            return isSuccesfull;
+            return LogIn(username, password);
         }
 
         /// <summary>
@@ -89,12 +138,13 @@ namespace Phi_Box
         /// </summary>
         public void LogOut()
         {
-            //Tell server User is disconnecting
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.LogOut.ToString());
+            dict.Add("userId", connectedUser.id.ToString());
+            string json = JsonConvert.SerializeObject(dict);
 
-            //Go back to login page
+            RequestToServer(json);
         }
-
-
 
         /********************************************
          *          USERS REQUESTS SECTION 
@@ -106,21 +156,18 @@ namespace Phi_Box
         /// <returns></returns>
         public List<User> GetOnlineUsers()
         {
-            //Request Online Users from server
-
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.GetOnlineUsers.ToString());
+            string json = JsonConvert.SerializeObject(dict);
             List<User> users = new List<User>();
 
-            foreach (JObject o in ReadJSONFile("users.json").Children<JObject>())
-            {
-                var elem = o.ToObject<Dictionary<string, object>>();
-
-                int id = Int32.Parse(elem["id"].ToString());
-                string username = elem["username"].ToString();
-
-                //Usually would compare with id
-                if(username != connectedUser.username)
-                    users.Add(new User(id, username));
-            }
+            string s = RequestToServer(json);
+            Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(s);
+            if (res.status == Status.Success)
+                users = res.users;
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+            
             return users;
         }        
 
@@ -129,11 +176,24 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <returns></returns>
-        public List<User> GetGroupUsers(int groupId)
+        public List<User> GetGroupUsers(uint groupId)
         {
-            //Request the users that are in a group
-            return GetOnlineUsers();
-            //return new List<User>();
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.GetGroupUsers.ToString());
+            dict.Add("groupId", groupId.ToString());
+            string json = JsonConvert.SerializeObject(dict);
+            List<User> users = new List<User>();
+
+            string s = RequestToServer(json);
+            Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(s);
+
+            if (res.status == Status.Success)
+                users = res.users;
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+
+            return users;
+
         }
 
         /// <summary>
@@ -141,15 +201,23 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <returns></returns>
-        public List<User> GetGroupPendingUsers(int groupId)
+        public List<User> GetGroupPendingUsers(uint groupId)
         {
-            //Request the users that are pending
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.GetGroupPendingUsers.ToString());
+            dict.Add("groupId", groupId.ToString());
+            string json = JsonConvert.SerializeObject(dict);
+            List<User> users = new List<User>();
 
-            return GetOnlineUsers();
-            //return new List<User>();
+            Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(RequestToServer(json));
+            
+            if (res.status == Status.Success)
+                users = res.users;
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+
+            return users;
         }
-
-
 
         /********************************************
          *          GROUPS REQUESTS SECTION 
@@ -163,14 +231,26 @@ namespace Phi_Box
         /// <returns></returns>
         public Group CreateGroup(string name, string description)
         {
-            //Send Group to Server
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.CreateGroup.ToString());
+            dict.Add("name", name);
+            dict.Add("description", description);
+            dict.Add("adminId", connectedUser.id.ToString());
+            string json = JsonConvert.SerializeObject(dict);
 
-            int id = 0; //Temporary, normallly, get all informations from results
-            Group group = new Group(id, name, description, (int)GroupStatus.IN, connectedUser.id);
-            List<Group> groups = GetGroups();
-            groups.Add(group);
-            string json = JsonConvert.SerializeObject(groups.ToArray());
-            System.IO.File.WriteAllText("../../groups.json", json);
+            Parser.IdResponse res = JsonConvert.DeserializeObject<Parser.IdResponse>(RequestToServer(json));
+            Group group = new Group();
+
+            if (res.status == Status.Success)
+            {
+                uint groupId = uint.Parse(res.id);
+                group = new Group(groupId, name, description, connectedUser.id, GroupStatus.IN);
+
+                List<Group> groups = GetGroups();
+                groups.Add(group);
+            }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
             
             return group;
         }
@@ -181,17 +261,27 @@ namespace Phi_Box
         /// <returns></returns>
         public List<Group> GetGroups()
         {
-            //Request Groups from server
-
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.GetGroups.ToString());
+            dict.Add("userId", connectedUser.id.ToString());
+            string json = JsonConvert.SerializeObject(dict);
             List<Group> groups = new List<Group>();
-            foreach (JObject o in ReadJSONFile("groups.json").Children<JObject>())
+
+            Parser.TripleListsGroupsForUserResponse res = JsonConvert.DeserializeObject<Parser.TripleListsGroupsForUserResponse>(RequestToServer(json));
+
+            if (res.status == Status.Success)
             {
-                var elem = o.ToObject<Dictionary<string, object>>();
-                int id = Int32.Parse(elem["id"].ToString());
-                int status = Int32.Parse(elem["status"].ToString());
-                int adminId = Int32.Parse(elem["admin"].ToString());
-                groups.Add(new Group( id, elem["name"].ToString(), elem["description"].ToString(), status, adminId));
+                foreach (Group g in res.inList)
+                    groups.Add(new Group(g.id, g.name, g.description, g.adminId, GroupStatus.IN));
+
+                foreach (Group g in res.pendingList)
+                    groups.Add(new Group(g.id, g.name, g.description, g.adminId, GroupStatus.PENDING));
+
+                foreach (Group g in res.outList)
+                    groups.Add(new Group(g.id, g.name, g.description, g.adminId, GroupStatus.OUT));
             }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
 
             return groups;
         }
@@ -200,27 +290,59 @@ namespace Phi_Box
         /// The loggedIn user ask to join a group
         /// </summary>
         /// <param name="groupId"></param>
-        public void JoinGroup(int groupId)
+        public void JoinGroup(uint groupId)
         {
-            Console.WriteLine("Asking to join the group " + groupId);
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.JoinGroup.ToString());
+            dict.Add("userId", connectedUser.id.ToString());
+            dict.Add("groupId", groupId.ToString());
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            {}
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
         /// The loggedIn user leave a group
         /// </summary>
         /// <param name="groupId"></param>
-        public void LeaveGroup(int groupId)
+        public void LeaveGroup(uint groupId)
         {
-            Console.WriteLine("Leaving the group " + groupId);
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.LeaveGroup.ToString());
+            dict.Add("userId", connectedUser.id.ToString());
+            dict.Add("groupId", groupId.ToString());
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
         /// Delete the group
         /// </summary>
         /// <param name="groupId"></param>
-        public void DeleteGroup(int groupId)
+        public void DeleteGroup(uint groupId)
         {
-            Console.WriteLine("Deleting the group " + groupId);
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.DeleteGroup.ToString());
+            dict.Add("groupId", groupId.ToString());
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
         }        
 
         /// <summary>
@@ -228,9 +350,20 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <param name="userId"></param>
-        public void KickUser(int groupId, int userId)
+        public void KickUser(uint groupId, uint userId)
         {
-            Console.WriteLine("Kicking the userId " + userId + " in the group:" + groupId);
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.KickUser.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("userId", userId.ToString());
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
@@ -238,9 +371,20 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <param name="userId"></param>
-        public void PromoteUser(int groupId, int userId)
+        public void PromoteUser(uint groupId, uint userId)
         {
-            Console.WriteLine("Promoting the userId " + userId + " in the group:" + groupId);
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.PromoteUser.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("userId", userId.ToString());
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
@@ -248,9 +392,20 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <param name="username"></param>
-        public void InviteUser(int groupId, string username)
+        public void InviteUser(uint groupId, string username)
         {
-            Console.WriteLine("Inviting " + username + " in the group:" + groupId);
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.InviteUser.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("userId", username);
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
@@ -258,9 +413,20 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <param name="userId"></param>
-        public void DeclineRequest(int groupId, int userId)
+        public void DeclineRequest(uint groupId, uint userId)
         {
-            Console.WriteLine("Declining request for userId:" + userId + " in the group:" + groupId);
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.DeclineRequest.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("userId", userId.ToString());
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
@@ -268,20 +434,22 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <param name="userId"></param>
-        public void ApproveRequest(int groupId, int userId)
+        public void ApproveRequest(uint groupId, uint userId)
         {
-            Console.WriteLine("Approving request for userId:" + userId + " in the group:" + groupId);
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.ApproveRequest.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("userId", userId.ToString());
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
         
-
-        /// <summary>
-        /// Get the list of groups
-        /// </summary>
-        /// <returns></returns>
-        public void GetFiles(int groupId)
-        {
-            //How files are going to look like????
-        }
     }
 }

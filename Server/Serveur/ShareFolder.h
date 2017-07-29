@@ -5,7 +5,7 @@
 #include "File.h"
 #include <map>
 
-class ShareFolder : Entity
+class ShareFolder : public Entity
 {
 public:
     ShareFolder() = default;
@@ -15,7 +15,10 @@ public:
 
 private:
     string root;
-    map<File, unsigned int> files; // int = version
+    map<File, unsigned int> files; //int = version
+    
+public:
+    void serialize(PrettyWriter<StringBuffer>& writer) const;
 };
 
 #endif // !SHAREFOLDER_H

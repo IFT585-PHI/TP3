@@ -20,12 +20,13 @@ namespace Phi_Box
     /// </summary>
     public partial class GroupView : Page
     {
-        private int groupId;
+
+        private uint groupId;
         private bool isAdmin;
 
         private MainWindow mainWindow;
 
-        public GroupView(MainWindow m, int id, int adminId)
+        public GroupView(MainWindow m, uint id, uint adminId)
         {
             mainWindow = m;
             groupId = id;
@@ -129,17 +130,19 @@ namespace Phi_Box
         private void DisplayGroupUsers()
         {
             users_list.Children.Clear();
-            foreach (User g in mainWindow.client.GetGroupUsers(groupId))
+            foreach (User u in mainWindow.client.GetGroupUsers(groupId))
             {
-                AddGroupUser(g);
+                if (u.id != mainWindow.client.connectedUser.id)
+                    AddGroupUser(u);
             }
         }
         private void DisplayPendingUsers()
         {
             pending_list.Children.Clear();
-            foreach (User g in mainWindow.client.GetGroupPendingUsers(groupId))
+            foreach (User u in mainWindow.client.GetGroupPendingUsers(groupId))
             {
-                AddPendingUser(g);
+                if (u.id != mainWindow.client.connectedUser.id)
+                    AddPendingUser(u);
             }
         }
 
@@ -151,23 +154,23 @@ namespace Phi_Box
 
         private void Promote_Click(object sender, RoutedEventArgs e)
         {
-            int userId = (int)((Button)sender).DataContext;
+            uint userId = (uint)((Button)sender).DataContext;
             mainWindow.client.PromoteUser(groupId, userId);
             mainWindow.Navigate(new GroupView(mainWindow, groupId, userId));
         }
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            int userId = (int)((Button)sender).DataContext;
+            uint userId = (uint)((Button)sender).DataContext;
             mainWindow.client.KickUser(groupId, userId);
         }
         private void Approve_Click(object sender, RoutedEventArgs e)
         {
-            int userId = (int)((Button)sender).DataContext;
+            uint userId = (uint)((Button)sender).DataContext;
             mainWindow.client.ApproveRequest(groupId, userId);
         }
         private void Decline_Click(object sender, RoutedEventArgs e)
         {
-            int userId = (int)((Button)sender).DataContext;
+            uint userId = (uint)((Button)sender).DataContext;
             mainWindow.client.DeclineRequest(groupId, userId);
         }
 

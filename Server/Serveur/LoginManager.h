@@ -22,10 +22,17 @@ private:
 public:
     void initialize();
     bool validateUserLogin(string userName, string password);
+   
+    bool addConnectedUser(User user);
+    bool removeConnectedUser(User user);
+
     vector<User> getConnectedUsers();
     vector<User> getNotConnectedUsers();
     void addUser(string userName, string password);
     void synchronize();
+
+	bool isUserConnected(unsigned int userId);
+	bool doesUsernameExists(string username);
 };
 
 #endif // !LOGINMANAGER_H

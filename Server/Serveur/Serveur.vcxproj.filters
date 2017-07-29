@@ -68,7 +68,7 @@
     <ClInclude Include="JsonWriter.h">
       <Filter>Header Files\JsonModule</Filter>
     </ClInclude>
-    <ClInclude Include="JsonReader.h">
+    <ClInclude Include="ReaderFromClient.h">
       <Filter>Header Files\JsonModule</Filter>
     </ClInclude>
   </ItemGroup>
@@ -109,10 +109,10 @@
     <ClCompile Include="Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JsonReader.cpp">
+    <ClCompile Include="JsonWriter.cpp">
       <Filter>Source Files\JsonModule</Filter>
     </ClCompile>
-    <ClCompile Include="JsonWriter.cpp">
+    <ClCompile Include="ReaderFromClient.cpp">
       <Filter>Source Files\JsonModule</Filter>
     </ClCompile>
   </ItemGroup>

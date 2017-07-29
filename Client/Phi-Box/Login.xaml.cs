@@ -79,12 +79,14 @@ namespace Phi_Box
             if (IsLogging)
             {
                 if (!mainWindow.client.LogIn(username, password)){
+                    errormessage.Text = "Wrong password and/or username.";
                     return;
                 }
             }
             else
             {
                 if (!mainWindow.client.Register(username, password)){
+                    errormessage.Text = "This username has already been taken.";
                     return;
                 }
             }

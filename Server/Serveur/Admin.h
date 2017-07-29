@@ -1,9 +1,14 @@
 #ifndef ADMIN_H
 #define ADMIN_H
 
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/stringbuffer.h"
+#include <cstdio>
+#include <string>
 #include <iostream>
 #include <set>
 
+using namespace rapidjson;
 using namespace std;
 
 class Server;
@@ -28,6 +33,7 @@ public:
     void Accept(unsigned int _userId);
     void Deny(unsigned int _userId);
     void SetUserId(unsigned int _userId);
+    void serialize(PrettyWriter<StringBuffer>& writer) const;
 };
 
 #endif // !ADMIN_H

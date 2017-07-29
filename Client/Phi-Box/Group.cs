@@ -3,24 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Phi_Box
 {
     public class Group
     {
-        public int id;
+        [JsonProperty("groupId")]
+        public uint id;
+        [JsonProperty("name")]
         public string name;
+        [JsonProperty("description")]
         public string description;
-        public int status;
-        public int adminId;
+        public uint adminId;
+        public GroupStatus status;
 
         public Group() { }
 
-        public Group(int _id, string _name, string _description, int _status, int _adminId)
+        public Group(uint _id, string _name, string _description, uint _adminId, GroupStatus _status)
         {
             id = _id;
             name = _name;
             description = _description;
+            adminId = _adminId;
             status = _status;
             adminId = _adminId;
         }
@@ -29,6 +35,5 @@ namespace Phi_Box
         {
             return name != null;
         }
-
     }
 }
