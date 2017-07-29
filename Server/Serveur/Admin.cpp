@@ -38,6 +38,10 @@ void Admin::SetUserId(unsigned int _userId) {
     userId = _userId;
 }
 
+unsigned int Admin::getUserId() {
+    return userId;
+}
+
 void Admin::serialize(PrettyWriter<StringBuffer>& writer) const {
     writer.StartObject();
 

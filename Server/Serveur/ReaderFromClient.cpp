@@ -354,6 +354,7 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
 
 	if (status == "Success") {
+
 		writer.String("inList");
 		writer.StartArray();
 		for (auto group : groupMan->getAllGroupsForUser(userId)) {
@@ -361,6 +362,9 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 
 			writer.String("groupId");
 			writer.Uint(group.getId());
+
+            writer.String("admin");
+            writer.Uint(group.admin.getUserId());
 
 			writer.String("name");
 			writer.String(group.name.c_str(), static_cast<SizeType>(group.name.length()));
@@ -380,6 +384,9 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 			writer.String("groupId");
 			writer.Uint(group.getId());
 
+            writer.String("admin");
+            writer.Uint(group.admin.getUserId());
+
 			writer.String("name");
 			writer.String(group.name.c_str(), static_cast<SizeType>(group.name.length()));
 
@@ -397,6 +404,9 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 
 			writer.String("groupId");
 			writer.Uint(group.getId());
+
+            writer.String("admin");
+            writer.Uint(group.admin.getUserId());
 
 			writer.String("name");
 			writer.String(group.name.c_str(), static_cast<SizeType>(group.name.length()));
