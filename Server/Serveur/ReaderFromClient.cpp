@@ -239,7 +239,7 @@ string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
     writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
 
     if (status == SUCCESS) {
-        writer.String("members");
+        writer.String("users");
         writer.StartArray();
         for (auto userId : group.members) {
             writer.StartObject();
@@ -247,9 +247,12 @@ string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
             writer.String("userId");
             writer.Uint(userId);
 
+			User user = userMan->getUserById(userId);
             writer.String("username");
-            User user = userMan->getUserById(userId);
             writer.String(user.getName().c_str(), static_cast<SizeType>(user.getName().length()));
+
+			writer.String("isConnected");
+			writer.Bool(user.getIsConnected());
 
             writer.EndObject();
         }
@@ -299,7 +302,7 @@ string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages) {
     writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
 
     if (status == SUCCESS) {
-        writer.String("pending");
+        writer.String("users");
         writer.StartArray();
         for (auto userId : group.pendingInvitations) {
             writer.StartObject();
@@ -323,6 +326,101 @@ string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages) {
     return sb.GetString();
 }
 
+string ReaderFromClient::getGroupsResponse(MessageMap messages) {
+	GroupManager* groupMan = GroupManager::getInstance();
+	UserManager* userMan = UserManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int userId = atoi(messages.find("userId")->second.c_str());
+
+	if (!groupMan->getAllGroups().empty()) {
+		status = SUCCESS;
+	}
+	else {
+		errorMsg = "No group exists";
+		status = FAILED;
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	if (status == "Success") {
+		writer.String("inList");
+		writer.StartArray();
+		for (auto group : groupMan->getAllGroupsForUser(userId)) {
+			writer.StartObject();
+
+			writer.String("groupId");
+			writer.Uint(group.getId());
+
+			writer.String("name");
+			writer.String(group.name.c_str(), static_cast<SizeType>(group.name.length()));
+
+			writer.String("description");
+			writer.String(group.description.c_str(), static_cast<SizeType>(group.description.length()));
+		}
+		writer.EndArray();
+
+		writer.String("pendingList");
+		writer.StartArray();
+		for (auto group : groupMan->getAllPendingGroupsForUser(userId)) {
+			writer.StartObject();
+
+			writer.String("groupId");
+			writer.Uint(group.getId());
+
+			writer.String("name");
+			writer.String(group.name.c_str(), static_cast<SizeType>(group.name.length()));
+
+			writer.String("description");
+			writer.String(group.description.c_str(), static_cast<SizeType>(group.description.length()));
+		}
+		writer.EndArray();
+
+		writer.String("outList");
+		writer.StartArray();
+		for (auto group : groupMan->getAllOutGroupForUser(userId)) {
+			writer.StartObject();
+
+			writer.String("groupId");
+			writer.Uint(group.getId());
+
+			writer.String("name");
+			writer.String(group.name.c_str(), static_cast<SizeType>(group.name.length()));
+
+			writer.String("description");
+			writer.String(group.description.c_str(), static_cast<SizeType>(group.description.length()));
+		}
+		writer.EndArray();
+	}
+	else {
+		writer.String("inList");
+		writer.StartArray();
+		writer.EndArray();
+
+		writer.String("pendingList");
+		writer.StartArray();
+		writer.EndArray();
+
+		writer.String("outList");
+		writer.StartArray();
+		writer.EndArray();
+	}
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
 
 string ReaderFromClient::getJoinGroupResponse(MessageMap messages)
 {
@@ -407,7 +505,7 @@ string ReaderFromClient::getCreateGroupResponse(MessageMap messages)
 
 	Group group = Group(groupId, name, description, userId);
 
-	if (groupMan->addGroup(groupMan->createNewGroupId(), group))
+	if (groupMan->addGroup(name, description, userId))
 	{
 		status = "Success";
 	}

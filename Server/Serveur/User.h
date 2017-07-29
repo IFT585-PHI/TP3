@@ -22,6 +22,7 @@ private:
     string name;
     string root;
     system_clock::time_point lastSynchronized;
+	bool isConnected;
 
     map<unsigned int, ShareFolder> groups;   //int = groupId
 
@@ -30,13 +31,14 @@ public:
         return id == u.id;
     }
 
-    void createGroup(string groupName, string description);
-    void applyGroup(unsigned int idGroup);
     void synchronize() override;
     set<unsigned int> getGroups();
     string getRoot();
     string getName();
     void serialize(PrettyWriter<StringBuffer>& writer) const;
+
+	void setIsConnected(bool val);
+	bool getIsConnected();
 };
 
 #endif // !USER_H

@@ -5,6 +5,7 @@ Group::Group(unsigned int _id, string _name, string _description, unsigned int _
 {
     admin = Admin(_id, _userId);
     members = set<unsigned int>();
+	members.insert(_userId);
     pendingInvitations = set<unsigned int>();
     filesVersion = map<unsigned int, unsigned int>();
 }

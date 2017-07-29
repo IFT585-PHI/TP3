@@ -154,10 +154,11 @@ namespace Phi_Box
             string json = JsonConvert.SerializeObject(dict);
             List<User> users = new List<User>();
 
-            Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(RequestToServer(json));
+            string s = RequestToServer(json);
+            Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(s);
 
             if (res.status == Status.Success)
-                users = res.userList;
+                users = res.users;
             else
                 Console.WriteLine("ERROR: " + res.errorInfo);
 
@@ -179,7 +180,7 @@ namespace Phi_Box
             Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(RequestToServer(json));
 
             if (res.status == Status.Success)
-                users = res.userList;
+                users = res.users;
             else
                 Console.WriteLine("ERROR: " + res.errorInfo);
 
@@ -202,7 +203,7 @@ namespace Phi_Box
             Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(RequestToServer(json));
 
             if (res.status == Status.Success)
-                users = res.userList;
+                users = res.users;
             else
                 Console.WriteLine("ERROR: " + res.errorInfo);
 
@@ -222,7 +223,7 @@ namespace Phi_Box
         public Group CreateGroup(string name, string description)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
-            dict.Add("function", ClientFunction.GetGroupPendingUsers.ToString());
+            dict.Add("function", ClientFunction.CreateGroup.ToString());
             dict.Add("name", name);
             dict.Add("description", description);
             dict.Add("adminId", connectedUser.id.ToString());
@@ -236,10 +237,14 @@ namespace Phi_Box
             else
                 Console.WriteLine("ERROR: " + res.errorInfo);
 
-            Group group = new Group(groupId, name, description, connectedUser.id, GroupStatus.IN);
+            Group group = new Group();
+            if(groupId != -1)
+            {
+                group = new Group(groupId, name, description, connectedUser.id, GroupStatus.IN);
 
-            List<Group> groups = GetGroups();
-            groups.Add(group);
+                List<Group> groups = GetGroups();
+                groups.Add(group);
+            }
             
             return group;
         }

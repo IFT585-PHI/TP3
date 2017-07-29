@@ -15,15 +15,6 @@ User::User(unsigned int _id, string _name, system_clock::time_point _lastSynchro
 {
 }
 
-void User::createGroup(string groupName, string description) {
-	int id = GroupManager::getInstance()->createNewGroupId();
-	GroupManager::getInstance()->addGroup(id, Group(id, groupName, description, id));
-}
-
-void User::applyGroup(unsigned int groupId) {
-	GroupManager::getInstance()->getGroupById(groupId).addPendingInvitation(id);
-}
-
 void User::synchronize() {
     // do something
 
@@ -47,6 +38,15 @@ string User::getName() {
 
 string User::getRoot() {
     return root;
+}
+
+void  User::setIsConnected(bool val)
+{
+	isConnected = val;
+}
+
+bool User::getIsConnected() {
+	return isConnected;
 }
 
 void User::serialize(PrettyWriter<StringBuffer>& writer) const {

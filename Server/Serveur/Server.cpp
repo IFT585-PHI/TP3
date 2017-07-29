@@ -18,6 +18,12 @@ void Server::initializeManager() {
 	GroupManager::getInstance()->initialize();
 	LoginManager::getInstance()->initialize();
 	UserManager::getInstance()->initialize();
+
+
+
+	//TEST
+	LoginManager::getInstance()->addUser("TEST", "test");
+	UserManager::getInstance()->addNewUser("TEST");
 }
 
 void Server::receiveFiles() {
@@ -91,11 +97,11 @@ string Server::LookUpClientFunction(string json) {
             return ReaderFromClient::getGroupPendingUsersResponse(messages);
 			break;
 		}
-		/*case ClientFunction::GetGroups:
+		case ClientFunction::GetGroups:
 		{
             return ReaderFromClient::getGroupsResponse(messages);
 			break;
-		}*/
+		}
         case ClientFunction::CreateGroup:
         {
             return ReaderFromClient::getCreateGroupResponse(messages);

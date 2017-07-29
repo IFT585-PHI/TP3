@@ -2,6 +2,9 @@
 #define GROUPMANAGER_H
 
 #include "Group.h"
+#include "vector"
+
+#include <algorithm> 
 
 static class GroupManager
 {
@@ -17,7 +20,7 @@ private:
 
 public:
     void initialize();
-    bool addGroup(unsigned int groupId, Group group);
+    bool addGroup(string name, string description, unsigned int adminId);
 	bool removeGroup(unsigned int groupId);
 
     bool addUserToGroup(unsigned int groupId, unsigned int userId);
@@ -31,6 +34,12 @@ public:
 
     bool doesGroupExists(unsigned int groupId);
 	bool doesUserPendingExists(unsigned int groupId, unsigned int userId);
+
+	vector<Group> getAllGroups();
+	vector<Group> getAllGroupsForUser(int userId);
+	vector<Group> getAllPendingGroupsForUser(int userId);
+	vector<Group> getAllOutGroupForUser(int userId);
+
 };
 
 #endif // !GROUPMANAGER_H

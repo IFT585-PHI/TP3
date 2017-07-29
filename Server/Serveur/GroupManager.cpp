@@ -17,12 +17,12 @@ void GroupManager::initialize() {
     // Build groups from file parser
 }
 
-bool GroupManager::addGroup(unsigned int groupId, Group group) {
-    if (doesGroupExists(groupId))
-        return false;
+bool GroupManager::addGroup(string name, string description, unsigned int adminId) {
+	//Should look if the name is already taken, but im lazy as fu
+	unsigned int groupId = createNewGroupId();
+	groups.insert(make_pair(groupId, Group{groupId, name, description, adminId}));
 
-    groups.insert(make_pair(groupId, group));
-    return true;
+	return true;
 }
 
 bool GroupManager::removeGroup(unsigned int groupId) {
@@ -90,4 +90,50 @@ bool GroupManager::doesUserPendingExists(unsigned int groupId, unsigned int user
 	}
 
 	return false;
+}
+
+vector<Group> GroupManager::getAllGroupsForUser(int userId)
+{
+	vector<Group> result;
+	for (auto entry : groups) {
+		if(entry.second.doesMemberExists(userId))
+			result.push_back(entry.second);
+	}
+	return result;
+}
+
+vector<Group> GroupManager::getAllPendingGroupsForUser(int userId)
+{
+	vector<Group> result;
+	for (auto entry : groups) {
+		if (entry.second.doesPendingInvitationExists(userId))
+			result.push_back(entry.second);
+	}
+	return result;
+}
+
+vector<Group> GroupManager::getAllOutGroupForUser(int userId)
+{
+	vector<Group> result = getAllGroups();
+	vector<Group> toRemove = getAllGroupsForUser(userId);
+
+	for (auto g : getAllOutGroupForUser(userId)) {
+		toRemove.push_back(g);
+	}
+
+	for (auto it = toRemove.begin(); it < toRemove.end(); ++it) {
+		if (std::find(result.begin(), result.end(), *it) != result.end())
+			result.erase(it);
+	}
+
+	return result;
+}
+
+vector<Group> GroupManager::getAllGroups()
+{
+	vector<Group> result;
+	for (auto entry : groups) {
+		result.push_back(entry.second);
+	}
+	return result;
 }

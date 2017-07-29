@@ -1,6 +1,7 @@
 #include "Server.h"
 #include "Group.h"
 #include "ShareFolder.h"
+#include "UserManager.h"
 #include "ReaderFromClient.h"
 #include <chrono>
 #include <thread>
@@ -34,6 +35,8 @@ int main() {
     /*string json = " { \"function\":\"Register\", \"username\":\"jjjj\", \"password\":\"bob\" } ";
 
     string test = Server::LookUpClientFunction(json);*/
+
+	
 
 	Server *server = new Server(io_service);
 	Server::initializeManager();

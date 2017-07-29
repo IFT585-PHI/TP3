@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Phi_Box
 {
-    public enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles };
+    public enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles };
     public enum Status { Success, Failed };
 
     class Parser
@@ -23,12 +23,12 @@ namespace Phi_Box
 
         public class ListUsersResponse : Response
         {
-            public List<User> userList { get; set; }
+            public List<User> users { get; set; }
         }
 
         public class ListGroupsResponse : Response
         {
-            public List<User> userList { get; set; }
+            public List<User> members { get; set; }
         }
 
         public class TripleListsGroupsForUserResponse : Response

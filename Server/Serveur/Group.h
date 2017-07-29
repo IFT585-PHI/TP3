@@ -13,7 +13,7 @@ public:
     Group(unsigned int _id, string _name, string _description, unsigned int _userId);
     Group(unsigned int _id, string _name, string _description, Admin _admin, set<unsigned int> _members, set<unsigned int> _pendingInvitations, map<unsigned int, unsigned int> _filesVersion);
     ~Group() = default;
-    
+ 
     string name;
     string description;
     Admin admin;
@@ -22,6 +22,10 @@ public:
     map<unsigned int, unsigned int> filesVersion; //int = idFile, int = latestVersion
 
 public:
+	bool operator ==(const Group &g) {
+		return id == g.id;
+	}
+
     bool addMember(unsigned int userId);
     bool removeMember(unsigned int userId);
 

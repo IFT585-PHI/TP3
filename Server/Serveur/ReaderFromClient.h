@@ -14,7 +14,7 @@
 using namespace rapidjson;
 using namespace std;
 
-enum ClientFunction                         { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles, Error };
+enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles, Error };
 static vector<string> ClientFunctionStrings{ "Register", "LogIn", "LogOut", "GetOnlineUsers", "GetGroupUsers", "GetGroupPendingUsers", "GetGroups", "CreateGroup", "JoinGroup", "LeaveGroup", "DeleteGroup", "KickUser", "PromoteUser", "InviteUser", "DeclineRequest", "ApproveRequest", "GetFiles", "Error" };
 
 static ClientFunction getEnumFromText(string val) {
@@ -85,8 +85,8 @@ public:
     static string getOnlineUsersResponse(MessageMap messages);
     static string getGroupUsersResponse(MessageMap messages);
     static string getGroupPendingUsersResponse(MessageMap messages);
-    //static string getGroupsResponse(MessageMap messages);
-    static string ReaderFromClient::getJoinGroupResponse(MessageMap messages);
+    static string getGroupsResponse(MessageMap messages);
+    static string getJoinGroupResponse(MessageMap messages);
     static string getLeaveGroupResponse(MessageMap messages);
 	static string getCreateGroupResponse(MessageMap messages);
     static string getDeleteGroupResponse(MessageMap messages);
