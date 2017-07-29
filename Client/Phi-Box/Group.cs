@@ -16,6 +16,7 @@ namespace Phi_Box
         public string name;
         [JsonProperty("description")]
         public string description;
+        [JsonProperty("adminId")]
         public uint adminId;
         public GroupStatus status;
 

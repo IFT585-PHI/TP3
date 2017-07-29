@@ -363,7 +363,7 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 			writer.String("groupId");
 			writer.Uint(group.getId());
 
-            writer.String("admin");
+            writer.String("adminId");
             writer.Uint(group.admin.getUserId());
 
 			writer.String("name");
@@ -384,7 +384,7 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 			writer.String("groupId");
 			writer.Uint(group.getId());
 
-            writer.String("admin");
+            writer.String("adminId");
             writer.Uint(group.admin.getUserId());
 
 			writer.String("name");
@@ -405,7 +405,7 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 			writer.String("groupId");
 			writer.Uint(group.getId());
 
-            writer.String("admin");
+            writer.String("adminId");
             writer.Uint(group.admin.getUserId());
 
 			writer.String("name");
