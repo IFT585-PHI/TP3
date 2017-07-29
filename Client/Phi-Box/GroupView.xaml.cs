@@ -69,7 +69,7 @@ namespace Phi_Box
 
             //<Ellipse Fill="#FF17FF00" Stroke="Black" Margin="10,12,0,11" Height="32" VerticalAlignment="Center" HorizontalAlignment="Left" Width="32"/>
             Ellipse ell = new Ellipse();
-            ell.Fill = Brushes.Lime; ell.Margin = new Thickness(10, 0, 0, 10); ell.Height = 25; ell.Width = 25;
+            ell.Fill = (user.isConnected) ? Brushes.Lime : Brushes.Red; ell.Margin = new Thickness(10, 0, 0, 10); ell.Height = 25; ell.Width = 25;
             ell.VerticalAlignment = VerticalAlignment.Bottom; ell.HorizontalAlignment = HorizontalAlignment.Left;
             ell.Stroke = Brushes.Black;
             grid.Children.Add(ell);
@@ -166,22 +166,29 @@ namespace Phi_Box
         {
             uint userId = (uint)((Button)sender).DataContext;
             mainWindow.client.KickUser(groupId, userId);
+            DisplayGroupUsers();
         }
         private void Approve_Click(object sender, RoutedEventArgs e)
         {
             uint userId = (uint)((Button)sender).DataContext;
             mainWindow.client.ApproveRequest(groupId, userId);
+            DisplayGroupUsers();
+            DisplayPendingUsers();
         }
         private void Decline_Click(object sender, RoutedEventArgs e)
         {
             uint userId = (uint)((Button)sender).DataContext;
             mainWindow.client.DeclineRequest(groupId, userId);
+            DisplayGroupUsers();
+            DisplayPendingUsers();
         }
 
         private void Add_Member_Click(object sender, RoutedEventArgs e)
         {
             string username = AddMember.Text;
             mainWindow.client.InviteUser(groupId, username);
+            DisplayGroupUsers();
+            DisplayPendingUsers();
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)
