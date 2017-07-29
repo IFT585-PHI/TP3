@@ -353,7 +353,7 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 	writer.String("errorInfo");
 	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
 
-	if (status == "Success") {
+	if (status == SUCCESS) {
 
 		writer.String("inList");
 		writer.StartArray();
@@ -448,12 +448,12 @@ string ReaderFromClient::getJoinGroupResponse(MessageMap messages)
 	int groupId = (atoi(messages.find("groupId")->second.c_str()));
 	int userId = (atoi(messages.find("userId")->second.c_str()));
 
-	if (groupMan->getGroupById(groupId).addMember(userId))
+	if (groupMan->getGroupById(groupId).addPendingInvitation(userId))
 	{
-		status = "Success";
+		status = SUCCESS;
 	}
 	else {
-		status = "Failed";
+		status = FAILED;
 		errorMsg = "User/Group doesn't exist or the user wasn't in the group";
 	}
 
@@ -485,10 +485,10 @@ string ReaderFromClient::getLeaveGroupResponse(MessageMap messages)
 
 	if (groupMan->getGroupById(groupId).removeMember(userId))
 	{
-		status = "Success";
+		status = SUCCESS;
 	}
 	else {
-		status = "Failed";
+		status = FAILED;
 		errorMsg = "User/Group doesn't exist or the user wasn't in the group";
 	}
 
@@ -522,10 +522,10 @@ string ReaderFromClient::getCreateGroupResponse(MessageMap messages)
 
 	if (groupMan->addGroup(name, description, userId))
 	{
-		status = "Success";
+		status = SUCCESS;
 	}
 	else {
-		status = "Failed";
+		status = FAILED;
 		errorMsg = "GroupID already exists";
 	}
 
@@ -561,10 +561,10 @@ string ReaderFromClient::getDeleteGroupResponse(MessageMap messages)
 
 	if (groupMan->removeGroup(groupId))
 	{
-		status = "Success";
+		status = SUCCESS;
 	}
 	else {
-		status = "Failed";
+		status = FAILED;
 		errorMsg = "Group doesn't exist";
 	}
 
@@ -596,10 +596,10 @@ string ReaderFromClient::getKickUserResponse(MessageMap messages)
 
 	if (groupMan->removeUserFromGroup(groupId, userId))
 	{
-		status = "Success";
+		status = SUCCESS;
 	}
 	else {
-		status = "Failed";
+		status = FAILED;
 		errorMsg = "User/Group doesn't exist or the user wasn't in the group";
 	}
 
@@ -631,10 +631,10 @@ string ReaderFromClient::getPromoteUserResponse(MessageMap messages)
 
 	if (groupMan->setNewAdmin(groupId, userId))
 	{
-		status = "Success";
+		status = SUCCESS;
 	}
 	else {
-		status = "Failed";
+		status = FAILED;
 		errorMsg = "User/Group doesn't exist";
 	}
 
@@ -666,10 +666,10 @@ string ReaderFromClient::getInviteUserResponse(MessageMap messages)
 
 	if (groupMan->addUserToGroup(groupId, userId))
 	{
-		status = "Success";
+		status = SUCCESS;
 	}
 	else {
-		status = "Failed";
+		status = FAILED;
 		errorMsg = "User/Group doesn't exist or the user was already in the group";
 	}
 
@@ -701,11 +701,11 @@ string ReaderFromClient::getDeclineRequestResponse(MessageMap messages)
 
 	if (groupMan->removeUserPending(groupId, userId))
 	{
-		status = "Success";
+		status = SUCCESS;
 	}
 	else
 	{
-		status = "Failed";
+		status = FAILED;
 		errorMsg = "User/Group doesn't exist or the user was not in the group pending invitation";
 	}
 
@@ -738,11 +738,11 @@ string ReaderFromClient::getApproveRequestResponse(MessageMap messages)
 	if (groupMan->removeUserPending(groupId, userId))
 	{
 		groupMan->addUserToGroup(groupId, userId);
-		status = "Success";
+		status = SUCCESS;
 	}
 	else
 	{
-		status = "Failed";
+		status = FAILED;
 		errorMsg = "User/Group doesn't exist or the user was not in the group pending invitation";
 	}
 
