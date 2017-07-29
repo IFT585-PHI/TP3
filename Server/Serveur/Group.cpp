@@ -4,7 +4,7 @@
 Group::Group(unsigned int _id, string _name, string _description, unsigned int _userId)
     : Entity(_id), name{ _name }, description{ _description }
 {
-    admin = Admin(_id, _userId);
+    admin = Admin(_userId, _id);
     members = set<unsigned int>();
 	members.insert(_userId);
 	members.insert(UserManager::getInstance()->getUserByName("TEST").getId());
