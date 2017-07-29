@@ -53,8 +53,6 @@ namespace Phi_Box
             delete.Click += new RoutedEventHandler(Leave_Click);
             delete.Click -= new RoutedEventHandler(Delete_Click);
             delete.Content = "Leave Group";
-
-            dashboard.Children.Remove(delete);
         }
         
 
