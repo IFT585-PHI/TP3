@@ -1,6 +1,7 @@
 #ifndef GROUPMANAGER_H
 #define GROUPMANAGER_H
 
+#include "UserManager.h"
 #include "Group.h"
 #include "vector"
 

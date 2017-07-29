@@ -46,7 +46,7 @@ namespace Phi_Box
                 TcpClient client = new TcpClient();
                 Console.WriteLine("Connection started...");
 
-                client.Connect("192.168.0.171", 13);
+                client.Connect("192.168.0.100", 13);
                 Console.WriteLine("Connected");
 
                 NetworkStream ns = client.GetStream();
@@ -398,7 +398,7 @@ namespace Phi_Box
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.InviteUser.ToString());
             dict.Add("groupId", groupId.ToString());
-            dict.Add("userId", username);
+            dict.Add("username", username);
             string json = JsonConvert.SerializeObject(dict);
 
             Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));

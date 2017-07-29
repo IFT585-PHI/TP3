@@ -21,6 +21,7 @@ void Server::initializeManager() {
 
 	//TEST
 	LoginManager::getInstance()->addUser("TEST", "test");
+	LoginManager::getInstance()->addUser("TEST2", "test");
 }
 
 void Server::receiveFiles() {

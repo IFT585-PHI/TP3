@@ -18,7 +18,7 @@ Group::Group(unsigned int _id, string _name, string _description, Admin _admin, 
 }
 
 bool Group::addMember(unsigned int userId) {
-    if (doesMemberExists(userId) || !doesPendingInvitationExists(userId))
+    if (doesMemberExists(userId))
         return false;
 
     members.insert(userId);

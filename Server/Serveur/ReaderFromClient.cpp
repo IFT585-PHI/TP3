@@ -658,13 +658,15 @@ string ReaderFromClient::getPromoteUserResponse(MessageMap messages)
 string ReaderFromClient::getInviteUserResponse(MessageMap messages)
 {
 	GroupManager* groupMan = GroupManager::getInstance();
+	UserManager* UserManager = UserManager::getInstance();
 	string errorMsg{};
 	string status{};
 
-	int userId = (atoi(messages.find("userId")->second.c_str()));
+	string username = messages.find("username")->second;
 	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+	User user = UserManager->getUserByName(username);
 
-	if (groupMan->addUserToGroup(groupId, userId))
+	if (groupMan->addUserToGroup(groupId, user.getId()))
 	{
 		status = SUCCESS;
 	}

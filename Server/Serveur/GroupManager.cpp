@@ -34,19 +34,17 @@ bool GroupManager::removeGroup(unsigned int groupId) {
 }
 
 bool GroupManager::addUserToGroup(unsigned int groupId, unsigned int userId) {
-    if (doesGroupExists(groupId))
+    if (!doesGroupExists(groupId) || !UserManager::getInstance()->doesUserExists(userId))
         return false;
 
-    groups[groupId].addMember(userId);
-    return true;
+    return groups[groupId].addMember(userId);
 }
 
 bool GroupManager::removeUserFromGroup(unsigned int groupId, unsigned int userId) {
     if (!doesGroupExists(groupId))
         return false;
 
-    groups[groupId].removeMember(userId);
-    return true;
+    return groups[groupId].removeMember(userId);;
 }
 
 bool GroupManager::removeUserPending(unsigned int groupId, unsigned int userId) {
