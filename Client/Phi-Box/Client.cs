@@ -144,6 +144,7 @@ namespace Phi_Box
             string json = JsonConvert.SerializeObject(dict);
 
             RequestToServer(json);
+            connectedUser = null;
         }
 
         /********************************************

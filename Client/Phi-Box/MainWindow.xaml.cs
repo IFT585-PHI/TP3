@@ -53,6 +53,15 @@ namespace Phi_Box
 
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if(client.connectedUser != null)
+            {
+                client.LogOut();
+                Navigate(new Login(this));
+            }
+        }
 
+        
     }
 }

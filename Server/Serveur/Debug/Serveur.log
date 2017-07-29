@@ -1,10 +1,7 @@
-﻿Build started 7/29/2017 12:46:27 PM.
+﻿Build started 7/29/2017 1:42:58 PM.
      1>Project "C:\Users\Utilisateur\Desktop\Phibox\TP3\Server\Serveur\Serveur.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\Users\Utilisateur\Desktop\Phibox\TP3\Server\packages\boost.1.64.0.0\build\native\..\..\lib\native\include\ /IC:\Users\Utilisateur\Desktop\Phibox\TP3\Server\packages\rapidjson.1.0.2\build\native\../..//build/native/include/ /IC:\Users\Simon\Desktop\TP3\TP3\Server\packages\rapidjson.1.0.2\build\native\include\rapidjson /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Admin.cpp Authentificator.cpp Entity.cpp File.cpp Group.cpp GroupManager.cpp ReaderFromClient.cpp JsonWriter.cpp LoginManager.cpp Server.cpp ShareFolder.cpp Source.cpp User.cpp UserManager.cpp
-         UserManager.cpp
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.cpp(81): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\Users\Utilisateur\Desktop\Phibox\TP3\Server\packages\boost.1.64.0.0\build\native\..\..\lib\native\include\ /IC:\Users\Utilisateur\Desktop\Phibox\TP3\Server\packages\rapidjson.1.0.2\build\native\../..//build/native/include/ /IC:\Users\Simon\Desktop\TP3\TP3\Server\packages\rapidjson.1.0.2\build\native\include\rapidjson /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Admin.cpp Group.cpp GroupManager.cpp ReaderFromClient.cpp Server.cpp Source.cpp User.cpp
          User.cpp
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
          Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
@@ -21,7 +18,6 @@
          - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
          Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
-         ShareFolder.cpp
          Server.cpp
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\groupmanager.h(43): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\loginmanager.h(36): warning C4091: 'static ': ignored on left of 'LoginManager' when no variable is declared
@@ -31,10 +27,6 @@
          - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
          - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
          Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
-         LoginManager.cpp
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\loginmanager.h(36): warning C4091: 'static ': ignored on left of 'LoginManager' when no variable is declared
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
-         JsonWriter.cpp
          ReaderFromClient.cpp
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\groupmanager.h(43): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
@@ -48,9 +40,6 @@
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\group.cpp(79): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\group.cpp(83): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\group.cpp(87): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
-         File.cpp
-         Entity.cpp
-         Authentificator.cpp
          Admin.cpp
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
          Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
@@ -77,10 +66,9 @@
          Debug\Source.obj
          Debug\User.obj
          Debug\UserManager.obj
-         LINK : C:\Users\Utilisateur\Desktop\Phibox\TP3\Server\Debug\Serveur.exe not found or not built by the last incremental link; performing full link
          Serveur.vcxproj -> C:\Users\Utilisateur\Desktop\Phibox\TP3\Server\Debug\Serveur.exe
      1>Done Building Project "C:\Users\Utilisateur\Desktop\Phibox\TP3\Server\Serveur\Serveur.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:12.25
+Time Elapsed 00:00:09.54

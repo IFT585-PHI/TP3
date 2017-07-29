@@ -50,6 +50,10 @@ namespace Phi_Box
         {
             Users.Children.Remove(PendingSection);
             UsersScroll.Height = 535;
+            delete.Click += new RoutedEventHandler(Leave_Click);
+            delete.Click -= new RoutedEventHandler(Delete_Click);
+            delete.Content = "Leave Group";
+
             dashboard.Children.Remove(delete);
         }
         
@@ -194,6 +198,11 @@ namespace Phi_Box
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             mainWindow.client.DeleteGroup(groupId);
+            mainWindow.Navigate(new Dashboard(mainWindow));
+        }
+        private void Leave_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindow.client.LeaveGroup(groupId);
             mainWindow.Navigate(new Dashboard(mainWindow));
         }
     }
