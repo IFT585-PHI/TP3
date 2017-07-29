@@ -20,11 +20,11 @@ namespace Phi_Box
     /// </summary>
     public partial class GroupView : Page
     {
-        private int groupId;
+        private uint groupId;
 
         private MainWindow mainWindow;
 
-        public GroupView(MainWindow m, int id)
+        public GroupView(MainWindow m, uint id)
         {
             mainWindow = m;
             groupId = id;

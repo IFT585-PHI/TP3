@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Phi_Box
 {
     public class Group
     {
+        [JsonProperty("groupId")]
         public uint id;
+        [JsonProperty("name")]
         public string name;
+        [JsonProperty("description")]
         public string description;
         public uint adminId;
         public GroupStatus status;

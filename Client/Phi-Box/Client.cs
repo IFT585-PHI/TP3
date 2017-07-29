@@ -87,7 +87,7 @@ namespace Phi_Box
 
             if (res.status == Status.Success)
             {
-                uint userId = res.id;
+                uint userId = uint.Parse(res.id);
                 connectedUser = new User(userId, username, true);
             }
             else
@@ -170,7 +170,7 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <returns></returns>
-        public List<User> GetGroupUsers(int groupId)
+        public List<User> GetGroupUsers(uint groupId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.GetGroupUsers.ToString());
@@ -178,7 +178,8 @@ namespace Phi_Box
             string json = JsonConvert.SerializeObject(dict);
             List<User> users = new List<User>();
 
-            Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(RequestToServer(json));
+            string s = RequestToServer(json);
+            Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(s);
 
             if (res.status == Status.Success)
                 users = res.users;
@@ -186,6 +187,7 @@ namespace Phi_Box
                 Console.WriteLine("ERROR: " + res.errorInfo);
 
             return users;
+
         }
 
         /// <summary>
@@ -235,7 +237,7 @@ namespace Phi_Box
 
             if (res.status == Status.Success)
             {
-                uint groupId = res.id;
+                uint groupId = uint.Parse(res.id);
                 group = new Group(groupId, name, description, connectedUser.id, GroupStatus.IN);
 
                 List<Group> groups = GetGroups();

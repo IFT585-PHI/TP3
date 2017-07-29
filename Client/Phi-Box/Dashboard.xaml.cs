@@ -145,7 +145,7 @@ namespace Phi_Box
 
         private void Go_To_Details(object sender, RoutedEventArgs e)
         {
-            int groupId = (int)((Button)sender).DataContext;
+            uint groupId = (uint)((Button)sender).DataContext;
             mainWindow.Navigate(new GroupView(mainWindow, groupId));
         }
     }

@@ -40,15 +40,6 @@ string User::getRoot() {
     return root;
 }
 
-void  User::setIsConnected(bool val)
-{
-	isConnected = val;
-}
-
-bool User::getIsConnected() {
-	return isConnected;
-}
-
 void User::serialize(PrettyWriter<StringBuffer>& writer) const {
     writer.StartObject();
 

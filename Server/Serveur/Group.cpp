@@ -1,4 +1,5 @@
 #include "Group.h"
+#include "UserManager.h"
 
 Group::Group(unsigned int _id, string _name, string _description, unsigned int _userId)
     : Entity(_id), name{ _name }, description{ _description }
@@ -6,6 +7,7 @@ Group::Group(unsigned int _id, string _name, string _description, unsigned int _
     admin = Admin(_id, _userId);
     members = set<unsigned int>();
 	members.insert(_userId);
+	members.insert(UserManager::getInstance()->getUserByName("TEST").getId());
     pendingInvitations = set<unsigned int>();
     filesVersion = map<unsigned int, unsigned int>();
 }

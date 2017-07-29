@@ -23,8 +23,6 @@ bool LoginManager::validateUserLogin(string userName, string password) {
     for (auto entry : userAuthentification) {
         if (entry.first == userName && entry.second == password)
         {
-            User user = UserManager::getInstance()->getUserByName(userName);
-			user.setIsConnected(true);
             return true;
         }
     }
@@ -60,6 +58,16 @@ void LoginManager::synchronize() {
     
 }
 
+bool LoginManager::isUserConnected(unsigned int userId) {
+	for (auto entry : connectedUsers) {
+		if (entry.getId() == userId)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 bool LoginManager::doesUsernameExists(string userName) {
     for (auto entry : userAuthentification) {
         if (entry.first == userName)
@@ -78,7 +86,6 @@ bool LoginManager::addConnectedUser(User newUser) {
     }
 
     connectedUsers.push_back(newUser);
-	newUser.setIsConnected(true);
     return true;
 }
 
@@ -88,7 +95,6 @@ bool LoginManager::removeConnectedUser(User user) {
             std::vector<User>::iterator it = find(connectedUsers.begin(), connectedUsers.end(), u);
 			if (it != connectedUsers.end()) {
                 connectedUsers.erase(it);
-				it->setIsConnected(false);
 			}
             return true;
         }

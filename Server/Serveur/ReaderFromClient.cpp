@@ -106,7 +106,7 @@ string ReaderFromClient::getLogInResponse(MessageMap messages) {
     writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
 
     if (status == SUCCESS) {
-        writer.String("userId");
+        writer.String("id");
         writer.Uint(user.getId());
     }
 
@@ -204,17 +204,18 @@ string ReaderFromClient::getOnlineUsersResponse(MessageMap messages) {
 }
 
 string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
+	LoginManager* loginMan = LoginManager::getInstance();
     UserManager* userMan = UserManager::getInstance();
     GroupManager* groupMan = GroupManager::getInstance();
     Group group{};
     string errorMsg{};
     string status{};
 
-    MessageMap::iterator groupId = messages.find("groupId");
+	int groupId = atoi(messages.find("groupId")->second.c_str());
 
     try
     {
-        group = groupMan->getGroupById(atoi(groupId->second.c_str()));
+        group = groupMan->getGroupById(groupId);
         status = SUCCESS;
     }
     catch (std::exception& e)
@@ -252,7 +253,7 @@ string ReaderFromClient::getGroupUsersResponse(MessageMap messages) {
             writer.String(user.getName().c_str(), static_cast<SizeType>(user.getName().length()));
 
 			writer.String("isConnected");
-			writer.Bool(user.getIsConnected());
+			writer.Bool(loginMan->isUserConnected(userId));
 
             writer.EndObject();
         }
@@ -273,11 +274,11 @@ string ReaderFromClient::getGroupPendingUsersResponse(MessageMap messages) {
     string errorMsg{};
     string status{};
 
-    MessageMap::iterator groupId = messages.find("groupId");
+	int groupId = atoi(messages.find("groupId")->second.c_str());
     
     try
     {
-        group = groupMan->getGroupById(atoi(groupId->second.c_str()));
+        group = groupMan->getGroupById(groupId);
         status = SUCCESS;
     }
     catch (std::exception& e)
@@ -366,6 +367,8 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 
 			writer.String("description");
 			writer.String(group.description.c_str(), static_cast<SizeType>(group.description.length()));
+
+			writer.EndObject();
 		}
 		writer.EndArray();
 
@@ -382,6 +385,8 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 
 			writer.String("description");
 			writer.String(group.description.c_str(), static_cast<SizeType>(group.description.length()));
+
+			writer.EndObject();
 		}
 		writer.EndArray();
 
@@ -398,6 +403,8 @@ string ReaderFromClient::getGroupsResponse(MessageMap messages) {
 
 			writer.String("description");
 			writer.String(group.description.c_str(), static_cast<SizeType>(group.description.length()));
+
+			writer.EndObject();
 		}
 		writer.EndArray();
 	}
@@ -498,12 +505,10 @@ string ReaderFromClient::getCreateGroupResponse(MessageMap messages)
 	string errorMsg{};
 	string status{};
 
-	string name = messages.find("name")->second.c_str();
-	string description = messages.find("description")->second.c_str();
+	string name = messages.find("name")->second;
+	string description = messages.find("description")->second;
 	int userId = atoi(messages.find("adminId")->second.c_str());
 	int groupId = groupMan->createNewGroupId();
-
-	Group group = Group(groupId, name, description, userId);
 
 	if (groupMan->addGroup(name, description, userId))
 	{
@@ -523,6 +528,11 @@ string ReaderFromClient::getCreateGroupResponse(MessageMap messages)
 
 	writer.String("errorInfo");
 	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	if (status == SUCCESS) {
+		writer.String("id");
+		writer.Uint(groupId);
+	}
 
 	writer.EndObject();
 

@@ -114,16 +114,17 @@ vector<Group> GroupManager::getAllPendingGroupsForUser(int userId)
 
 vector<Group> GroupManager::getAllOutGroupForUser(int userId)
 {
-	vector<Group> result = getAllGroups();
+	vector<Group> result;
+	vector<Group> all = getAllGroups();
 	vector<Group> toRemove = getAllGroupsForUser(userId);
 
-	for (auto g : getAllOutGroupForUser(userId)) {
+	for (auto g : getAllPendingGroupsForUser(userId)) {
 		toRemove.push_back(g);
 	}
 
-	for (auto it = toRemove.begin(); it < toRemove.end(); ++it) {
-		if (std::find(result.begin(), result.end(), *it) != result.end())
-			result.erase(it);
+	for (auto it = all.begin(); it != all.end(); ++it) {
+		if (!(std::find(toRemove.begin(), toRemove.end(), *it) != toRemove.end()))
+			result.push_back(*it);
 	}
 
 	return result;
