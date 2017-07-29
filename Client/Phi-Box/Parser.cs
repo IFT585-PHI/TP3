@@ -18,7 +18,7 @@ namespace Phi_Box
         }
         public class IdResponse : Response
         {
-            public int id { get; set; }
+            public uint id { get; set; }
         }
 
         public class ListUsersResponse : Response

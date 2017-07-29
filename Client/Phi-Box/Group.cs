@@ -8,15 +8,15 @@ namespace Phi_Box
 {
     public class Group
     {
-        public int id;
+        public uint id;
         public string name;
         public string description;
-        public int adminId;
+        public uint adminId;
         public GroupStatus status;
 
         public Group() { }
 
-        public Group(int _id, string _name, string _description, int _adminId, GroupStatus _status)
+        public Group(uint _id, string _name, string _description, uint _adminId, GroupStatus _status)
         {
             id = _id;
             name = _name;

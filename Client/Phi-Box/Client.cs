@@ -82,20 +82,20 @@ namespace Phi_Box
             dict.Add("username", username);
             dict.Add("password", password);
             string json = JsonConvert.SerializeObject(dict);
-            int userId = -1;
 
             Parser.IdResponse res = JsonConvert.DeserializeObject<Parser.IdResponse>(RequestToServer(json));          
 
             if (res.status == Status.Success)
-                userId = res.id;
+            {
+                uint userId = res.id;
+                connectedUser = new User(userId, username, true);
+            }
             else
             {
                 Console.WriteLine("ERROR: " + res.errorInfo);
                 return false;
             }
 
-            connectedUser = new User(userId, username, true);
-    
             return true;
         }
 
@@ -174,6 +174,7 @@ namespace Phi_Box
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.GetGroupUsers.ToString());
+            dict.Add("groupId", groupId.ToString());
             string json = JsonConvert.SerializeObject(dict);
             List<User> users = new List<User>();
 
@@ -228,24 +229,23 @@ namespace Phi_Box
             dict.Add("description", description);
             dict.Add("adminId", connectedUser.id.ToString());
             string json = JsonConvert.SerializeObject(dict);
-            int groupId = -1;
 
             Parser.IdResponse res = JsonConvert.DeserializeObject<Parser.IdResponse>(RequestToServer(json));
+            Group group = new Group();
 
             if (res.status == Status.Success)
-                groupId = res.id;
-            else
-                Console.WriteLine("ERROR: " + res.errorInfo);
-
-            Group group = new Group();
-            if(groupId != -1)
             {
+                uint groupId = res.id;
                 group = new Group(groupId, name, description, connectedUser.id, GroupStatus.IN);
 
                 List<Group> groups = GetGroups();
                 groups.Add(group);
+
             }
-            
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+
+
             return group;
         }
 
