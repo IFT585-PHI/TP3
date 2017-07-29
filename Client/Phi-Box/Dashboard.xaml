@@ -35,5 +35,6 @@
                 <StackPanel Height="504" Width="300" x:Name="users_list" Orientation="Vertical" />
             </ScrollViewer>
         </Grid>
+        <Button x:Name="logout" Content="Logout" HorizontalAlignment="Left" Margin="941,10,0,0" VerticalAlignment="Top" Width="115" Height="52" FontSize="18" Click="Logout_Click"/>
     </Grid>
 </Page>

@@ -29,6 +29,12 @@ namespace Phi_Box
             description = _description;
             adminId = _adminId;
             status = _status;
+            adminId = _adminId;
+        }
+
+        public bool IsValid()
+        {
+            return name != null;
         }
     }
 }

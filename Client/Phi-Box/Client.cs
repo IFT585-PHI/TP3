@@ -10,58 +10,66 @@ using System.Net.Sockets;
 using System.Net;
 using System.Net.Cache;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Runtime.Serialization;
 
 namespace Phi_Box 
 {
     public class Client
     {
-        private User connectedUser;
+
+        public User connectedUser;
+        public Window popup;
 
         public Client()
         {
         }
 
-        public void Submit_TCP_Request()
+        /********************************************
+         *          UTILITY REQUESTS SECTION 
+         ********************************************/
+
+        private void DisplayError(string message)
         {
+            MessageBox.Show(message);
+        }
+
+        string RequestToServer(string json)
+        {
+            string response = string.Empty;
+
             try
             {
                 TcpClient client = new TcpClient();
-                Console.WriteLine("Connection started ...");
+                Console.WriteLine("Connection started...");
 
-                client.Connect("192.168.0.100", 13);
+                client.Connect("192.168.0.171", 13);
                 Console.WriteLine("Connected");
 
-                Console.WriteLine("Transmition of the request : Test.");
-
-                string str = "Test.";
                 NetworkStream ns = client.GetStream();
-                StreamWriter sw = new StreamWriter(ns);
 
-                sw.Write(str);
+                Console.WriteLine("Transmition of the request...");
+                StreamWriter sw = new StreamWriter(ns);
+                sw.Write(json + ".");
                 sw.Flush();
 
+                Console.WriteLine("Reception of the request...");
                 StreamReader sr = new StreamReader(ns);
-                string response = sr.ReadLine();
-                Console.WriteLine("The reponse from the server :" + response);
-                sr.Close();
+                response = sr.ReadToEnd();
+
 
                 client.Close();
                 Console.WriteLine("Connection closed");
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ERROR: " + ex.Message);
             }
-        }
 
-        /********************************************
-         *          TEMPORARY SECTION 
-         ********************************************/
-        private JArray ReadJSONFile(string fileName)
-        {
-            return JArray.Parse(File.ReadAllText("../../" + fileName));
+            return response;
         }
 
 
@@ -83,8 +91,7 @@ namespace Phi_Box
             dict.Add("password", password);
             string json = JsonConvert.SerializeObject(dict);
 
-            Parser.IdResponse res = JsonConvert.DeserializeObject<Parser.IdResponse>(RequestToServer(json));          
-
+            Parser.IdResponse res = JsonConvert.DeserializeObject<Parser.IdResponse>(RequestToServer(json)); 
             if (res.status == Status.Success)
             {
                 uint userId = uint.Parse(res.id);
@@ -137,6 +144,7 @@ namespace Phi_Box
             string json = JsonConvert.SerializeObject(dict);
 
             RequestToServer(json);
+            connectedUser = null;
         }
 
         /********************************************
@@ -156,12 +164,11 @@ namespace Phi_Box
 
             string s = RequestToServer(json);
             Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(s);
-
             if (res.status == Status.Success)
                 users = res.users;
             else
                 Console.WriteLine("ERROR: " + res.errorInfo);
-
+            
             return users;
         }        
 
@@ -195,7 +202,7 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <returns></returns>
-        public List<User> GetGroupPendingUsers(int groupId)
+        public List<User> GetGroupPendingUsers(uint groupId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.GetGroupPendingUsers.ToString());
@@ -204,7 +211,7 @@ namespace Phi_Box
             List<User> users = new List<User>();
 
             Parser.ListUsersResponse res = JsonConvert.DeserializeObject<Parser.ListUsersResponse>(RequestToServer(json));
-
+            
             if (res.status == Status.Success)
                 users = res.users;
             else
@@ -242,12 +249,10 @@ namespace Phi_Box
 
                 List<Group> groups = GetGroups();
                 groups.Add(group);
-
             }
             else
                 Console.WriteLine("ERROR: " + res.errorInfo);
-
-
+            
             return group;
         }
 
@@ -286,7 +291,7 @@ namespace Phi_Box
         /// The loggedIn user ask to join a group
         /// </summary>
         /// <param name="groupId"></param>
-        public void JoinGroup(int groupId)
+        public void JoinGroup(uint groupId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.JoinGroup.ToString());
@@ -306,7 +311,7 @@ namespace Phi_Box
         /// The loggedIn user leave a group
         /// </summary>
         /// <param name="groupId"></param>
-        public void LeaveGroup(int groupId)
+        public void LeaveGroup(uint groupId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.LeaveGroup.ToString());
@@ -326,7 +331,7 @@ namespace Phi_Box
         /// Delete the group
         /// </summary>
         /// <param name="groupId"></param>
-        public void DeleteGroup(int groupId)
+        public void DeleteGroup(uint groupId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.DeleteGroup.ToString());
@@ -346,7 +351,7 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <param name="userId"></param>
-        public void KickUser(int groupId, int userId)
+        public void KickUser(uint groupId, uint userId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.KickUser.ToString());
@@ -367,7 +372,7 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <param name="userId"></param>
-        public void PromoteUser(int groupId, int userId)
+        public void PromoteUser(uint groupId, uint userId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.PromoteUser.ToString());
@@ -388,7 +393,7 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <param name="username"></param>
-        public void InviteUser(int groupId, string username)
+        public void InviteUser(uint groupId, string username)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.InviteUser.ToString());
@@ -409,7 +414,7 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <param name="userId"></param>
-        public void DeclineRequest(int groupId, int userId)
+        public void DeclineRequest(uint groupId, uint userId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.DeclineRequest.ToString());
@@ -430,7 +435,7 @@ namespace Phi_Box
         /// </summary>
         /// <param name="groupId"></param>
         /// <param name="userId"></param>
-        public void ApproveRequest(int groupId, int userId)
+        public void ApproveRequest(uint groupId, uint userId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.ApproveRequest.ToString());
@@ -446,39 +451,6 @@ namespace Phi_Box
                 Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
-        string RequestToServer(string json)
-        {
-            string response = string.Empty;
-
-            try
-            {
-                TcpClient client = new TcpClient();
-                Console.WriteLine("Connection started...");
-
-                client.Connect("192.168.0.100", 13);
-                Console.WriteLine("Connected");
-
-                NetworkStream ns = client.GetStream();
-
-                Console.WriteLine("Transmition of the request...");
-                StreamWriter sw = new StreamWriter(ns);
-                sw.Write(json + ".");
-                sw.Flush();
-
-                Console.WriteLine("Reception of the request...");
-                StreamReader sr = new StreamReader(ns);
-                response = sr.ReadToEnd();
-
-
-                client.Close();
-                Console.WriteLine("Connection closed");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("ERROR: " + ex.Message);
-            }
-
-            return response;
-        }
+        
     }
 }

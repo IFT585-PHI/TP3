@@ -8,10 +8,10 @@
       d:DesignHeight="720" d:DesignWidth="1080"
       Title="GroupView">
 
-    <Grid  Height="720" Width="1080" Background="#FFCECECE">
+    <Grid x:Name="dashboard" Height="720" Width="1080" Background="#FFCECECE">
         <Image x:Name="image1" HorizontalAlignment="Center" Height="78" VerticalAlignment="Top" Width="270" Source="images/phibbox_red.png"/>
         <Grid HorizontalAlignment="Left" Height="573" Margin="0,83,0,0" VerticalAlignment="Top" Width="738" Background="White">
-            <ScrollViewer HorizontalAlignment="Left" Height="451" VerticalAlignment="Top" Width="738" HorizontalScrollBarVisibility="Auto">
+            <ScrollViewer HorizontalAlignment="Left" Height="456" VerticalAlignment="Top" Width="738" HorizontalScrollBarVisibility="Auto">
                 <StackPanel x:Name="files_list" Orientation="Vertical" />
             </ScrollViewer>
             <Grid HorizontalAlignment="Left" Height="117" Margin="0,456,0,0" VerticalAlignment="Top" Width="738" Background="WhiteSmoke">
@@ -19,13 +19,29 @@
             </Grid>
 
         </Grid>
-        <Grid HorizontalAlignment="Left" Height="573" Margin="761,83,0,0" VerticalAlignment="Top" Width="319" Background="White">
-            <Grid HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Width="319" Background="WhiteSmoke">
-                <Label x:Name="label" Content="Users" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70" Width="319" FontSize="36" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Grid x:Name="Users" HorizontalAlignment="Left" Height="573" Margin="757,83,0,0" VerticalAlignment="Top" Width="319" Background="White">
+            <Grid HorizontalAlignment="Left" Height="38" VerticalAlignment="Top" Width="319" Background="WhiteSmoke">
+                <Label x:Name="label" Content="Users" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70" Width="319" FontSize="28" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             </Grid>
-            <ScrollViewer HorizontalAlignment="Left" Height="503" Margin="0,70,0,0" VerticalAlignment="Top" Width="319">
-                <StackPanel Height="504" Width="300" x:Name="users_list" Orientation="Vertical" />
+            <ScrollViewer x:Name="UsersScroll" HorizontalAlignment="Left" Height="233" Margin="0,38,0,0" VerticalAlignment="Top" Width="309">
+                <StackPanel Width="286" x:Name="users_list" Orientation="Vertical" />
             </ScrollViewer>
+            <Grid x:Name="PendingSection" HorizontalAlignment="Left" Height="586" VerticalAlignment="Top" Width="319" Margin="0,271,0,-284">
+                <Grid x:Name="PendingGrid" HorizontalAlignment="Left" Height="38" VerticalAlignment="Top" Width="319" Background="WhiteSmoke" Margin="0,0,0,0">
+                    <Label x:Name="label2" Content="Pending" HorizontalAlignment="Center" VerticalAlignment="Center" Height="45" Width="319" FontSize="23" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,-7,0,0"/>
+                </Grid>
+                <ScrollViewer HorizontalAlignment="Left" Height="181" Margin="0,38,0,0" VerticalAlignment="Top" Width="309">
+                    <StackPanel Width="288" x:Name="pending_list" Orientation="Vertical" />
+                </ScrollViewer>
+                <Grid HorizontalAlignment="Left" Height="76" Margin="0,224,0,0" VerticalAlignment="Top" Width="319" Background="WhiteSmoke">
+                    <Label x:Name="label3" Content="Add Member:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="34" Width="196" FontSize="20" FontWeight="Bold" Padding="25,0,0,0" Margin="0,6,0,0" />
+                    <TextBox x:Name="AddMember" HorizontalAlignment="Left" Height="41" Margin="25,33,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="199" FontSize="22"/>
+                    <Button x:Name="button" Content="Add" HorizontalAlignment="Left" Margin="243,33,0,0" VerticalAlignment="Top" Width="52" Height="41" FontSize="14" Click="Add_Member_Click"/>
+                </Grid>
+            </Grid>
         </Grid>
+        <Button x:Name="logout" Content="Logout" HorizontalAlignment="Left" Margin="941,10,0,0" VerticalAlignment="Top" Width="115" Height="52" FontSize="18" Click="Logout_Click"/>
+        <Button x:Name="prev" Content="Dashboard" HorizontalAlignment="Left" Margin="27,10,0,0" VerticalAlignment="Top" Width="115" Height="52" FontSize="18" Click="Prev_Click"/>
+        <Button x:Name="delete" Content="Delete Group" HorizontalAlignment="Left" Margin="175,10,0,0" VerticalAlignment="Top" Width="151" Height="52" FontSize="18" Click="Delete_Click"/>
     </Grid>
 </Page>

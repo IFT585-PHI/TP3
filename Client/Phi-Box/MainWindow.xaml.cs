@@ -25,6 +25,7 @@ namespace Phi_Box
         PENDING,
         IN
     }
+    
 
     public partial class MainWindow : Window
     {
@@ -36,14 +37,14 @@ namespace Phi_Box
             client = new Client();
 
             InitializeComponent();
-
+            
             //Start at login page
             Navigate(new Login(this));
         }
 
         public void Navigate(Page page)
         {
-            frame.NavigationService.Navigate(page);
+            frame.NavigationService.Navigate(page);            
         }
         
         //Don't mind that, need it to change pages
@@ -52,6 +53,15 @@ namespace Phi_Box
 
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if(client.connectedUser != null)
+            {
+                client.LogOut();
+                Navigate(new Login(this));
+            }
+        }
 
+        
     }
 }

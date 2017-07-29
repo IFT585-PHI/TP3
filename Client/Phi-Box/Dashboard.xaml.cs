@@ -46,11 +46,9 @@ namespace Phi_Box
 
             Group group = mainWindow.client.CreateGroup(name, description);
 
-            if(group.name == null)
-            {
-                //DISPLAY ERROR MESSAGE
+            if(!group.IsValid())
                 return;
-            }
+
             AddGroup(group);
         }
 
@@ -76,7 +74,7 @@ namespace Phi_Box
                 //<Button x:Name="Join_group" Content="Join" Margin="504,14,126,37" FontSize="18"/>
                 Button button = new Button();
                 button.Name = "Join_group"; button.Content = "Join"; button.Margin = new Thickness(610, 14, 20, 37);
-                button.FontSize = 18; button.DataContext = group.id;
+                button.FontSize = 18; button.DataContext = group.id; button.Click += new RoutedEventHandler(Join_Group);
 
                 if (group.status == GroupStatus.PENDING)
                     button.IsEnabled = false;
@@ -89,6 +87,7 @@ namespace Phi_Box
                 Button button2 = new Button();
                 button2.Name = "See_group"; button2.Content = "Details"; button2.Margin = new Thickness(610, 14, 20, 37);
                 button2.FontSize = 18; button2.Click += new RoutedEventHandler(Go_To_Details); button2.DataContext = group.id;
+                button2.Tag = group.adminId;
                 grid.Children.Add(button2);
             }            
 
@@ -129,6 +128,7 @@ namespace Phi_Box
 
         private void DisplayGroups()
         {
+            groups_list.Children.Clear();
             foreach (Group g in mainWindow.client.GetGroups())
             {
                 AddGroup(g);
@@ -136,17 +136,31 @@ namespace Phi_Box
         }
         private void DisplayUsers()
         {
-            foreach (User g in mainWindow.client.GetOnlineUsers())
+            users_list.Children.Clear();
+            foreach (User u in mainWindow.client.GetOnlineUsers())
             {
-                AddUser(g);
+                if(u.id != mainWindow.client.connectedUser.id)
+                    AddUser(u);
             }
         }
 
-
+        private void Join_Group(object sender, RoutedEventArgs e)
+        {
+            mainWindow.client.JoinGroup((uint)((Button)sender).DataContext);
+            ((Button)sender).IsEnabled = false;
+        }
         private void Go_To_Details(object sender, RoutedEventArgs e)
         {
             uint groupId = (uint)((Button)sender).DataContext;
-            mainWindow.Navigate(new GroupView(mainWindow, groupId));
+            uint adminId = (uint)((Button)sender).Tag;
+            Console.WriteLine("GroupId: " + groupId + " adminID: " + adminId + " connected: " + mainWindow.client.connectedUser.id);
+            mainWindow.Navigate(new GroupView(mainWindow, groupId, adminId));
+        }
+
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindow.client.LogOut();
+            mainWindow.Navigate(new Login(mainWindow));
         }
     }
 }

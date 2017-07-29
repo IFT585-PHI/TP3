@@ -94,11 +94,6 @@ namespace Phi_Box
             mainWindow.Navigate(new Dashboard(mainWindow));
         }
 
-        private void Submit_TCP_Request(object sender, RoutedEventArgs e)
-        {
-            mainWindow.client.Submit_TCP_Request();
-        }
-
         private void ResetField()
         {
             textBoxUsername.Text = "";
