@@ -33,6 +33,7 @@ public:
     void Accept(unsigned int _userId);
     void Deny(unsigned int _userId);
     void SetUserId(unsigned int _userId);
+    unsigned int getUserId();
     void serialize(PrettyWriter<StringBuffer>& writer) const;
 };
 
