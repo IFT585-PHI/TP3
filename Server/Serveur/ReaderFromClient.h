@@ -15,8 +15,8 @@ using namespace rapidjson;
 using namespace std;
 
 const string SERVERFILESPATH = "C:/Users/Shocky/Documents/University/Été 2017/Telematique/TP3Kraken/TP3/Server/Serveur/Files";
-enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles, SendFile, Error };
-static vector<string> ClientFunctionStrings{ "Register", "LogIn", "LogOut", "GetOnlineUsers", "GetGroupUsers", "GetGroupPendingUsers", "GetGroups", "CreateGroup", "JoinGroup", "LeaveGroup", "DeleteGroup", "KickUser", "PromoteUser", "InviteUser", "DeclineRequest", "ApproveRequest", "GetFiles", "Error" };
+enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, SendFile, Error };
+static vector<string> ClientFunctionStrings{ "Register", "LogIn", "LogOut", "GetOnlineUsers", "GetGroupUsers", "GetGroupPendingUsers", "GetGroups", "CreateGroup", "JoinGroup", "LeaveGroup", "DeleteGroup", "KickUser", "PromoteUser", "InviteUser", "DeclineRequest", "ApproveRequest", "SendFile", "Error" };
 
 static ClientFunction getEnumFromText(string val) {
     for (int i = 0; i < ClientFunctionStrings.size(); ++i)

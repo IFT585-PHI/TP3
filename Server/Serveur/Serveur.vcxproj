@@ -153,8 +153,6 @@
     <ClInclude Include="Group.h" />
     <ClInclude Include="GroupManager.h" />
     <ClInclude Include="ReaderFromClient.h" />
-    <ClInclude Include="JsonWriter.h" />
-    <ClInclude Include="ISynchronize.h" />
     <ClInclude Include="LoginManager.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="ShareFolder.h" />
@@ -169,7 +167,6 @@
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="GroupManager.cpp" />
     <ClCompile Include="ReaderFromClient.cpp" />
-    <ClCompile Include="JsonWriter.cpp" />
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ShareFolder.cpp" />

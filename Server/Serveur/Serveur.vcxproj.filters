@@ -41,9 +41,6 @@
     <ClInclude Include="Admin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ISynchronize.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="ShareFolder.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
@@ -64,9 +61,6 @@
     </ClInclude>
     <ClInclude Include="Server.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="JsonWriter.h">
-      <Filter>Header Files\JsonModule</Filter>
     </ClInclude>
     <ClInclude Include="ReaderFromClient.h">
       <Filter>Header Files\JsonModule</Filter>
@@ -108,9 +102,6 @@
     </ClCompile>
     <ClCompile Include="Server.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonWriter.cpp">
-      <Filter>Source Files\JsonModule</Filter>
     </ClCompile>
     <ClCompile Include="ReaderFromClient.cpp">
       <Filter>Source Files\JsonModule</Filter>
