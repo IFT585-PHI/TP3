@@ -11,6 +11,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net;
 using System.Net.Cache;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Phi_Box
 {
@@ -94,11 +96,37 @@ namespace Phi_Box
             mainWindow.Navigate(new Dashboard(mainWindow));
         }
 
+        private void Submit_Click_Transfert_Test(object sender, RoutedEventArgs e)
+        {
+            string path = "C:/Users/Shocky/TestFile.txt";
+            string fileContent = "";
+            try
+            {
+                using (StreamReader reader = new StreamReader(path, Encoding.UTF8, true))
+                {
+                    fileContent = reader.ReadToEnd() + ".";
+                }
+              
+
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            Client client = new Client();
+            client.SendFile(GetFileName(GetFileName(path)),fileContent);
+        }
+
         private void ResetField()
         {
             textBoxUsername.Text = "";
             passwordBox.Password = "";
             errormessage.Text = "";
+        }
+
+        private string GetFileName(string path)
+        {
+            var words = path.Split('/','\\');
+            return words[words.Length - 1];
         }
         
 

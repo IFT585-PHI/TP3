@@ -145,8 +145,9 @@ string Server::LookUpClientFunction(string json) {
             return ReaderFromClient::getApproveRequestResponse(messages);
 			break;
 		}
-		case ClientFunction::GetFiles:
+		case ClientFunction::SendFile:
 		{
+			return ReaderFromClient::getApproveRequestResponse(messages);
 			break;
 		}
         case ClientFunction::Error:

@@ -14,7 +14,8 @@
 using namespace rapidjson;
 using namespace std;
 
-enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles, Error };
+const string SERVERFILESPATH = "C:/Users/Shocky/Documents/University/Été 2017/Telematique/TP3Kraken/TP3/Server/Serveur/Files";
+enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles, SendFile, Error };
 static vector<string> ClientFunctionStrings{ "Register", "LogIn", "LogOut", "GetOnlineUsers", "GetGroupUsers", "GetGroupPendingUsers", "GetGroups", "CreateGroup", "JoinGroup", "LeaveGroup", "DeleteGroup", "KickUser", "PromoteUser", "InviteUser", "DeclineRequest", "ApproveRequest", "GetFiles", "Error" };
 
 static ClientFunction getEnumFromText(string val) {
@@ -95,7 +96,7 @@ public:
     static string getInviteUserResponse(MessageMap messages);
     static string getDeclineRequestResponse(MessageMap messages);
     static string getApproveRequestResponse(MessageMap messages);
-    //static string getGetFilesResponse(MessageMap messages);
+	static string getSendFileResponse(MessageMap messages);
     
         //status , errorInfo ==empty si pas d'erreur, retour 
 };

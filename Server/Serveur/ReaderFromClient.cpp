@@ -1,7 +1,10 @@
+#include <Windows.h>
 #include "UserManager.h"
 #include "GroupManager.h"
 #include "LoginManager.h"
 #include "ReaderFromClient.h"
+#include <fstream>
+#include <boost/filesystem/operations.hpp>
 
 void ReaderFromClient::ParseMessages(const char* json, MessageMap& messages) {
     Reader reader;
@@ -747,6 +750,57 @@ string ReaderFromClient::getApproveRequestResponse(MessageMap messages)
 		status = FAILED;
 		errorMsg = "User/Group doesn't exist or the user was not in the group pending invitation";
 	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getSendFileResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+	string fileName = messages.find("name")->second.c_str();
+	string fileContent = messages.find("content")->second.c_str();
+	string filePath = SERVERFILESPATH + std::to_string(groupId);
+	boost::filesystem::path dir(filePath);
+
+	if (!(boost::filesystem::exists(dir))) {
+
+		if (boost::filesystem::create_directory(dir)) {
+
+		} else {
+			status = FAILED;
+			errorMsg = "Could not create or reach the file directory for the group id" + groupId;
+		}
+	}
+
+	try {
+		std::ofstream file(filePath + "/" + fileName); //open in constructor
+		file << fileContent;
+		status = SUCCESS;
+	}
+	catch (exception e) {
+		status = FAILED;
+		errorMsg = "Could not store the file" + fileName;
+	}
+
+
 
 	rapidjson::StringBuffer sb;
 	PrettyWriter<StringBuffer> writer(sb);

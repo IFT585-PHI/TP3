@@ -1,20 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json.Linq;
 using System.Net.Sockets;
-using System.Net;
-using System.Net.Cache;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
-using System.Runtime.Serialization;
 
 namespace Phi_Box 
 {
@@ -451,6 +440,27 @@ namespace Phi_Box
                 Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
-        
+        /// <summary>
+        /// Send a file to the server.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="content"></param>
+        public void SendFile(string fileName, string content)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.SendFile.ToString());
+            dict.Add("groupId", "0150");
+            dict.Add("name", fileName);
+            dict.Add("content", content);
+
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+        }
     }
 }
