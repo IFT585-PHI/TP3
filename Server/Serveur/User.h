@@ -2,7 +2,6 @@
 #define USER_H
 
 #include "ShareFolder.h"
-#include "ISynchronize.h"
 #include <chrono>
 #include <set>
 
@@ -10,7 +9,7 @@ using namespace std::chrono;
 
 class Server;
 
-class User : public Entity, ISynchronize
+class User : public Entity
 {
 public:
     User() = default;
@@ -30,7 +29,7 @@ public:
         return id == u.id;
     }
 
-    void synchronize() override;
+    void synchronize();
     set<unsigned int> getGroups();
     string getRoot();
     string getName();
