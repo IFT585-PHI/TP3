@@ -162,6 +162,16 @@ string Server::LookUpClientFunction(string json) {
 			return ReaderFromClient::getFileTransferCompleteResponse(messages);
 			break;
 		}
+		case ClientFunction::RenamedFile:
+		{
+			return ReaderFromClient::getRenamedFileResponse(messages);
+			break;
+		}
+		case ClientFunction::DeletedFile:
+		{
+			return ReaderFromClient::getDeletedFileResponse(messages);
+			break;
+		}
         case ClientFunction::Error:
         {
             break;

@@ -117,6 +117,10 @@ File* Group::getFileFromName(string fileName) {
     return nullptr;
 }
 
+int Group::createNewFileId() {
+	return files.size();
+}
+
 
 
 /*

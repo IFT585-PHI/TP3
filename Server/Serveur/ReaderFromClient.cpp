@@ -876,6 +876,13 @@ string ReaderFromClient::getFileTransferCompleteResponse(MessageMap messages)
 	}
 
 	try {
+		File* file = new File(fileName, filePath, groupMan->getGroupById(groupId)->createNewFileId());
+		if(groupMan->getGroupById(groupId)->getFileFromName(fileName) == nullptr) {
+			groupMan->getGroupById(groupId)->addFile(file);
+		}
+		else {
+			groupMan->getGroupById(groupId)->updateFile(file);
+		}
 		string path = filePath + "/" + fileName;
 		std::ofstream(path, std::ios::binary).write(PendingFiles[fileName].data(), PendingFiles[fileName].size());
 		status = SUCCESS;
@@ -902,7 +909,7 @@ string ReaderFromClient::getFileTransferCompleteResponse(MessageMap messages)
 	return sb.GetString();
 }
 
-string ReaderFromClient::getRenameFileResponse(MessageMap messages) {
+string ReaderFromClient::getRenamedFileResponse(MessageMap messages) {
     GroupManager* groupMan = GroupManager::getInstance();
     string errorMsg{};
     string status{};
@@ -963,7 +970,7 @@ string ReaderFromClient::getRenameFileResponse(MessageMap messages) {
     return sb.GetString();
 }
 
-string ReaderFromClient::getDeleteFileResponse(MessageMap messages) {
+string ReaderFromClient::getDeletedFileResponse(MessageMap messages) {
     GroupManager* groupMan = GroupManager::getInstance();
     string errorMsg{};
     string status{};

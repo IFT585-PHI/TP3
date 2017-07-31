@@ -46,6 +46,8 @@ public:
     void setAdmin(unsigned int userId);
    // void serialize(PrettyWriter<StringBuffer>& writer) const;
 
+	int createNewFileId();
+
 	string getName();
 };
 
