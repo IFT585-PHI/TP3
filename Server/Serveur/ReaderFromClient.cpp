@@ -784,13 +784,8 @@ string ReaderFromClient::getSendFileResponse(MessageMap messages)
 	int last = 0;
 
 	while (std::getline(ss, token, ',')) {
-		if (stoi(token) == 10 && last == 13) {
-			last = stoi(token);
-		}
-		else {
 			vect.push_back(stoi(token));
 			last = stoi(token);
-		}
 	};
 	try {
 		vector<char> mergedVector;
@@ -880,10 +875,8 @@ string ReaderFromClient::getFileTransferCompleteResponse(MessageMap messages)
 	}
 
 	try {
-		std::ofstream file(filePath + "/" + fileName); //open in constructor
-		file.write(PendingFiles[fileName].data(), PendingFiles[fileName].size());
-		file.flush();
-		file.close();
+		string path = filePath + "/" + fileName;
+		std::ofstream(path, std::ios::binary).write(PendingFiles[fileName].data(), PendingFiles[fileName].size());
 		status = SUCCESS;
 	}
 	catch (exception e) {
