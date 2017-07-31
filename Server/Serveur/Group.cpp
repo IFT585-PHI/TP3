@@ -64,6 +64,14 @@ bool Group::removeFile(File* file) {
     return true;
 }
 
+bool Group::renameFile(File * file, string newName) {
+    if (!doesFileExists(file->getId()))
+        return false;
+
+    file->setName(newName);
+    return true;
+}
+
 bool Group::addPendingInvitation(unsigned int userId) {
     if (doesPendingInvitationExists(userId))
         return false;
@@ -99,6 +107,17 @@ void Group::setAdmin(unsigned int userId) {
 string Group::getName() {
 	return name;
 }
+
+File* Group::getFileFromName(string fileName) {
+    for (auto file : files) {
+        if (file.second->getName() == fileName)
+            return file.second;
+    }
+
+    return nullptr;
+}
+
+
 
 /*
 void Group::serialize(PrettyWriter<StringBuffer>& writer) const {

@@ -14,8 +14,8 @@
 using namespace rapidjson;
 using namespace std;
 
-enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, SendFile, CreatePendingFile, FileTransferComplete, Error };
-static vector<string> ClientFunctionStrings{ "Register", "LogIn", "LogOut", "GetOnlineUsers", "GetGroupUsers", "GetGroupPendingUsers", "GetGroups", "CreateGroup", "JoinGroup", "LeaveGroup", "DeleteGroup", "KickUser", "PromoteUser", "InviteUser", "DeclineRequest", "ApproveRequest", "SendFile","CreatePendingFile","FileTransferComplete", "Error" };
+enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, SendFile, CreatePendingFile, FileTransferComplete, RenameFile, DeleteFile, Error };
+static vector<string> ClientFunctionStrings{ "Register", "LogIn", "LogOut", "GetOnlineUsers", "GetGroupUsers", "GetGroupPendingUsers", "GetGroups", "CreateGroup", "JoinGroup", "LeaveGroup", "DeleteGroup", "KickUser", "PromoteUser", "InviteUser", "DeclineRequest", "ApproveRequest", "SendFile","CreatePendingFile","FileTransferComplete", "RenameFile", "DeleteFile","Error" };
 static std::map<string, vector<char> > PendingFiles = {};
 
 static ClientFunction getEnumFromText(string val) {
@@ -99,6 +99,8 @@ public:
 	static string getSendFileResponse(MessageMap messages);
 	static string getCreateFileResponse(MessageMap messages);
 	static string getFileTransferCompleteResponse(MessageMap messages);
+    static string getRenameFileResponse(MessageMap messages);
+    static string getDeleteFileResponse(MessageMap messages);
     
         //status , errorInfo ==empty si pas d'erreur, retour 
 };

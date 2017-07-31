@@ -867,7 +867,7 @@ string ReaderFromClient::getFileTransferCompleteResponse(MessageMap messages)
 	if (!(boost::filesystem::exists(dir))) {
 
 		if (boost::filesystem::create_directory(dir)) {
-
+            
 		}
 		else {
 			status = FAILED;
@@ -900,4 +900,121 @@ string ReaderFromClient::getFileTransferCompleteResponse(MessageMap messages)
 	puts(sb.GetString());
 
 	return sb.GetString();
+}
+
+string ReaderFromClient::getRenameFileResponse(MessageMap messages) {
+    GroupManager* groupMan = GroupManager::getInstance();
+    string errorMsg{};
+    string status{};
+
+    int groupId = (atoi(messages.find("groupId")->second.c_str()));
+    string oldFileName = messages.find("oldFileName")->second.c_str();
+    string newFileName = messages.find("newFileName")->second.c_str();
+    
+    string filePath = Server::root + std::to_string(groupId);
+    boost::filesystem::path dir(filePath);
+
+    File* file = groupMan->getGroupById(groupId)->getFileFromName(oldFileName);
+
+    if (file != nullptr) {
+        string filePath = Server::root + std::to_string(groupId);
+        boost::filesystem::path dir(filePath);
+
+        if (boost::filesystem::exists(dir)) {
+            string oldFileFullName = filePath + oldFileName;
+            string newFileFullName = filePath + newFileName;
+            if (rename(oldFileFullName.c_str(), newFileFullName.c_str()) != 0) {
+                status = FAILED;
+                errorMsg = "Could not rename file " + oldFileName + "from repository";
+            }
+            else {
+                if (!groupMan->getGroupById(groupId)->renameFile(file, newFileName)) {
+                    status = FAILED;
+                    errorMsg = "Could not rename file " + oldFileName + "from datastructure";
+                }
+                else
+                    status = SUCCESS;
+            }
+        }
+        else {
+            status = FAILED;
+            errorMsg = "Could not find " + filePath;
+        }
+    }
+    else {
+        status = FAILED;
+        errorMsg = "Could not find file " + oldFileName + "in datastructure";
+    }
+    
+    rapidjson::StringBuffer sb;
+    PrettyWriter<StringBuffer> writer(sb);
+
+    writer.StartObject();
+    writer.String("status");
+    writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+    writer.String("errorInfo");
+    writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+    writer.EndObject();
+
+    puts(sb.GetString());
+
+    return sb.GetString();
+}
+
+string ReaderFromClient::getDeleteFileResponse(MessageMap messages) {
+    GroupManager* groupMan = GroupManager::getInstance();
+    string errorMsg{};
+    string status{};
+
+    int groupId = (atoi(messages.find("groupId")->second.c_str()));
+    string fileName = messages.find("fileName")->second.c_str();
+    
+    File* file = groupMan->getGroupById(groupId)->getFileFromName(fileName);
+
+    if (file != nullptr) {
+        string filePath = Server::root + std::to_string(groupId);
+        boost::filesystem::path dir(filePath);
+
+        if (boost::filesystem::exists(dir)) {
+            string fileFullName = filePath + fileName;
+            if (remove(fileFullName.c_str()) != 0) {
+                status = FAILED;
+                errorMsg = "Could not delete file " + fileName + "from repository";
+            }
+            else {
+                if (!groupMan->getGroupById(groupId)->removeFile(file)) {
+                    status = FAILED;
+                    errorMsg = "Could not delete file " + fileName + "from datastructure";
+                }
+                else
+                    status = SUCCESS;
+            }
+        }
+        else {
+            status = FAILED;
+            errorMsg = "Could not find " + filePath;
+        }
+    }
+    else {
+        status = FAILED;
+        errorMsg = "Could not find file " + fileName + "in datastructure";
+    }
+
+    rapidjson::StringBuffer sb;
+    PrettyWriter<StringBuffer> writer(sb);
+
+    writer.StartObject();
+    writer.String("status");
+    writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+    writer.String("errorInfo");
+    writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+    writer.EndObject();
+
+    puts(sb.GetString());
+
+    return sb.GetString();
 }

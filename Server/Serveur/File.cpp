@@ -1,10 +1,9 @@
 #include "File.h"
 
-File::File(string _name, string _extension, string _path, unsigned int _id)
+File::File(string _name, string _path, unsigned int _id)
     : Entity(_id), path{_path}
 {
-    fileName.name = _name;
-    fileName.extension = _extension;
+    fileName = _name;
 }
 
 unsigned int File::getVersion() {
@@ -32,4 +31,12 @@ void File::serialize(PrettyWriter<StringBuffer>& writer) const {
 
 void File::incVersion() {
 	++version;
+}
+
+string File::getName() {
+    return fileName;
+}
+
+void File::setName(string newName) {
+    fileName = newName;
 }

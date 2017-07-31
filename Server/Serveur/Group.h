@@ -33,6 +33,9 @@ public:
     bool addFile(File* file);
     bool updateFile(File* file);
     bool removeFile(File* file);
+    bool renameFile(File* file, string newName);
+
+    File* getFileFromName(string fileName);
 
     bool addPendingInvitation(unsigned int userId);
     bool removePendingInvitation(unsigned int userId);
