@@ -14,7 +14,6 @@
 using namespace rapidjson;
 using namespace std;
 
-const string SERVERFILESPATH = "C:/Users/Shocky/Documents/University/Été 2017/Telematique/TP3Kraken/TP3/Server/Serveur/Files";
 enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, SendFile, CreatePendingFile, FileTransferComplete, Error };
 static vector<string> ClientFunctionStrings{ "Register", "LogIn", "LogOut", "GetOnlineUsers", "GetGroupUsers", "GetGroupPendingUsers", "GetGroups", "CreateGroup", "JoinGroup", "LeaveGroup", "DeleteGroup", "KickUser", "PromoteUser", "InviteUser", "DeclineRequest", "ApproveRequest", "SendFile","CreatePendingFile","FileTransferComplete", "Error" };
 static std::map<string, vector<char> > PendingFiles = {};
@@ -98,7 +97,7 @@ public:
     static string getDeclineRequestResponse(MessageMap messages);
     static string getApproveRequestResponse(MessageMap messages);
 	static string getSendFileResponse(MessageMap messages);
-	static string getCreatePendingFileResponse(MessageMap messages);
+	static string getCreateFileResponse(MessageMap messages);
 	static string getFileTransferCompleteResponse(MessageMap messages);
     
         //status , errorInfo ==empty si pas d'erreur, retour 

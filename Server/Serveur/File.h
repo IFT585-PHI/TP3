@@ -40,6 +40,7 @@ public:
     unsigned int getVersion();
     void setVersion(unsigned int _version);
     void serialize(PrettyWriter<StringBuffer>& writer) const;
+	void incVersion();
 };
 
 #endif // !FILE_H

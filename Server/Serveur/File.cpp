@@ -32,3 +32,7 @@ void File::serialize(PrettyWriter<StringBuffer>& writer) const {
 
     writer.EndObject();
 }
+
+void File::incVersion() {
+	++version;
+}

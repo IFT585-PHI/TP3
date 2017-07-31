@@ -11,7 +11,7 @@ class Group : public Entity
 public:
     Group() = default;
     Group(unsigned int _id, string _name, string _description, unsigned int _userId);
-    Group(unsigned int _id, string _name, string _description, Admin _admin, set<unsigned int> _members, set<unsigned int> _pendingInvitations, map<unsigned int, unsigned int> _filesVersion);
+    Group(unsigned int _id, string _name, string _description, Admin _admin, set<unsigned int> _members, set<unsigned int> _pendingInvitations, map<unsigned int, File*> _files);
     ~Group() = default;
  
     string name;
@@ -19,7 +19,7 @@ public:
     Admin admin;
     set<unsigned int> members; //int = userId
     set<unsigned int> pendingInvitations; //int = userId
-    map<unsigned int, unsigned int> filesVersion; //int = idFile, int = latestVersion
+    map<unsigned int, File*> files; //int = idFile
 
 public:
 	bool operator ==(const Group &g) {
@@ -29,9 +29,9 @@ public:
     bool addMember(unsigned int userId);
     bool removeMember(unsigned int userId);
 
-    bool addFile(unsigned int fileId);
-    bool updateFile(unsigned int fileId);
-    bool removeFile(unsigned int fileId);
+    bool addFile(File* file);
+    bool updateFile(File* file);
+    bool removeFile(File* file);
 
     bool addPendingInvitation(unsigned int userId);
     bool removePendingInvitation(unsigned int userId);

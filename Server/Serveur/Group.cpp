@@ -1,5 +1,7 @@
 #include "Group.h"
+#include "Server.h"
 #include "UserManager.h"
+#include <boost/filesystem/operations.hpp>
 
 Group::Group(unsigned int _id, string _name, string _description, unsigned int _userId)
     : Entity(_id), name{ _name }, description{ _description }
@@ -9,11 +11,14 @@ Group::Group(unsigned int _id, string _name, string _description, unsigned int _
 	members.insert(_userId);
 	members.insert(UserManager::getInstance()->getUserByName("TEST").getId());
     pendingInvitations = set<unsigned int>();
-    filesVersion = map<unsigned int, unsigned int>();
+    files = map<unsigned int, File>();
+
+	if (boost::filesystem::exists(Server::root))
+		boost::filesystem::create_directory(Server::root);
 }
 
-Group::Group(unsigned int _id, string _name, string _description, Admin _admin, set<unsigned int> _members, set<unsigned int> _pendingInvitations, map<unsigned int, unsigned int> _filesVersion)
-    : Entity(_id), name{ _name }, description{ _description }, admin{ _admin }, members{ _members }, pendingInvitations{ _pendingInvitations }, filesVersion{ _filesVersion }
+Group::Group(unsigned int _id, string _name, string _description, Admin _admin, set<unsigned int> _members, set<unsigned int> _pendingInvitations, map<unsigned int, File*> _files)
+    : Entity(_id), name{ _name }, description{ _description }, admin{ _admin }, members{ _members }, pendingInvitations{ _pendingInvitations }, files{ _files }
 {
 }
 
@@ -34,28 +39,28 @@ bool Group::removeMember(unsigned int userId) {
     return true;
 }
 
-bool Group::addFile(unsigned int fileId) {
-    if (doesFileExists(fileId))
+bool Group::addFile(File* file) {
+    if (doesFileExists(file->getId()))
         return false;
 
-    filesVersion.insert(make_pair(fileId, 1));
+    files.insert(make_pair(file->getId(), file));
     return true;
 }
 
-bool Group::updateFile(unsigned int fileId) {
-    if (!doesFileExists(fileId))
+bool Group::updateFile(File* file) {
+	if (!doesFileExists(file->getId()))
         return false;
 
-    //do something with file content?
-    filesVersion[fileId] += 1;
+	files[file->getId()] = file;
+	files[file->getId()]->incVersion();
     return true;
 }
 
-bool Group::removeFile(unsigned int fileId) {
-    if (!doesFileExists(fileId))
+bool Group::removeFile(File* file) {
+	if (!doesFileExists(file->getId()))
         return false;
 
-    filesVersion.erase(fileId);
+    files.erase(file->getId());
     return true;
 }
 

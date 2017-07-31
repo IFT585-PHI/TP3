@@ -10,9 +10,10 @@ using boost::asio::ip::tcp;
 class Server
 {
 public:
+	static const string root;
+
 	Server(boost::asio::io_service* io_service);
     ~Server() = default;
-    static string address;
 
 	boost::asio::io_service* service;
 	tcp::acceptor acceptor;
@@ -26,8 +27,6 @@ public:
 	std::string readRequest(tcp::socket & socket);
 	void sendResponse(tcp::socket & socket, const std::string& str);
 	void run();
-
-//private:
 	static string LookUpClientFunction(string json);
 };
 

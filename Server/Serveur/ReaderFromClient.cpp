@@ -2,8 +2,9 @@
 #include "GroupManager.h"
 #include "LoginManager.h"
 #include "ReaderFromClient.h"
-#include <fstream>
+#include "Server.h"
 #include <boost/filesystem/operations.hpp>
+#include <fstream>
 #include <sstream>
 
 void ReaderFromClient::ParseMessages(const char* json, MessageMap& messages) {
@@ -818,7 +819,7 @@ string ReaderFromClient::getSendFileResponse(MessageMap messages)
 	return sb.GetString();
 }
 
-string ReaderFromClient::getCreatePendingFileResponse(MessageMap messages)
+string ReaderFromClient::getCreateFileResponse(MessageMap messages)
 {
 	GroupManager* groupMan = GroupManager::getInstance();
 	string errorMsg{};
@@ -860,7 +861,7 @@ string ReaderFromClient::getFileTransferCompleteResponse(MessageMap messages)
 
 	int groupId = (atoi(messages.find("groupId")->second.c_str()));
 	string fileName = messages.find("name")->second.c_str();
-	string filePath = SERVERFILESPATH + std::to_string(groupId);
+	string filePath = Server::root + std::to_string(groupId);
 	boost::filesystem::path dir(filePath);
 
 	if (!(boost::filesystem::exists(dir))) {
