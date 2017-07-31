@@ -46,7 +46,7 @@ namespace Phi_Box
                 TcpClient client = new TcpClient();
                 Console.WriteLine("Connection started...");
 
-                client.Connect("192.168.0.171", 13);
+                client.Connect("169.254.103.85", 13);
                 Console.WriteLine("Connected");
 
                 NetworkStream ns = client.GetStream();
