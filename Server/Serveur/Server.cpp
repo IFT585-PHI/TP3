@@ -7,13 +7,13 @@
 #include <boost/filesystem/operations.hpp>
 
 using boost::asio::ip::tcp;
-const string Server::root = "C:/PhiboxServer";
+const string Server::root = "C:/PhiboxServer/";
 
 Server::Server(boost::asio::io_service* io_service)
 	:acceptor(*io_service, tcp::endpoint(tcp::v4(), 13)), socket(*io_service),
 	 service(io_service)
 {
-	if(boost::filesystem::exists(root))
+	if(!boost::filesystem::exists(root))
 		boost::filesystem::create_directory(root);
 }
 

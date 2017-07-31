@@ -861,7 +861,7 @@ string ReaderFromClient::getFileTransferCompleteResponse(MessageMap messages)
 
 	int groupId = (atoi(messages.find("groupId")->second.c_str()));
 	string fileName = messages.find("name")->second.c_str();
-	string filePath = Server::root + std::to_string(groupId);
+	string filePath = Server::root + groupMan->getGroupById(groupId)->getName();
 	boost::filesystem::path dir(filePath);
 
 	if (!(boost::filesystem::exists(dir))) {

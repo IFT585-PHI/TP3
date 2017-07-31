@@ -96,6 +96,10 @@ void Group::setAdmin(unsigned int userId) {
     admin.SetUserId(userId);
 }
 
+string Group::getName() {
+	return name;
+}
+
 /*
 void Group::serialize(PrettyWriter<StringBuffer>& writer) const {
     writer.StartObject();

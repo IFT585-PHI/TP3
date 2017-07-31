@@ -42,6 +42,8 @@ public:
     bool doesPendingInvitationExists(unsigned int userId);
     void setAdmin(unsigned int userId);
    // void serialize(PrettyWriter<StringBuffer>& writer) const;
+
+	string getName();
 };
 
 #endif // !GROUP_H
