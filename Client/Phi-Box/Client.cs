@@ -26,7 +26,7 @@ namespace Phi_Box
             MessageBox.Show(message);
         }
 
-        string RequestToServer(string json)
+        static string RequestToServer(string json)
         {
             string response = string.Empty;
 
@@ -35,7 +35,7 @@ namespace Phi_Box
                 TcpClient client = new TcpClient();
                 Console.WriteLine("Connection started...");
 
-                client.Connect("192.168.0.113", 13);
+                client.Connect("192.168.1.208", 13);
                 Console.WriteLine("Connected");
 
                 NetworkStream ns = client.GetStream();
@@ -446,7 +446,8 @@ namespace Phi_Box
         /// <summary>
         /// Create the pending file in the server.
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="fileName"></param>public static void AddedFileRequest(uint groupId, string filePath, string fileName)
+
         public void CreateFile(string fileName)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -505,24 +506,58 @@ namespace Phi_Box
                 Console.WriteLine("ERROR: " + res.errorInfo);
         }
         
-        public static void AddedFileRequest(uint groupId)
+	public static void AddedFileRequest(uint groupId, string filePath, string fileName)
         {
+            byte[] data = File.ReadAllBytes(filePath);
+            int length = data.Length;
+            long maxLength = 100 / sizeof(byte);
+            long transmitted = 0;
+            CreateFile(fileName);
+            while (transmitted != length)
+            {
+                if (length - transmitted < maxLength - 1)
+                {
+                    maxLength = length - transmitted;
+                }
+                byte[] bytesToTransmit = new byte[maxLength];
+                Array.Copy(data, transmitted, bytesToTransmit, 0, maxLength);
+                transmitted += maxLength;
+                SendFile(fileName, bytesToTransmit);
+            }
+            SendFileTransferComplete(fileName, groupId);
+    }
 
+        public static void RenamedFileRequest(uint groupId, string oldFileName, string newFileName)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.RenamedFile.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("oldFileName", oldFileName);
+            dict.Add("newFileName", newFileName);
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
-        public static void RenamedFileRequest(uint groupId)
+        public static void DeletedFileRequest(uint groupId, string fileName)
         {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.RemovedFile.ToString());
+            dict.Add("groupId", groupId.ToString());
+            dict.Add("fileName", fileName);
+            string json = JsonConvert.SerializeObject(dict);
 
-        }
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
 
-        public static void UpdatedFileRequest(uint groupId)
-        {
-
-        }
-
-        public static void DeletedFileRequest(uint groupId)
-        {
-
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
     }

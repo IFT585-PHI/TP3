@@ -63,22 +63,22 @@ namespace Phi_Box
 
         private void OnChanged(object source, FileSystemEventArgs e)
         {
-            Client.UpdatedFileRequest(id);
+            Client.AddedFileRequest(id, e.FullPath, e.Name);
         }
 
         private void OnCreated(object source, FileSystemEventArgs e)
         {
-            Client.AddedFileRequest(id);
+            Client.AddedFileRequest(id, e.FullPath, e.Name);
         }
 
         private void OnDeleted(object source, FileSystemEventArgs e)
         {
-            Client.DeletedFileRequest(id);
+            Client.DeletedFileRequest(id, e.Name);
         }
 
-        private void OnRenamed(object source, FileSystemEventArgs e)
+        private void OnRenamed(object source, RenamedEventArgs e)
         {
-            Client.RenamedFileRequest(id);
+            Client.RenamedFileRequest(id, e.OldName, e.Name);
         }
 
         public bool IsValid()
