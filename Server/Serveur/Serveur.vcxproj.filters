@@ -44,9 +44,6 @@
     <ClInclude Include="User.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Authentificator.h">
-      <Filter>Header Files\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="GroupManager.h">
       <Filter>Header Files\Manager</Filter>
     </ClInclude>
@@ -78,9 +75,6 @@
     </ClCompile>
     <ClCompile Include="User.cpp">
       <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Authentificator.cpp">
-      <Filter>Source Files\Manager</Filter>
     </ClCompile>
     <ClCompile Include="GroupManager.cpp">
       <Filter>Source Files\Manager</Filter>

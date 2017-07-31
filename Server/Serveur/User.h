@@ -13,12 +13,10 @@ class User : public Entity
 public:
     User() = default;
     User(unsigned int _id, string _name);
-    User(unsigned int _id, string _name, system_clock::time_point _lastSynchronized);
     ~User() = default;
 
 private:
     string name;
-    system_clock::time_point lastSynchronized;
 
 public:
     bool operator == (const User &u) {
@@ -26,7 +24,6 @@ public:
     }
 
     string getName();
-   // void serialize(PrettyWriter<StringBuffer>& writer) const;
 };
 
 #endif // !USER_H

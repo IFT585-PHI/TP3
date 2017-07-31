@@ -14,9 +14,6 @@ UserManager* UserManager::getInstance() {
 	return UserManager::um;
 }
 
-void UserManager::initialize() {
-}
-
 bool UserManager::addNewUser(string userName) {
     for(auto u : getListExistingUsers())
     {

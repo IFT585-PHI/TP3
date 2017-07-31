@@ -861,7 +861,7 @@ string ReaderFromClient::getFileTransferCompleteResponse(MessageMap messages)
 
 	int groupId = (atoi(messages.find("groupId")->second.c_str()));
 	string fileName = messages.find("name")->second.c_str();
-	string filePath = Server::root + groupMan->getGroupById(groupId)->getName();
+	string filePath = Server::ROOT + groupMan->getGroupById(groupId)->getName();
 	boost::filesystem::path dir(filePath);
 
 	if (!(boost::filesystem::exists(dir))) {
@@ -876,7 +876,7 @@ string ReaderFromClient::getFileTransferCompleteResponse(MessageMap messages)
 	}
 
 	try {
-		File* file = new File(fileName, filePath, groupMan->getGroupById(groupId)->createNewFileId());
+		File* file = new File(fileName, groupMan->getGroupById(groupId)->createNewFileId());
 		if(groupMan->getGroupById(groupId)->getFileFromName(fileName) == nullptr) {
 			groupMan->getGroupById(groupId)->addFile(file);
 		}
@@ -918,7 +918,7 @@ string ReaderFromClient::getRenamedFileResponse(MessageMap messages) {
     string oldFileName = messages.find("oldFileName")->second.c_str();
     string newFileName = messages.find("newFileName")->second.c_str();
     
-    string filePath = Server::root + groupMan->getGroupById(groupId)->getName() + "/";
+    string filePath = Server::ROOT + groupMan->getGroupById(groupId)->getName() + "/";
     boost::filesystem::path dir(filePath);
 
     File* file = groupMan->getGroupById(groupId)->getFileFromName(oldFileName);
@@ -980,7 +980,7 @@ string ReaderFromClient::getDeletedFileResponse(MessageMap messages) {
     File* file = groupMan->getGroupById(groupId)->getFileFromName(fileName);
 
     if (file != nullptr) {
-        string filePath = Server::root + groupMan->getGroupById(groupId)->getName() + "/";
+        string filePath = Server::ROOT + groupMan->getGroupById(groupId)->getName() + "/";
         boost::filesystem::path dir(filePath);
 
         if (boost::filesystem::exists(dir)) {

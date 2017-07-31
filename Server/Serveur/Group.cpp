@@ -13,13 +13,8 @@ Group::Group(unsigned int _id, string _name, string _description, unsigned int _
     pendingInvitations = set<unsigned int>();
     files = map<unsigned int, File*>();
 
-	if (boost::filesystem::exists(Server::root))
-		boost::filesystem::create_directory(Server::root);
-}
-
-Group::Group(unsigned int _id, string _name, string _description, Admin _admin, set<unsigned int> _members, set<unsigned int> _pendingInvitations, map<unsigned int, File*> _files)
-    : Entity(_id), name{ _name }, description{ _description }, admin{ _admin }, members{ _members }, pendingInvitations{ _pendingInvitations }, files{ _files }
-{
+	if (boost::filesystem::exists(Server::ROOT))
+		boost::filesystem::create_directory(Server::ROOT);
 }
 
 bool Group::addMember(unsigned int userId) {
@@ -121,61 +116,3 @@ File* Group::getFileFromName(string fileName) {
 int Group::createNewFileId() {
 	return files.size();
 }
-
-
-
-/*
-void Group::serialize(PrettyWriter<StringBuffer>& writer) const {
-    writer.StartObject();
-
-    Entity::serialize(writer);
-
-    writer.String("Name");
-    writer.String(name.c_str(), static_cast<SizeType>(name.length()));
-    writer.String("Description");
-    writer.String(description.c_str(), static_cast<SizeType>(description.length()));
-    
-    writer.String("Admin");
-    admin.serialize(writer);
-
-    writer.String("Members");
-    writer.StartArray();
-    if (!members.empty()) {
-        for (auto member : members)
-            writer.Uint(member);
-    }
-    else
-        writer.Null();
-
-    writer.EndArray();
-
-    writer.String("PerndingInvitations");
-    writer.StartArray();
-    if (!pendingInvitations.empty()) {
-        for (auto pending : pendingInvitations)
-            writer.Uint(pending);
-    }
-    else
-        writer.Null();
-
-    writer.EndArray();
-
-    writer.String("FilesVersion");
-    writer.StartArray();
-    if (!filesVersion.empty()) {
-        for (auto file : filesVersion) {
-            writer.StartObject();
-            writer.String("FileId");
-            writer.Uint(file.first);
-            writer.String("FileVersion");
-            writer.Uint(file.second);
-            writer.EndObject();
-        }
-    }
-    else
-        writer.Null();
-
-    writer.EndArray();
-
-    writer.EndObject();
-}*/

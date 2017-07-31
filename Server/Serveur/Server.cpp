@@ -7,37 +7,14 @@
 #include <boost/filesystem/operations.hpp>
 
 using boost::asio::ip::tcp;
-const string Server::root = "C:/PhiboxServer/";
+const string Server::ROOT = "C:/PhiboxServer/";
 
 Server::Server(boost::asio::io_service* io_service)
 	:acceptor(*io_service, tcp::endpoint(tcp::v4(), 13)), socket(*io_service),
 	 service(io_service)
 {
-	if(!boost::filesystem::exists(root))
-		boost::filesystem::create_directory(root);
-}
-
-void Server::initializeManager() {
-	GroupManager::getInstance()->initialize();
-	LoginManager::getInstance()->initialize();
-	UserManager::getInstance()->initialize();
-
-	//TEST
-	LoginManager::getInstance()->addUser("TEST", "test");
-	LoginManager::getInstance()->addUser("TEST2", "test");
-}
-
-void Server::receiveFiles() {
-
-}
-
-void Server::sendFile(File file) {
-    
-}
-
-void Server::synchronize() {
-
-    //...
+	if(!boost::filesystem::exists(ROOT))
+		boost::filesystem::create_directory(ROOT);
 }
 
 void Server::run() {

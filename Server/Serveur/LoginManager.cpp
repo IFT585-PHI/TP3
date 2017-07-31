@@ -15,10 +15,6 @@ LoginManager* LoginManager::getInstance() {
 	return LoginManager::lm;
 }
 
-void LoginManager::initialize() {
-    // Build userAuthentification from file parser
-}
-
 bool LoginManager::validateUserLogin(string userName, string password) {
     for (auto entry : userAuthentification) {
         if (entry.first == userName && entry.second == password)
@@ -32,19 +28,6 @@ bool LoginManager::validateUserLogin(string userName, string password) {
 
 vector<User> LoginManager::getConnectedUsers() {
     return connectedUsers;
-}
-
-vector<User> LoginManager::getNotConnectedUsers() {
-	vector<User> notConnectedUsers = UserManager::getInstance()->getListExistingUsers();
-
-    for(auto u : connectedUsers)
-    {
-        std::vector<User>::iterator it = find(notConnectedUsers.begin(), notConnectedUsers.end(), u);
-        if(it != notConnectedUsers.end())
-            notConnectedUsers.erase(it);
-    }
-
-    return notConnectedUsers;
 }
 
 void LoginManager::addUser(string userName, string password) {

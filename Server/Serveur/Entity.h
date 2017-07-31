@@ -20,7 +20,6 @@ public:
 protected:
     unsigned int id;
     Entity(unsigned int _id);
-   // void serialize(PrettyWriter<StringBuffer>& writer) const;
 };
 
 #endif // !ENTITY_H

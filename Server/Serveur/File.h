@@ -7,7 +7,7 @@ class File : public Entity
 {
 public:
     File() = default;
-    File(string _name, string _path, unsigned int _id);
+    File(string _name, unsigned int _id);
     ~File() = default;
 
     bool operator==(const File &f) {
@@ -20,14 +20,12 @@ public:
 
 private:
     string fileName;
-    string path;
     unsigned int version = 1;
 
 public:
     unsigned int getVersion();
     string getName();
     void setName(string newName);
-    //void serialize(PrettyWriter<StringBuffer>& writer) const;
 	void incVersion();
 };
 

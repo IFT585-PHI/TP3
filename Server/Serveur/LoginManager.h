@@ -21,14 +21,12 @@ private:
     vector<User> connectedUsers;
 
 public:
-    void initialize();
     bool validateUserLogin(string userName, string password);
    
     bool addConnectedUser(User user);
     bool removeConnectedUser(User user);
 
     vector<User> getConnectedUsers();
-    vector<User> getNotConnectedUsers();
     void addUser(string userName, string password);
 
 	bool isUserConnected(unsigned int userId);

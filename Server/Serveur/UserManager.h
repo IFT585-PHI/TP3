@@ -18,7 +18,6 @@ private:
     map<unsigned int, User> existingUsers; // int = userId
 
 public:
-    void initialize();
     bool addNewUser(string userName);
     vector<User> getListExistingUsers();
     User getUserByName(string userName);
