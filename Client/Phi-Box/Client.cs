@@ -35,7 +35,7 @@ namespace Phi_Box
                 TcpClient client = new TcpClient();
                 Console.WriteLine("Connection started...");
 
-                client.Connect("192.168.0.100", 13);
+                client.Connect("192.168.0.113", 13);
                 Console.WriteLine("Connected");
 
                 NetworkStream ns = client.GetStream();
@@ -51,6 +51,9 @@ namespace Phi_Box
 
 
                 client.Close();
+                sw.Close();
+                sr.Close();
+                ns.Close();
                 Console.WriteLine("Connection closed");
             }
             catch (Exception ex)
@@ -441,18 +444,57 @@ namespace Phi_Box
         }
 
         /// <summary>
+        /// Create the pending file in the server.
+        /// </summary>
+        /// <param name="fileName"></param>
+        public void CreateFile(string fileName)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.CreatePendingFile.ToString());
+            dict.Add("name", fileName);
+
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+        }
+
+        /// <summary>
         /// Send a file to the server.
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="content"></param>
-        public void SendFile(string fileName, string content)
+        public void SendFile(string fileName, byte[] content)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.SendFile.ToString());
-            dict.Add("groupId", "0150");
             dict.Add("name", fileName);
-            dict.Add("content", content);
+            dict.Add("content", string.Join(",", content));
+            string json = JsonConvert.SerializeObject(dict);
 
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+        }
+
+        /// <summary>
+        /// Tell the server that a certain file was fully transfered.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="groupId"></param>
+        public void SendFileTransferComplete(string fileName, int groupId)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.FileTransferComplete.ToString());
+            dict.Add("name", fileName);
+            dict.Add("groupId", groupId.ToString());
             string json = JsonConvert.SerializeObject(dict);
 
             Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));

@@ -147,7 +147,17 @@ string Server::LookUpClientFunction(string json) {
 		}
 		case ClientFunction::SendFile:
 		{
-			return ReaderFromClient::getApproveRequestResponse(messages);
+			return ReaderFromClient::getSendFileResponse(messages);
+			break;
+		}
+		case ClientFunction::CreatePendingFile:
+		{
+			return ReaderFromClient::getCreatePendingFileResponse(messages);
+			break;
+		}	
+		case ClientFunction::FileTransferComplete:
+		{
+			return ReaderFromClient::getFileTransferCompleteResponse(messages);
 			break;
 		}
         case ClientFunction::Error:

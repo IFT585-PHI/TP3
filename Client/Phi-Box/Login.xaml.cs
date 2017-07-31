@@ -98,22 +98,28 @@ namespace Phi_Box
 
         private void Submit_Click_Transfert_Test(object sender, RoutedEventArgs e)
         {
-            string path = "C:/Users/Shocky/TestFile.txt";
-            string fileContent = "";
-            try
-            {
-                using (StreamReader reader = new StreamReader(path, Encoding.UTF8, true))
-                {
-                    fileContent = reader.ReadToEnd() + ".";
-                }
-              
+            string path = "C:/Users/Shocky/devoir_4 (1).pdf";
+            byte[] data = File.ReadAllBytes(path);
+            int length = data.Length;
 
-            } catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
             Client client = new Client();
-            client.SendFile(GetFileName(GetFileName(path)),fileContent);
+            string fileName = GetFileName(path);
+            long maxLength = 100 / sizeof(byte);
+            long transmitted = 0;
+            client.CreateFile(fileName);
+
+            while (transmitted != length)
+            {
+                if(length - transmitted < maxLength - 1)
+                {
+                    maxLength = length - transmitted;
+                }
+                byte[] bytesToTransmit = new byte[maxLength];
+                Array.Copy(data, transmitted, bytesToTransmit, 0, maxLength);
+                transmitted += maxLength;
+                client.SendFile(fileName, bytesToTransmit);
+            }
+            client.SendFileTransferComplete(fileName, 123);
         }
 
         private void ResetField()

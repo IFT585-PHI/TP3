@@ -1,10 +1,10 @@
-#include <Windows.h>
 #include "UserManager.h"
 #include "GroupManager.h"
 #include "LoginManager.h"
 #include "ReaderFromClient.h"
 #include <fstream>
 #include <boost/filesystem/operations.hpp>
+#include <sstream>
 
 void ReaderFromClient::ParseMessages(const char* json, MessageMap& messages) {
     Reader reader;
@@ -774,9 +774,97 @@ string ReaderFromClient::getSendFileResponse(MessageMap messages)
 	string errorMsg{};
 	string status{};
 
-	int groupId = (atoi(messages.find("groupId")->second.c_str()));
 	string fileName = messages.find("name")->second.c_str();
 	string fileContent = messages.find("content")->second.c_str();
+	
+	std::stringstream ss(fileContent);
+	vector<char> vect;
+	char i;
+	std::string token;
+	int last = 0;
+
+	while (std::getline(ss, token, ',')) {
+		if (stoi(token) == 10 && last == 13) {
+			last = stoi(token);
+		}
+		else {
+			vect.push_back(stoi(token));
+			last = stoi(token);
+		}
+	};
+	try {
+		vector<char> mergedVector;
+		vector<char> currentBytes = PendingFiles[fileName];
+		mergedVector.reserve(currentBytes.size() + vect.size());
+		mergedVector.insert(mergedVector.end(), currentBytes.begin(), currentBytes.end());
+		mergedVector.insert(mergedVector.end(), vect.begin(), vect.end());
+		PendingFiles[fileName] = mergedVector;
+		status = SUCCESS;
+	}
+	catch (exception e) {
+		status = FAILED;
+		errorMsg = "Could update the pending file" + fileName;
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getCreatePendingFileResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	string fileName = messages.find("name")->second.c_str();
+	try {
+		vector<char> byteToStore;
+		PendingFiles.insert({ fileName , byteToStore });
+		status = SUCCESS;
+	}
+	catch (exception e) {
+		status = FAILED;
+		errorMsg = "Could not create the file" + fileName;
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getFileTransferCompleteResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+	string fileName = messages.find("name")->second.c_str();
 	string filePath = SERVERFILESPATH + std::to_string(groupId);
 	boost::filesystem::path dir(filePath);
 
@@ -784,7 +872,8 @@ string ReaderFromClient::getSendFileResponse(MessageMap messages)
 
 		if (boost::filesystem::create_directory(dir)) {
 
-		} else {
+		}
+		else {
 			status = FAILED;
 			errorMsg = "Could not create or reach the file directory for the group id" + groupId;
 		}
@@ -792,15 +881,15 @@ string ReaderFromClient::getSendFileResponse(MessageMap messages)
 
 	try {
 		std::ofstream file(filePath + "/" + fileName); //open in constructor
-		file << fileContent;
+		file.write(PendingFiles[fileName].data(), PendingFiles[fileName].size());
+		file.flush();
+		file.close();
 		status = SUCCESS;
 	}
 	catch (exception e) {
 		status = FAILED;
 		errorMsg = "Could not store the file" + fileName;
 	}
-
-
 
 	rapidjson::StringBuffer sb;
 	PrettyWriter<StringBuffer> writer(sb);
