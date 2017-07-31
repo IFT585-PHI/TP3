@@ -3,6 +3,7 @@
 
 #include "User.h"
 #include <vector>
+#include <map>
 
 class Server;
 
@@ -29,7 +30,6 @@ public:
     vector<User> getConnectedUsers();
     vector<User> getNotConnectedUsers();
     void addUser(string userName, string password);
-    void synchronize();
 
 	bool isUserConnected(unsigned int userId);
 	bool doesUsernameExists(string username);

@@ -11,11 +11,8 @@ unsigned int File::getVersion() {
     return version;
 }
 
-void File::setVersion(unsigned int _version) {
-    version = _version;
-}
-
 /*template <typename Writer>*/
+/*
 void File::serialize(PrettyWriter<StringBuffer>& writer) const {
     writer.StartObject();
 
@@ -31,7 +28,7 @@ void File::serialize(PrettyWriter<StringBuffer>& writer) const {
     writer.Uint(version);
 
     writer.EndObject();
-}
+}*/
 
 void File::incVersion() {
 	++version;

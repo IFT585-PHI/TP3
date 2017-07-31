@@ -11,7 +11,7 @@ Group::Group(unsigned int _id, string _name, string _description, unsigned int _
 	members.insert(_userId);
 	members.insert(UserManager::getInstance()->getUserByName("TEST").getId());
     pendingInvitations = set<unsigned int>();
-    files = map<unsigned int, File>();
+    files = map<unsigned int, File*>();
 
 	if (boost::filesystem::exists(Server::root))
 		boost::filesystem::create_directory(Server::root);
@@ -85,7 +85,7 @@ bool Group::doesMemberExists(unsigned int userId) {
 }
 
 bool Group::doesFileExists(unsigned int fileId) {
-    return filesVersion.count(fileId);
+    return files.count(fileId);
 }
 
 bool Group::doesPendingInvitationExists(unsigned int userId) {
@@ -96,6 +96,7 @@ void Group::setAdmin(unsigned int userId) {
     admin.SetUserId(userId);
 }
 
+/*
 void Group::serialize(PrettyWriter<StringBuffer>& writer) const {
     writer.StartObject();
 
@@ -149,4 +150,4 @@ void Group::serialize(PrettyWriter<StringBuffer>& writer) const {
     writer.EndArray();
 
     writer.EndObject();
-}
+}*/

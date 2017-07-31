@@ -1,6 +1,5 @@
 #include "Server.h"
 #include "Group.h"
-#include "ShareFolder.h"
 #include "UserManager.h"
 #include "ReaderFromClient.h"
 #include <chrono>

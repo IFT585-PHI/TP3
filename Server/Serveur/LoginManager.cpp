@@ -53,11 +53,6 @@ void LoginManager::addUser(string userName, string password) {
 	UserManager::getInstance()->addNewUser(userName);
 }
 
-void LoginManager::synchronize() {
-	vector<User> existingUsers = UserManager::getInstance()->getListExistingUsers();
-    
-}
-
 bool LoginManager::isUserConnected(unsigned int userId) {
 	for (auto entry : connectedUsers) {
 		if (entry.getId() == userId)

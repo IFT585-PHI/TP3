@@ -36,8 +36,7 @@ void Server::sendFile(File file) {
 }
 
 void Server::synchronize() {
-	UserManager::getInstance()->synchronize();
-	LoginManager::getInstance()->synchronize();
+
     //...
 }
 
@@ -155,7 +154,7 @@ string Server::LookUpClientFunction(string json) {
 		}
 		case ClientFunction::CreatePendingFile:
 		{
-			return ReaderFromClient::getCreatePendingFileResponse(messages);
+			return ReaderFromClient::getCreateFileResponse(messages);
 			break;
 		}	
 		case ClientFunction::FileTransferComplete:

@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "Admin.h"
+#include "File.h"
 #include <set>
 #include <map>
 
@@ -40,7 +41,7 @@ public:
     bool doesFileExists(unsigned int fileId);
     bool doesPendingInvitationExists(unsigned int userId);
     void setAdmin(unsigned int userId);
-    void serialize(PrettyWriter<StringBuffer>& writer) const;
+   // void serialize(PrettyWriter<StringBuffer>& writer) const;
 };
 
 #endif // !GROUP_H

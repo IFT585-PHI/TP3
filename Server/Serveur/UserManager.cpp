@@ -28,19 +28,6 @@ bool UserManager::addNewUser(string userName) {
     return true;
 }
 
-set<unsigned int> UserManager::getAllGroupIdFor(unsigned int id) {
-    if (existingUsers.count(id))
-        return existingUsers[id].getGroups();
-
-    throw exception{ "No user exist for this id" };;
-}
-
-void UserManager::synchronize() {
-    for (auto u : existingUsers) {
-        u.second.synchronize();
-    }
-}
-
 vector<User> UserManager::getListExistingUsers() {
     vector<User> users;
 
@@ -49,10 +36,6 @@ vector<User> UserManager::getListExistingUsers() {
     }
 
     return users;
-}
-
-map<unsigned int, User> UserManager::getExistingUsers() {
-    return existingUsers;
 }
 
 User UserManager::getUserByName(string userName) {

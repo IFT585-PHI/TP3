@@ -4,42 +4,21 @@
 #include <ctime>
 
 User::User(unsigned int _id, string _name)
-    : Entity(_id), name{ _name }, root{}
+    : Entity(_id), name{ _name }
 {
     lastSynchronized = system_clock::now();
-    groups = map<unsigned int, ShareFolder>();
 }
 
-User::User(unsigned int _id, string _name, system_clock::time_point _lastSynchronized, map<unsigned int, ShareFolder> _groups)
-    : Entity(_id), name{ _name }, root{}, lastSynchronized{ _lastSynchronized }, groups{ _groups }
+User::User(unsigned int _id, string _name, system_clock::time_point _lastSynchronized)
+    : Entity(_id), name{ _name }, lastSynchronized{ _lastSynchronized }
 {
-}
-
-void User::synchronize() {
-    // do something
-
-
-    lastSynchronized = system_clock::now();
-}
-
-set<unsigned int> User::getGroups() {
-    set<unsigned int> groupsList{};
-
-    for (auto group : groups) {
-        groupsList.insert(group.first);
-    }
-
-    return groupsList;
 }
 
 string User::getName() {
     return name;
 }
 
-string User::getRoot() {
-    return root;
-}
-
+/*
 void User::serialize(PrettyWriter<StringBuffer>& writer) const {
     writer.StartObject();
 
@@ -77,3 +56,4 @@ void User::serialize(PrettyWriter<StringBuffer>& writer) const {
 
     writer.EndObject();
 }
+*/
