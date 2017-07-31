@@ -22,7 +22,7 @@ namespace Phi_Box
         public GroupStatus status;
 
         FileSystemWatcher fsw;
-        string root = "C:/Phibox";
+        string root = "C:/Phibox/";
 
         public Group() { }
 
@@ -40,27 +40,45 @@ namespace Phi_Box
 
         private void initFileWatcher()
         {
-            if (!Directory.Exists(root))
-            {
-                Directory.CreateDirectory(root);
-            }
-
             if(!Directory.Exists(root + name))
             {
+                if (!Directory.Exists(root))
+                {
+                    Directory.CreateDirectory(root);
+                }
+
                 Directory.CreateDirectory(root + name);
             }
 
             fsw = new FileSystemWatcher();
             fsw.Path = root + name;
-            fsw.NotifyFilter = NotifyFilters.LastWrite;
+            fsw.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
             fsw.Filter = "*.*";
+            fsw.Created += new FileSystemEventHandler(OnCreated);
             fsw.Changed += new FileSystemEventHandler(OnChanged);
+            fsw.Deleted += new FileSystemEventHandler(OnDeleted);
+            fsw.Renamed += new RenamedEventHandler(OnRenamed);
             fsw.EnableRaisingEvents = true;
         }
 
         private void OnChanged(object source, FileSystemEventArgs e)
         {
+            Client.UpdatedFileRequest(id);
+        }
 
+        private void OnCreated(object source, FileSystemEventArgs e)
+        {
+            Client.AddedFileRequest(id);
+        }
+
+        private void OnDeleted(object source, FileSystemEventArgs e)
+        {
+            Client.DeletedFileRequest(id);
+        }
+
+        private void OnRenamed(object source, FileSystemEventArgs e)
+        {
+            Client.RenamedFileRequest(id);
         }
 
         public bool IsValid()

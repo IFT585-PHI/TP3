@@ -504,5 +504,26 @@ namespace Phi_Box
             else
                 Console.WriteLine("ERROR: " + res.errorInfo);
         }
+        
+        public static void AddedFileRequest(uint groupId)
+        {
+
+        }
+
+        public static void RenamedFileRequest(uint groupId)
+        {
+
+        }
+
+        public static void UpdatedFileRequest(uint groupId)
+        {
+
+        }
+
+        public static void DeletedFileRequest(uint groupId)
+        {
+
+        }
+
     }
 }
