@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Phi_Box
 {
-    public enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles, SendFile, CreatePendingFile, FileTransferComplete, AddedFile, RenamedFile, UpdatedFile, RemovedFile };
+    public enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles, SendFile, CreatePendingFile, FileTransferComplete, AddedFile, RenamedFile, UpdatedFile, DeletedFile };
     public enum Status { Success, Failed };
 
     class Parser

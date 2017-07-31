@@ -35,7 +35,7 @@ namespace Phi_Box
                 TcpClient client = new TcpClient();
                 Console.WriteLine("Connection started...");
 
-                client.Connect("192.168.1.208", 13);
+                client.Connect("192.168.0.100", 13);
                 Console.WriteLine("Connected");
 
                 NetworkStream ns = client.GetStream();
@@ -547,7 +547,7 @@ namespace Phi_Box
         public static void DeletedFileRequest(uint groupId, string fileName)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
-            dict.Add("function", ClientFunction.RemovedFile.ToString());
+            dict.Add("function", ClientFunction.DeletedFile.ToString());
             dict.Add("groupId", groupId.ToString());
             dict.Add("fileName", fileName);
             string json = JsonConvert.SerializeObject(dict);

@@ -69,6 +69,7 @@ bool Group::renameFile(File * file, string newName) {
         return false;
 
     file->setName(newName);
+	file->incVersion();
     return true;
 }
 

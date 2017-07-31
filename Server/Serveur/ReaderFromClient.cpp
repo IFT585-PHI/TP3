@@ -918,13 +918,12 @@ string ReaderFromClient::getRenamedFileResponse(MessageMap messages) {
     string oldFileName = messages.find("oldFileName")->second.c_str();
     string newFileName = messages.find("newFileName")->second.c_str();
     
-    string filePath = Server::root + std::to_string(groupId);
+    string filePath = Server::root + groupMan->getGroupById(groupId)->getName() + "/";
     boost::filesystem::path dir(filePath);
 
     File* file = groupMan->getGroupById(groupId)->getFileFromName(oldFileName);
 
     if (file != nullptr) {
-        string filePath = Server::root + std::to_string(groupId);
         boost::filesystem::path dir(filePath);
 
         if (boost::filesystem::exists(dir)) {
@@ -981,7 +980,7 @@ string ReaderFromClient::getDeletedFileResponse(MessageMap messages) {
     File* file = groupMan->getGroupById(groupId)->getFileFromName(fileName);
 
     if (file != nullptr) {
-        string filePath = Server::root + std::to_string(groupId);
+        string filePath = Server::root + groupMan->getGroupById(groupId)->getName() + "/";
         boost::filesystem::path dir(filePath);
 
         if (boost::filesystem::exists(dir)) {
