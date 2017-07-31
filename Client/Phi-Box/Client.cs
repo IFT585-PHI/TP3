@@ -46,7 +46,7 @@ namespace Phi_Box
                 TcpClient client = new TcpClient();
                 Console.WriteLine("Connection started...");
 
-                client.Connect("192.168.0.100", 13);
+                client.Connect("192.168.0.171", 13);
                 Console.WriteLine("Connected");
 
                 NetworkStream ns = client.GetStream();
@@ -451,6 +451,15 @@ namespace Phi_Box
                 Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
-        
+
+        /********************************************
+         *          Files REQUESTS SECTION 
+         ********************************************/
+
+        public List<File> GetFiles(uint groupId)
+        {
+            return new List<File>();
+        }
+
     }
 }

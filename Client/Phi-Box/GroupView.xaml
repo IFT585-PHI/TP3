@@ -11,11 +11,11 @@
     <Grid x:Name="dashboard" Height="720" Width="1080" Background="#FFCECECE">
         <Image x:Name="image1" HorizontalAlignment="Center" Height="78" VerticalAlignment="Top" Width="270" Source="images/phibbox_red.png"/>
         <Grid HorizontalAlignment="Left" Height="573" Margin="0,83,0,0" VerticalAlignment="Top" Width="738" Background="White">
-            <ScrollViewer HorizontalAlignment="Left" Height="456" VerticalAlignment="Top" Width="738" HorizontalScrollBarVisibility="Auto">
+            <ScrollViewer HorizontalAlignment="Left" Height="527" VerticalAlignment="Top" Width="738" HorizontalScrollBarVisibility="Auto" Margin="0,46,0,0">
                 <StackPanel x:Name="files_list" Orientation="Vertical" />
             </ScrollViewer>
-            <Grid HorizontalAlignment="Left" Height="117" Margin="0,456,0,0" VerticalAlignment="Top" Width="738" Background="WhiteSmoke">
-                <!-- Files shenanigans HERE?-->
+            <Grid HorizontalAlignment="Left" Height="46" VerticalAlignment="Top" Width="738" Background="WhiteSmoke">
+                <Label Content="Files" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70" Width="319" FontSize="28" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             </Grid>
 
         </Grid>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,11 +36,13 @@ namespace Phi_Box
             InitializeComponent();
 
             DisplayGroupUsers();
+            DisplayFiles();
 
             if (isAdmin)
                 DisplayAdminView();
             else
                 DisplayUserView();
+
         }
 
         private void DisplayAdminView()
@@ -128,6 +131,31 @@ namespace Phi_Box
 
             pending_list.Children.Add(grid);
         }
+        private void AddFile(File file)
+        {
+            /*             
+                <Grid Height="68" Width="718">
+                    <Border BorderBrush="Gray" BorderThickness="1"/>
+                    <Label x:Name="label1" Content="File name 1.txt" HorizontalAlignment="Left" Margin="52,0,0,0" VerticalAlignment="Center" FontSize="22"/>
+                </Grid>
+             */
+
+            //<Grid Height="68" Width="718">
+            Grid grid = new Grid();
+            grid.Height = 68; grid.Width = 718; grid.VerticalAlignment = VerticalAlignment.Top;
+
+            //<Border BorderBrush="Gray" BorderThickness="1"/>
+            grid.Children.Add(new Border { BorderBrush = Brushes.Gray, BorderThickness = new Thickness(1) });
+
+            //<Label Content="File name 1.txt" HorizontalAlignment="Left" Margin="52,0,0,0" VerticalAlignment="Center" FontSize="22"/>
+            Label label = new Label();
+            label.Content = file.name; label.FontSize = 22;
+            label.HorizontalAlignment = HorizontalAlignment.Left; label.VerticalAlignment = VerticalAlignment.Center;
+            label.Margin = new Thickness(52, 0, 0, 0);
+            grid.Children.Add(label);
+
+            files_list.Children.Add(grid);
+        }
 
         private void DisplayGroupUsers()
         {
@@ -147,11 +175,14 @@ namespace Phi_Box
                     AddPendingUser(u);
             }
         }
-
-        
         private void DisplayFiles()
         {
             files_list.Children.Clear();
+            Console.WriteLine(Directory.GetCurrentDirectory());
+            foreach (File u in mainWindow.client.GetFiles(groupId))
+            {
+                AddFile(u);
+            }
         }
 
         private void Promote_Click(object sender, RoutedEventArgs e)
