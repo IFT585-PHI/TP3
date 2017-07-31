@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Phi_Box
 {
-    public class File
+    public class PhiFile
     {
         public string name;
 
 
-        public File(string _fileName)
+        public PhiFile(string _fileName)
         {
             name = _fileName;
         }

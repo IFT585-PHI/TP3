@@ -131,15 +131,8 @@ namespace Phi_Box
 
             pending_list.Children.Add(grid);
         }
-        private void AddFile(File file)
+        private void AddFile(PhiFile file)
         {
-            /*             
-                <Grid Height="68" Width="718">
-                    <Border BorderBrush="Gray" BorderThickness="1"/>
-                    <Label x:Name="label1" Content="File name 1.txt" HorizontalAlignment="Left" Margin="52,0,0,0" VerticalAlignment="Center" FontSize="22"/>
-                </Grid>
-             */
-
             //<Grid Height="68" Width="718">
             Grid grid = new Grid();
             grid.Height = 68; grid.Width = 718; grid.VerticalAlignment = VerticalAlignment.Top;
@@ -179,7 +172,7 @@ namespace Phi_Box
         {
             files_list.Children.Clear();
             Console.WriteLine(Directory.GetCurrentDirectory());
-            foreach (File u in mainWindow.client.GetFiles(groupId))
+            foreach (PhiFile u in mainWindow.client.GetFiles(groupId))
             {
                 AddFile(u);
             }

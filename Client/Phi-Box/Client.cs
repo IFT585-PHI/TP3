@@ -456,9 +456,9 @@ namespace Phi_Box
          *          Files REQUESTS SECTION 
          ********************************************/
 
-        public List<File> GetFiles(uint groupId)
+        public List<PhiFile> GetFiles(uint groupId)
         {
-            return new List<File>();
+            return new List<PhiFile>();
         }
 
     }
