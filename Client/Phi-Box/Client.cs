@@ -448,7 +448,7 @@ namespace Phi_Box
         /// </summary>
         /// <param name="fileName"></param>public static void AddedFileRequest(uint groupId, string filePath, string fileName)
 
-        public void CreateFile(string fileName)
+        public static void CreateFile(string fileName)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.CreatePendingFile.ToString());
@@ -469,7 +469,7 @@ namespace Phi_Box
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="content"></param>
-        public void SendFile(string fileName, byte[] content)
+        public static void SendFile(string fileName, byte[] content)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.SendFile.ToString());
@@ -490,7 +490,7 @@ namespace Phi_Box
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="groupId"></param>
-        public void SendFileTransferComplete(string fileName, int groupId)
+        public static void SendFileTransferComplete(string fileName, uint groupId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.FileTransferComplete.ToString());
@@ -506,7 +506,7 @@ namespace Phi_Box
                 Console.WriteLine("ERROR: " + res.errorInfo);
         }
         
-	public static void AddedFileRequest(uint groupId, string filePath, string fileName)
+	    public static void AddedFileRequest(uint groupId, string filePath, string fileName)
         {
             byte[] data = File.ReadAllBytes(filePath);
             int length = data.Length;
@@ -525,7 +525,7 @@ namespace Phi_Box
                 SendFile(fileName, bytesToTransmit);
             }
             SendFileTransferComplete(fileName, groupId);
-    }
+        }
 
         public static void RenamedFileRequest(uint groupId, string oldFileName, string newFileName)
         {

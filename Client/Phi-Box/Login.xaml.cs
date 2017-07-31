@@ -96,32 +96,6 @@ namespace Phi_Box
             mainWindow.Navigate(new Dashboard(mainWindow));
         }
 
-        private void Submit_Click_Transfert_Test(object sender, RoutedEventArgs e)
-        {
-            string path = "C:/Users/Shocky/devoir_4 (1).pdf";
-            byte[] data = File.ReadAllBytes(path);
-            int length = data.Length;
-
-            Client client = new Client();
-            string fileName = GetFileName(path);
-            long maxLength = 100 / sizeof(byte);
-            long transmitted = 0;
-            client.CreateFile(fileName);
-
-            while (transmitted != length)
-            {
-                if(length - transmitted < maxLength - 1)
-                {
-                    maxLength = length - transmitted;
-                }
-                byte[] bytesToTransmit = new byte[maxLength];
-                Array.Copy(data, transmitted, bytesToTransmit, 0, maxLength);
-                transmitted += maxLength;
-                client.SendFile(fileName, bytesToTransmit);
-            }
-            client.SendFileTransferComplete(fileName, 123);
-        }
-
         private void ResetField()
         {
             textBoxUsername.Text = "";
