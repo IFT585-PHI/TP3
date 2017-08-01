@@ -505,6 +505,48 @@ namespace Phi_Box
         }
 
         /// <summary>
+        /// Create the pending file in the server.
+        /// </summary>
+        /// <param name="fileName"></param>public static void AddedFileRequest(uint groupId, string filePath, string fileName)
+
+        public static void CreateFile(string fileName)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.CreatePendingFile.ToString());
+            dict.Add("name", fileName);
+
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+        }
+
+        /// <summary>
+        /// Send a file to the server.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="content"></param>
+        public static void SendFile(string fileName, byte[] content)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.SendFile.ToString());
+            dict.Add("name", fileName);
+            dict.Add("content", string.Join(",", content));
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+        }
+
+        /// <summary>
         /// Tell the server that a certain file was fully transfered.
         /// </summary>
         /// <param name="fileName"></param>
