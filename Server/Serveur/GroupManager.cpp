@@ -13,10 +13,6 @@ GroupManager* GroupManager::getInstance() {
 	return GroupManager::gm;
 }
 
-void GroupManager::initialize() {
-    // Build groups from file parser
-}
-
 bool GroupManager::addGroup(string name, string description, unsigned int adminId) {
 	//Should look if the name is already taken, but im lazy as fu
 	unsigned int groupId = createNewGroupId();
@@ -59,7 +55,7 @@ bool GroupManager::removeUserPending(unsigned int groupId, unsigned int userId) 
 	getGroupById(groupId)->removePendingInvitation(userId);
 }
 
-int GroupManager::createNewGroupId() {
+unsigned int GroupManager::createNewGroupId() {
 	return groups.size();
 }
 

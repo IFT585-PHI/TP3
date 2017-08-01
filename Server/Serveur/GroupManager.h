@@ -20,7 +20,6 @@ private:
     map<unsigned int, Group*> groups; // int = groupId
 
 public:
-    void initialize();
     bool addGroup(string name, string description, unsigned int adminId);
 	bool removeGroup(unsigned int groupId);
 
@@ -29,7 +28,7 @@ public:
 
 	bool removeUserPending(unsigned int groupId, unsigned int userId);
 
-	int createNewGroupId();
+	unsigned int createNewGroupId();
     bool setNewAdmin(unsigned int groupId, unsigned int userId);
     Group *getGroupById(unsigned int groupId);
 

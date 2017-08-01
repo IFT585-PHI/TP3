@@ -2,6 +2,10 @@
 #include "GroupManager.h"
 #include "LoginManager.h"
 #include "ReaderFromClient.h"
+#include "Server.h"
+#include <boost/filesystem/operations.hpp>
+#include <fstream>
+#include <sstream>
 
 void ReaderFromClient::ParseMessages(const char* json, MessageMap& messages) {
     Reader reader;
@@ -43,7 +47,7 @@ string ReaderFromClient::getRegisterResponse(MessageMap& messages) {
     MessageMap::iterator password = messages.find("password");;
 
     if (!loginMan->doesUsernameExists(username->second)) {
-        loginMan->addUser(username->second, password->second);
+        loginMan->addUserAuthentification(username->second, password->second);
         userMan->addNewUser(username->second);
         status = SUCCESS;
     }
@@ -763,4 +767,260 @@ string ReaderFromClient::getApproveRequestResponse(MessageMap messages)
 	puts(sb.GetString());
 
 	return sb.GetString();
+}
+
+string ReaderFromClient::getSendFileResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	string fileName = messages.find("name")->second.c_str();
+	string fileContent = messages.find("content")->second.c_str();
+	
+	std::stringstream ss(fileContent);
+	vector<char> vect;
+	char i;
+	std::string token;
+	int last = 0;
+
+	while (std::getline(ss, token, ',')) {
+			vect.push_back(stoi(token));
+			last = stoi(token);
+	};
+	try {
+		vector<char> mergedVector;
+		vector<char> currentBytes = PendingFiles[fileName];
+		mergedVector.reserve(currentBytes.size() + vect.size());
+		mergedVector.insert(mergedVector.end(), currentBytes.begin(), currentBytes.end());
+		mergedVector.insert(mergedVector.end(), vect.begin(), vect.end());
+		PendingFiles[fileName] = mergedVector;
+		status = SUCCESS;
+	}
+	catch (exception e) {
+		status = FAILED;
+		errorMsg = "Could update the pending file" + fileName;
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getCreateFileResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	string fileName = messages.find("name")->second.c_str();
+	try {
+		vector<char> byteToStore;
+		PendingFiles.insert({ fileName , byteToStore });
+		status = SUCCESS;
+	}
+	catch (exception e) {
+		status = FAILED;
+		errorMsg = "Could not create the file" + fileName;
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getFileTransferCompleteResponse(MessageMap messages)
+{
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+	string fileName = messages.find("name")->second.c_str();
+	string filePath = Server::ROOT + groupMan->getGroupById(groupId)->getName();
+	boost::filesystem::path dir(filePath);
+
+	if (!(boost::filesystem::exists(dir))) {
+
+		if (boost::filesystem::create_directory(dir)) {
+            
+		}
+		else {
+			status = FAILED;
+			errorMsg = "Could not create or reach the file directory for the group id" + groupId;
+		}
+	}
+
+	try {
+		File* file = new File(fileName, groupMan->getGroupById(groupId)->createNewFileId());
+		if(groupMan->getGroupById(groupId)->getFileFromName(fileName) == nullptr) {
+			groupMan->getGroupById(groupId)->addFile(file);
+		}
+		else {
+			groupMan->getGroupById(groupId)->updateFile(file);
+		}
+		string path = filePath + "/" + fileName;
+		std::ofstream(path, std::ios::binary).write(PendingFiles[fileName].data(), PendingFiles[fileName].size());
+		status = SUCCESS;
+	}
+	catch (exception e) {
+		status = FAILED;
+		errorMsg = "Could not store the file" + fileName;
+	}
+
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
+string ReaderFromClient::getRenamedFileResponse(MessageMap messages) {
+    GroupManager* groupMan = GroupManager::getInstance();
+    string errorMsg{};
+    string status{};
+
+    int groupId = (atoi(messages.find("groupId")->second.c_str()));
+    string oldFileName = messages.find("oldFileName")->second.c_str();
+    string newFileName = messages.find("newFileName")->second.c_str();
+    
+    string filePath = Server::ROOT + groupMan->getGroupById(groupId)->getName() + "/";
+    boost::filesystem::path dir(filePath);
+
+    File* file = groupMan->getGroupById(groupId)->getFileFromName(oldFileName);
+
+    if (file != nullptr) {
+        boost::filesystem::path dir(filePath);
+
+        if (boost::filesystem::exists(dir)) {
+            string oldFileFullName = filePath + oldFileName;
+            string newFileFullName = filePath + newFileName;
+            if (rename(oldFileFullName.c_str(), newFileFullName.c_str()) != 0) {
+                status = FAILED;
+                errorMsg = "Could not rename file " + oldFileName + "from repository";
+            }
+            else {
+                if (!groupMan->getGroupById(groupId)->renameFile(file, newFileName)) {
+                    status = FAILED;
+                    errorMsg = "Could not rename file " + oldFileName + "from datastructure";
+                }
+                else
+                    status = SUCCESS;
+            }
+        }
+        else {
+            status = FAILED;
+            errorMsg = "Could not find " + filePath;
+        }
+    }
+    else {
+        status = FAILED;
+        errorMsg = "Could not find file " + oldFileName + "in datastructure";
+    }
+    
+    rapidjson::StringBuffer sb;
+    PrettyWriter<StringBuffer> writer(sb);
+
+    writer.StartObject();
+    writer.String("status");
+    writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+    writer.String("errorInfo");
+    writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+    writer.EndObject();
+
+    puts(sb.GetString());
+
+    return sb.GetString();
+}
+
+string ReaderFromClient::getDeletedFileResponse(MessageMap messages) {
+    GroupManager* groupMan = GroupManager::getInstance();
+    string errorMsg{};
+    string status{};
+
+    int groupId = (atoi(messages.find("groupId")->second.c_str()));
+    string fileName = messages.find("fileName")->second.c_str();
+    
+    File* file = groupMan->getGroupById(groupId)->getFileFromName(fileName);
+
+    if (file != nullptr) {
+        string filePath = Server::ROOT + groupMan->getGroupById(groupId)->getName() + "/";
+        boost::filesystem::path dir(filePath);
+
+        if (boost::filesystem::exists(dir)) {
+            string fileFullName = filePath + fileName;
+            if (remove(fileFullName.c_str()) != 0) {
+                status = FAILED;
+                errorMsg = "Could not delete file " + fileName + "from repository";
+            }
+            else {
+                if (!groupMan->getGroupById(groupId)->removeFile(file)) {
+                    status = FAILED;
+                    errorMsg = "Could not delete file " + fileName + "from datastructure";
+                }
+                else
+                    status = SUCCESS;
+            }
+        }
+        else {
+            status = FAILED;
+            errorMsg = "Could not find " + filePath;
+        }
+    }
+    else {
+        status = FAILED;
+        errorMsg = "Could not find file " + fileName + "in datastructure";
+    }
+
+    rapidjson::StringBuffer sb;
+    PrettyWriter<StringBuffer> writer(sb);
+
+    writer.StartObject();
+    writer.String("status");
+    writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+    writer.String("errorInfo");
+    writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+    writer.EndObject();
+
+    puts(sb.GetString());
+
+    return sb.GetString();
 }

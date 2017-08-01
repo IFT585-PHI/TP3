@@ -1,68 +1,51 @@
-﻿Build started 7/29/2017 1:42:58 PM.
+﻿Build started 7/31/2017 8:38:58 PM.
      1>Project "C:\Users\Utilisateur\Desktop\Phibox\TP3\Server\Serveur\Serveur.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\Users\Utilisateur\Desktop\Phibox\TP3\Server\packages\boost.1.64.0.0\build\native\..\..\lib\native\include\ /IC:\Users\Utilisateur\Desktop\Phibox\TP3\Server\packages\rapidjson.1.0.2\build\native\../..//build/native/include/ /IC:\Users\Simon\Desktop\TP3\TP3\Server\packages\rapidjson.1.0.2\build\native\include\rapidjson /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Admin.cpp Group.cpp GroupManager.cpp ReaderFromClient.cpp Server.cpp Source.cpp User.cpp
-         User.cpp
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
-         Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
-         - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
-         - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
-         Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\groupmanager.h(43): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\user.cpp(54): warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\time.h(475): note: see declaration of 'ctime'
-         Source.cpp
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
-         Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
-         - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
-         - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
-         Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
-         Server.cpp
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\groupmanager.h(43): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\loginmanager.h(36): warning C4091: 'static ': ignored on left of 'LoginManager' when no variable is declared
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
-         Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
-         - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
-         - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
-         Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\Users\Utilisateur\Desktop\Phibox\TP3\Server\packages\boost.1.64.0.0\build\native\..\..\lib\native\include\ /IC:\Users\Utilisateur\Desktop\Phibox\TP3\Server\packages\rapidjson.1.0.2\build\native\../..//build/native/include/ /IC:\Users\Simon\Desktop\TP3\TP3\Server\packages\rapidjson.1.0.2\build\native\include\rapidjson /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Admin.cpp Group.cpp GroupManager.cpp LoginManager.cpp ReaderFromClient.cpp Server.cpp Source.cpp User.cpp
          ReaderFromClient.cpp
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(26): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\groupmanager.h(43): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\loginmanager.h(36): warning C4091: 'static ': ignored on left of 'LoginManager' when no variable is declared
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
-         GroupManager.cpp
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\groupmanager.h(43): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\groupmanager.cpp(79): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
-         Group.cpp
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\group.cpp(79): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\group.cpp(83): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\group.cpp(87): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
-         Admin.cpp
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.h(21): warning C4018: '<': signed/unsigned mismatch
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\loginmanager.h(34): warning C4091: 'static ': ignored on left of 'LoginManager' when no variable is declared
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.h(22): warning C4018: '<': signed/unsigned mismatch
          Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
          - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
          - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
          Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.cpp(783): warning C4101: 'i': unreferenced local variable
+         LoginManager.cpp
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\loginmanager.h(34): warning C4091: 'static ': ignored on left of 'LoginManager' when no variable is declared
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(26): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
+         GroupManager.cpp
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(26): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
      1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\groupmanager.h(43): warning C4091: 'static ': ignored on left of 'GroupManager' when no variable is declared
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(29): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\groupmanager.cpp(78): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
+         Group.cpp
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.h(22): warning C4018: '<': signed/unsigned mismatch
+         Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately. For example:
+         - add -D_WIN32_WINNT=0x0501 to the compiler command line; or
+         - add _WIN32_WINNT=0x0501 to your project's Preprocessor Definitions.
+         Assuming _WIN32_WINNT=0x0501 (i.e. Windows XP target).
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\usermanager.h(26): warning C4091: 'static ': ignored on left of 'UserManager' when no variable is declared
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\group.cpp(88): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\group.cpp(92): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\group.cpp(96): warning C4800: 'unsigned int': forcing value to bool 'true' or 'false' (performance warning)
          Generating Code...
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\groupmanager.cpp(57): warning C4715: 'GroupManager::removeUserPending': not all control paths return a value
-     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.h(24): warning C4715: 'getEnumFromText': not all control paths return a value
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\groupmanager.cpp(56): warning C4715: 'GroupManager::removeUserPending': not all control paths return a value
+     1>c:\users\utilisateur\desktop\phibox\tp3\server\serveur\readerfromclient.h(25): warning C4715: 'getEnumFromText': not all control paths return a value
+         Skipping... (no relevant changes detected)
+         User.cpp
+         Source.cpp
+         Server.cpp
+         Admin.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Utilisateur\Desktop\Phibox\TP3\Server\Debug\Serveur.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Users\Utilisateur\Desktop\Phibox\TP3\Server\Serveur\\Boost\lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Utilisateur\Desktop\Phibox\TP3\Server\Debug\Serveur.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Utilisateur\Desktop\Phibox\TP3\Server\Debug\Serveur.lib" /MACHINE:X86 Debug\Admin.obj
-         Debug\Authentificator.obj
          Debug\Entity.obj
          Debug\File.obj
          Debug\Group.obj
          Debug\GroupManager.obj
          Debug\ReaderFromClient.obj
-         Debug\JsonWriter.obj
          Debug\LoginManager.obj
          Debug\Server.obj
-         Debug\ShareFolder.obj
          Debug\Source.obj
          Debug\User.obj
          Debug\UserManager.obj
@@ -71,4 +54,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:09.54
+Time Elapsed 00:00:05.77

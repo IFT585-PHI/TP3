@@ -11,6 +11,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net;
 using System.Net.Cache;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Phi_Box
 {
@@ -28,6 +30,7 @@ namespace Phi_Box
         {
             mainWindow = m;
             InitializeComponent();
+            textBoxIP.Text = Client.ipAddresse;
             textBoxUsername.Focus();
         }
         
@@ -75,7 +78,15 @@ namespace Phi_Box
                 passwordBox.Focus();
                 return;
             }
-            
+            else if (textBoxIP.Text.Length == 0)
+            {
+                errormessage.Text = "Enter the server Ip address.";
+                passwordBox.Focus();
+                return;
+            }
+
+            Client.ipAddresse = textBoxIP.Text;
+
             if (IsLogging)
             {
                 if (!mainWindow.client.LogIn(username, password)){
@@ -99,6 +110,12 @@ namespace Phi_Box
             textBoxUsername.Text = "";
             passwordBox.Password = "";
             errormessage.Text = "";
+        }
+
+        private string GetFileName(string path)
+        {
+            var words = path.Split('/','\\');
+            return words[words.Length - 1];
         }
         
 

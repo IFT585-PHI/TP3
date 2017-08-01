@@ -12,18 +12,17 @@
         <!--Button as a Link button using style-->
         <!--end Button as a Link button using style-->
         <Grid Background="Red" Height="312" VerticalAlignment="Center" HorizontalAlignment="Center" Width="380">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="252*" />
-                <!--   <RowDefinition Height="12*" />-->
-            </Grid.RowDefinitions>
-            <TextBlock Height="20" HorizontalAlignment="Left" Margin="42,212,0,0" x:Name ="errormessage" VerticalAlignment="Top" Width="300"  OpacityMask="Crimson" Foreground="White" FontStyle="Italic" />
-            <TextBlock Height="23" HorizontalAlignment="Left" Margin="0,107,0,0" Name="textBlockUsername" Text="Username:" VerticalAlignment="Top" Width="140" FontSize="18" FontWeight="Bold" Foreground="White" TextAlignment="Right" />
-            <TextBlock Height="23" HorizontalAlignment="Left" Margin="0,150,0,0" Name="textBlockPassword" Text="Password:" VerticalAlignment="Top" Width="140" FontSize="18" FontWeight="Bold" Foreground="White" TextAlignment="Right" />
+            <TextBlock Height="23" HorizontalAlignment="Left" Margin="0,91,0,0" Name="IpAdresse" Text="Server Ip:" VerticalAlignment="Top" Width="140" FontSize="18" FontWeight="Bold" Foreground="White" TextAlignment="Right" />
+            <TextBox Height="28" HorizontalAlignment="Left" Margin="145,92,0,0" Name="textBoxIP" VerticalAlignment="Top" Width="175" FontSize="14" />
 
-            <TextBox Height="28" HorizontalAlignment="Left" Margin="145,108,0,0" Name="textBoxUsername" VerticalAlignment="Top" Width="175" FontSize="14" />
-            <PasswordBox Height="28" HorizontalAlignment="Left" Margin="145,151,0,0" Name="passwordBox" VerticalAlignment="Top" Width="175" FontSize="14" KeyDown="Enter_Shortcut" />
-                     
-            <Button Name="RegisterLink" HorizontalAlignment="Center" Margin="0,184,0,105" Content="Register" Cursor="Hand" Click="Register_Click" Background="White" BorderBrush="White" Foreground="White" FontSize="14" RenderTransformOrigin="0.2,1.475">
+            <TextBlock Height="20" HorizontalAlignment="Left" Margin="42,232,0,0" x:Name ="errormessage" VerticalAlignment="Top" Width="300"  OpacityMask="Crimson" Foreground="White" FontStyle="Italic" />
+            <TextBlock Height="23" HorizontalAlignment="Left" Margin="0,129,0,0" Name="textBlockUsername" Text="Username:" VerticalAlignment="Top" Width="140" FontSize="18" FontWeight="Bold" Foreground="White" TextAlignment="Right" />
+            <TextBlock Height="23" HorizontalAlignment="Left" Margin="0,170,0,0" Name="textBlockPassword" Text="Password:" VerticalAlignment="Top" Width="140" FontSize="18" FontWeight="Bold" Foreground="White" TextAlignment="Right" />
+
+            <TextBox Height="28" HorizontalAlignment="Left" Margin="145,130,0,0" Name="textBoxUsername" VerticalAlignment="Top" Width="175" FontSize="14" />
+            <PasswordBox Height="28" HorizontalAlignment="Left" Margin="145,171,0,0" Name="passwordBox" VerticalAlignment="Top" Width="175" FontSize="14" KeyDown="Enter_Shortcut" />
+
+            <Button Name="RegisterLink" HorizontalAlignment="Center" Margin="165,204,165,85" Content="Register" Cursor="Hand" Click="Register_Click" Background="White" BorderBrush="White" Foreground="White" FontSize="14" RenderTransformOrigin="0.2,1.475">
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <TextBlock TextDecorations="Underline"><InlineUIContainer>
@@ -42,8 +41,8 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Content="Login" Height="23" HorizontalAlignment="Center" Margin="0,253,0,0" Name="Submit" VerticalAlignment="Top" Width="70" Click="Submit_Click" />
+            <Button Content="Login" Height="23" HorizontalAlignment="Center" Margin="155,263,155,0" Name="Submit" VerticalAlignment="Top" Width="70" Click="Submit_Click" />
             <Image x:Name="image" Margin="42,0,38,238" HorizontalAlignment="Center" Source="images/phibbox_white.png"/>
-        </Grid>        
+        </Grid>
     </Grid>
 </Page>

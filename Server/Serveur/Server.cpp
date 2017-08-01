@@ -4,38 +4,17 @@
 #include "UserManager.h"
 #include "Server.h"
 #include <boost/asio.hpp>
+#include <boost/filesystem/operations.hpp>
 
 using boost::asio::ip::tcp;
-string Server::address = "127.0.0.1";
+const string Server::ROOT = "C:/PhiboxServer/";
 
 Server::Server(boost::asio::io_service* io_service)
-	:acceptor(*io_service, tcp::endpoint(tcp::v4(), 13)), socket(*io_service),
+	:acceptor(*io_service, tcp::endpoint(tcp::v4(), 1313)), socket(*io_service),
 	 service(io_service)
 {
-}
-
-void Server::initializeManager() {
-	GroupManager::getInstance()->initialize();
-	LoginManager::getInstance()->initialize();
-	UserManager::getInstance()->initialize();
-
-	//TEST
-	LoginManager::getInstance()->addUser("TEST", "test");
-	LoginManager::getInstance()->addUser("TEST2", "test");
-}
-
-void Server::receiveFiles() {
-
-}
-
-void Server::sendFile(File file) {
-    
-}
-
-void Server::synchronize() {
-	UserManager::getInstance()->synchronize();
-	LoginManager::getInstance()->synchronize();
-    //...
+	if(!boost::filesystem::exists(ROOT))
+		boost::filesystem::create_directory(ROOT);
 }
 
 void Server::run() {
@@ -145,8 +124,29 @@ string Server::LookUpClientFunction(string json) {
             return ReaderFromClient::getApproveRequestResponse(messages);
 			break;
 		}
-		case ClientFunction::GetFiles:
+		case ClientFunction::SendFile:
 		{
+			return ReaderFromClient::getSendFileResponse(messages);
+			break;
+		}
+		case ClientFunction::CreatePendingFile:
+		{
+			return ReaderFromClient::getCreateFileResponse(messages);
+			break;
+		}	
+		case ClientFunction::FileTransferComplete:
+		{
+			return ReaderFromClient::getFileTransferCompleteResponse(messages);
+			break;
+		}
+		case ClientFunction::RenamedFile:
+		{
+			return ReaderFromClient::getRenamedFileResponse(messages);
+			break;
+		}
+		case ClientFunction::DeletedFile:
+		{
+			return ReaderFromClient::getDeletedFileResponse(messages);
 			break;
 		}
         case ClientFunction::Error:
