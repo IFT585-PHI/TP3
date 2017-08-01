@@ -9,7 +9,6 @@ Group::Group(unsigned int _id, string _name, string _description, unsigned int _
     admin = Admin(_userId, _id);
     members = set<unsigned int>();
 	members.insert(_userId);
-	members.insert(UserManager::getInstance()->getUserByName("TEST").getId());
     pendingInvitations = set<unsigned int>();
     files = map<unsigned int, File*>();
 
@@ -113,6 +112,6 @@ File* Group::getFileFromName(string fileName) {
     return nullptr;
 }
 
-int Group::createNewFileId() {
+unsigned int Group::createNewFileId() {
 	return files.size();
 }

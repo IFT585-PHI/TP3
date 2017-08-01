@@ -47,7 +47,7 @@ string ReaderFromClient::getRegisterResponse(MessageMap& messages) {
     MessageMap::iterator password = messages.find("password");;
 
     if (!loginMan->doesUsernameExists(username->second)) {
-        loginMan->addUser(username->second, password->second);
+        loginMan->addUserAuthentification(username->second, password->second);
         userMan->addNewUser(username->second);
         status = SUCCESS;
     }
@@ -530,7 +530,7 @@ string ReaderFromClient::getCreateGroupResponse(MessageMap messages)
 	}
 	else {
 		status = FAILED;
-		errorMsg = "GroupID already exists";
+		errorMsg = "Group name already exists";
 	}
 
 	rapidjson::StringBuffer sb;

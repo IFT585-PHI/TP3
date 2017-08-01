@@ -28,12 +28,13 @@ public:
 
 	bool removeUserPending(unsigned int groupId, unsigned int userId);
 
-	int createNewGroupId();
+	unsigned int createNewGroupId();
     bool setNewAdmin(unsigned int groupId, unsigned int userId);
     Group *getGroupById(unsigned int groupId);
 
     bool doesGroupExists(unsigned int groupId);
 	bool doesUserPendingExists(unsigned int groupId, unsigned int userId);
+	bool doesGroupNameExists(string groupName);
 
 	vector<Group> getAllGroups();
 	vector<Group> getAllGroupsForUser(int userId);

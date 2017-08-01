@@ -30,7 +30,8 @@ vector<User> LoginManager::getConnectedUsers() {
     return connectedUsers;
 }
 
-void LoginManager::addUser(string userName, string password) {
+
+void LoginManager::addUserAuthentification(string userName, string password) {
     userAuthentification.insert(make_pair(userName, password));
 
 	UserManager::getInstance()->addNewUser(userName);

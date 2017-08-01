@@ -4,6 +4,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Windows;
+using System.Net;
 
 namespace Phi_Box 
 {
@@ -12,9 +13,18 @@ namespace Phi_Box
 
         public User connectedUser;
         public Window popup;
+        static public string ipAddresse;
 
         public Client()
         {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    ipAddresse = ip.ToString();
+                }
+            }
         }
 
         /********************************************
@@ -35,7 +45,7 @@ namespace Phi_Box
                 TcpClient client = new TcpClient();
                 Console.WriteLine("Connection started...");
 
-                client.Connect("192.168.0.100", 13);
+                client.Connect(ipAddresse, 1313);
                 Console.WriteLine("Connected");
 
                 NetworkStream ns = client.GetStream();
@@ -243,7 +253,7 @@ namespace Phi_Box
                 groups.Add(group);
             }
             else
-                Console.WriteLine("ERROR: " + res.errorInfo);
+                DisplayError("ERROR: " + res.errorInfo);
             
             return group;
         }
@@ -296,7 +306,7 @@ namespace Phi_Box
             if (res.status == Status.Success)
             {}
             else
-                Console.WriteLine("ERROR: " + res.errorInfo);
+                DisplayError("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
@@ -316,7 +326,7 @@ namespace Phi_Box
             if (res.status == Status.Success)
             { }
             else
-                Console.WriteLine("ERROR: " + res.errorInfo);
+                DisplayError("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
@@ -335,7 +345,7 @@ namespace Phi_Box
             if (res.status == Status.Success)
             { }
             else
-                Console.WriteLine("ERROR: " + res.errorInfo);
+                DisplayError("ERROR: " + res.errorInfo);
         }        
 
         /// <summary>
@@ -356,7 +366,7 @@ namespace Phi_Box
             if (res.status == Status.Success)
             { }
             else
-                Console.WriteLine("ERROR: " + res.errorInfo);
+                DisplayError("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
@@ -377,7 +387,7 @@ namespace Phi_Box
             if (res.status == Status.Success)
             { }
             else
-                Console.WriteLine("ERROR: " + res.errorInfo);
+                DisplayError("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
@@ -398,7 +408,7 @@ namespace Phi_Box
             if (res.status == Status.Success)
             { }
             else
-                Console.WriteLine("ERROR: " + res.errorInfo);
+                DisplayError("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
@@ -419,7 +429,7 @@ namespace Phi_Box
             if (res.status == Status.Success)
             { }
             else
-                Console.WriteLine("ERROR: " + res.errorInfo);
+                DisplayError("ERROR: " + res.errorInfo);
         }
 
         /// <summary>
@@ -433,6 +443,57 @@ namespace Phi_Box
             dict.Add("function", ClientFunction.ApproveRequest.ToString());
             dict.Add("groupId", groupId.ToString());
             dict.Add("userId", userId.ToString());
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                DisplayError("ERROR: " + res.errorInfo);
+        }
+
+
+        /********************************************
+         *          Files REQUESTS SECTION 
+         ********************************************/
+
+        public List<string> GetFiles(uint groupId)
+        {
+            return new List<string>();
+        }
+
+        /// <summary>
+        /// Create the pending file in the server.
+        /// </summary>
+        /// <param name="fileName"></param>public static void AddedFileRequest(uint groupId, string filePath, string fileName)
+        public static void CreateFile(string fileName)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.CreatePendingFile.ToString());
+            dict.Add("name", fileName);
+
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            { }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+        }
+
+        /// <summary>
+        /// Send a file to the server.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="content"></param>
+        public static void SendFile(string fileName, byte[] content)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.SendFile.ToString());
+            dict.Add("name", fileName);
+            dict.Add("content", string.Join(",", content));
             string json = JsonConvert.SerializeObject(dict);
 
             Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));

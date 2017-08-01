@@ -12,6 +12,9 @@ using System.Windows.Navigation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Linq;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Net;
 
 namespace Phi_Box
 {
@@ -37,7 +40,7 @@ namespace Phi_Box
             client = new Client();
 
             InitializeComponent();
-            
+
             //Start at login page
             Navigate(new Login(this));
         }
@@ -50,7 +53,6 @@ namespace Phi_Box
         //Don't mind that, need it to change pages
         private void frame_Navigated(object sender, NavigationEventArgs e)
         {
-
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
