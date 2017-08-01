@@ -530,7 +530,7 @@ string ReaderFromClient::getCreateGroupResponse(MessageMap messages)
 	}
 	else {
 		status = FAILED;
-		errorMsg = "GroupID already exists";
+		errorMsg = "Group name already exists";
 	}
 
 	rapidjson::StringBuffer sb;

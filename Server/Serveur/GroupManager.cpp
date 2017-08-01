@@ -14,14 +14,13 @@ GroupManager* GroupManager::getInstance() {
 }
 
 bool GroupManager::addGroup(string name, string description, unsigned int adminId) {
-	//Should look if the name is already taken, but im lazy as fu
-	unsigned int groupId = createNewGroupId();
-
-    Group * g = new Group{ groupId, name, description, adminId };
-
-	groups.insert(make_pair(groupId, g));
-
-	return true;
+	if (!doesGroupNameExists(name)) {
+		unsigned int groupId = createNewGroupId();
+		Group * g = new Group{ groupId, name, description, adminId };
+		groups.insert(make_pair(groupId, g));
+		return true;
+	}
+	return false;
 }
 
 bool GroupManager::removeGroup(unsigned int groupId) {
@@ -77,6 +76,15 @@ Group* GroupManager::getGroupById(unsigned int groupId) {
 bool GroupManager::doesGroupExists(unsigned int groupId) {
     return groups.count(groupId);
 }
+
+bool GroupManager::doesGroupNameExists(string groupName) {
+	for (auto group : groups) {
+		if (group.second->getName() == groupName)
+			return true;
+	}
+	return false;
+}
+
 
 bool GroupManager::doesUserPendingExists(unsigned int groupId, unsigned int userId) {
 	if (!doesGroupExists(groupId))

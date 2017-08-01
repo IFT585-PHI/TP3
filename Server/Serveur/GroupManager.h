@@ -34,6 +34,7 @@ public:
 
     bool doesGroupExists(unsigned int groupId);
 	bool doesUserPendingExists(unsigned int groupId, unsigned int userId);
+	bool doesGroupNameExists(string groupName);
 
 	vector<Group> getAllGroups();
 	vector<Group> getAllGroupsForUser(int userId);
