@@ -1,5 +1,7 @@
 #include "Group.h"
+#include "Server.h"
 #include "UserManager.h"
+#include <boost/filesystem/operations.hpp>
 
 Group::Group(unsigned int _id, string _name, string _description, unsigned int _userId)
     : Entity(_id), name{ _name }, description{ _description }
@@ -7,14 +9,11 @@ Group::Group(unsigned int _id, string _name, string _description, unsigned int _
     admin = Admin(_userId, _id);
     members = set<unsigned int>();
 	members.insert(_userId);
-	members.insert(UserManager::getInstance()->getUserByName("TEST").getId());
     pendingInvitations = set<unsigned int>();
-    filesVersion = map<unsigned int, unsigned int>();
-}
+    files = map<unsigned int, File*>();
 
-Group::Group(unsigned int _id, string _name, string _description, Admin _admin, set<unsigned int> _members, set<unsigned int> _pendingInvitations, map<unsigned int, unsigned int> _filesVersion)
-    : Entity(_id), name{ _name }, description{ _description }, admin{ _admin }, members{ _members }, pendingInvitations{ _pendingInvitations }, filesVersion{ _filesVersion }
-{
+	if (boost::filesystem::exists(Server::ROOT))
+		boost::filesystem::create_directory(Server::ROOT);
 }
 
 bool Group::addMember(unsigned int userId) {
@@ -34,28 +33,37 @@ bool Group::removeMember(unsigned int userId) {
     return true;
 }
 
-bool Group::addFile(unsigned int fileId) {
-    if (doesFileExists(fileId))
+bool Group::addFile(File* file) {
+    if (doesFileExists(file->getId()))
         return false;
 
-    filesVersion.insert(make_pair(fileId, 1));
+    files.insert(make_pair(file->getId(), file));
     return true;
 }
 
-bool Group::updateFile(unsigned int fileId) {
-    if (!doesFileExists(fileId))
+bool Group::updateFile(File* file) {
+	if (!doesFileExists(file->getId()))
         return false;
 
-    //do something with file content?
-    filesVersion[fileId] += 1;
+	files[file->getId()] = file;
+	files[file->getId()]->incVersion();
     return true;
 }
 
-bool Group::removeFile(unsigned int fileId) {
-    if (!doesFileExists(fileId))
+bool Group::removeFile(File* file) {
+	if (!doesFileExists(file->getId()))
         return false;
 
-    filesVersion.erase(fileId);
+    files.erase(file->getId());
+    return true;
+}
+
+bool Group::renameFile(File * file, string newName) {
+    if (!doesFileExists(file->getId()))
+        return false;
+
+    file->setName(newName);
+	file->incVersion();
     return true;
 }
 
@@ -80,7 +88,7 @@ bool Group::doesMemberExists(unsigned int userId) {
 }
 
 bool Group::doesFileExists(unsigned int fileId) {
-    return filesVersion.count(fileId);
+    return files.count(fileId);
 }
 
 bool Group::doesPendingInvitationExists(unsigned int userId) {
@@ -91,57 +99,19 @@ void Group::setAdmin(unsigned int userId) {
     admin.SetUserId(userId);
 }
 
-void Group::serialize(PrettyWriter<StringBuffer>& writer) const {
-    writer.StartObject();
+string Group::getName() {
+	return name;
+}
 
-    Entity::serialize(writer);
-
-    writer.String("Name");
-    writer.String(name.c_str(), static_cast<SizeType>(name.length()));
-    writer.String("Description");
-    writer.String(description.c_str(), static_cast<SizeType>(description.length()));
-    
-    writer.String("Admin");
-    admin.serialize(writer);
-
-    writer.String("Members");
-    writer.StartArray();
-    if (!members.empty()) {
-        for (auto member : members)
-            writer.Uint(member);
+File* Group::getFileFromName(string fileName) {
+    for (auto file : files) {
+        if (file.second->getName() == fileName)
+            return file.second;
     }
-    else
-        writer.Null();
 
-    writer.EndArray();
+    return nullptr;
+}
 
-    writer.String("PerndingInvitations");
-    writer.StartArray();
-    if (!pendingInvitations.empty()) {
-        for (auto pending : pendingInvitations)
-            writer.Uint(pending);
-    }
-    else
-        writer.Null();
-
-    writer.EndArray();
-
-    writer.String("FilesVersion");
-    writer.StartArray();
-    if (!filesVersion.empty()) {
-        for (auto file : filesVersion) {
-            writer.StartObject();
-            writer.String("FileId");
-            writer.Uint(file.first);
-            writer.String("FileVersion");
-            writer.Uint(file.second);
-            writer.EndObject();
-        }
-    }
-    else
-        writer.Null();
-
-    writer.EndArray();
-
-    writer.EndObject();
+int Group::createNewFileId() {
+	return files.size();
 }

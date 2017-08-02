@@ -20,7 +20,6 @@ private:
     map<unsigned int, Group*> groups; // int = groupId
 
 public:
-    void initialize();
     bool addGroup(string name, string description, unsigned int adminId);
 	bool removeGroup(unsigned int groupId);
 

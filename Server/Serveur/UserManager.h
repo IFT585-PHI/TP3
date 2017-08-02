@@ -3,6 +3,7 @@
 
 #include "User.h"
 #include <vector>
+#include <map>
 
 static class UserManager
 {
@@ -17,12 +18,8 @@ private:
     map<unsigned int, User> existingUsers; // int = userId
 
 public:
-    void initialize();
     bool addNewUser(string userName);
-    set<unsigned int> getAllGroupIdFor(unsigned int id);
-    void synchronize();
     vector<User> getListExistingUsers();
-    map<unsigned int, User> getExistingUsers();
     User getUserByName(string userName);
     User getUserById(unsigned int userId);
     bool doesUserExists(unsigned int userId);

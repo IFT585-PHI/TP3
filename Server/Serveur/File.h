@@ -3,24 +3,11 @@
 
 #include "Entity.h"
 
-struct FileName {
-    string name;
-    string extension;
-
-    string getFileName() {
-        return name + "." + extension;
-    }
-
-    string getFileName() const{
-        return name + "." + extension;
-    }
-};
-
 class File : public Entity
 {
 public:
     File() = default;
-    File(string _name, string _extension, string _path, unsigned int _id);
+    File(string _name, unsigned int _id);
     ~File() = default;
 
     bool operator==(const File &f) {
@@ -32,14 +19,14 @@ public:
     }
 
 private:
-    FileName fileName;
-    string path;
+    string fileName;
     unsigned int version = 1;
 
 public:
     unsigned int getVersion();
-    void setVersion(unsigned int _version);
-    void serialize(PrettyWriter<StringBuffer>& writer) const;
+    string getName();
+    void setName(string newName);
+	void incVersion();
 };
 
 #endif // !FILE_H

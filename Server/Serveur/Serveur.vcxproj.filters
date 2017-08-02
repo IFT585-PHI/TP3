@@ -41,17 +41,8 @@
     <ClInclude Include="Admin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ISynchronize.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="ShareFolder.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="User.h">
       <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Authentificator.h">
-      <Filter>Header Files\Manager</Filter>
     </ClInclude>
     <ClInclude Include="GroupManager.h">
       <Filter>Header Files\Manager</Filter>
@@ -64,9 +55,6 @@
     </ClInclude>
     <ClInclude Include="Server.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="JsonWriter.h">
-      <Filter>Header Files\JsonModule</Filter>
     </ClInclude>
     <ClInclude Include="ReaderFromClient.h">
       <Filter>Header Files\JsonModule</Filter>
@@ -82,17 +70,11 @@
     <ClCompile Include="Group.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="ShareFolder.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Admin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="User.cpp">
       <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Authentificator.cpp">
-      <Filter>Source Files\Manager</Filter>
     </ClCompile>
     <ClCompile Include="GroupManager.cpp">
       <Filter>Source Files\Manager</Filter>
@@ -108,9 +90,6 @@
     </ClCompile>
     <ClCompile Include="Server.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonWriter.cpp">
-      <Filter>Source Files\JsonModule</Filter>
     </ClCompile>
     <ClCompile Include="ReaderFromClient.cpp">
       <Filter>Source Files\JsonModule</Filter>

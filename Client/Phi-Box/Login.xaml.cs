@@ -1,16 +1,11 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System;
-using System.Net.Sockets;
-using System.IO;
-using System.Text;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Net;
-using System.Net.Cache;
 
 namespace Phi_Box
 {
@@ -29,6 +24,8 @@ namespace Phi_Box
             mainWindow = m;
             InitializeComponent();
             textBoxUsername.Focus();
+            Task synchronizationTask = new Task(SynchronizeFields);
+            synchronizationTask.Start();
         }
         
 
@@ -100,7 +97,31 @@ namespace Phi_Box
             passwordBox.Password = "";
             errormessage.Text = "";
         }
-        
 
+        private string GetFileName(string path)
+        {
+            var words = path.Split('/','\\');
+            return words[words.Length - 1];
+        }
+
+        private void SynchronizeFields()
+        {
+            while (true)
+            {
+                string root = Group.root;
+
+                Dictionary<int, List<string>> filesList = new Dictionary<int, List<string>>();
+
+                foreach (string directory in Directory.GetDirectories(root)){
+                    List<string> filesInDirectory = new List<string>();
+                    foreach (string file in Directory.GetFiles(directory)){
+                        filesInDirectory.Add(file.Split('\\').Last());
+                    }
+                    filesList.Add(int.Parse(directory.Split('/').Last()), filesInDirectory);
+                }
+                Client.SendCurrentFileListRequest(filesList);
+                Thread.Sleep(15000);
+            }
+        }
     }
 }
