@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -22,7 +17,7 @@ namespace Phi_Box
         public GroupStatus status;
 
         FileSystemWatcher fsw;
-        string root = "C:/Phibox/";
+        public static string root = "C:/Phibox/";
 
         public Group() { }
 

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Collections.Generic;
 namespace Phi_Box
 {
-    public enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles, SendFile, CreatePendingFile, FileTransferComplete, AddedFile, RenamedFile, DeletedFile };
+    public enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGropups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles, SendFile, CreatePendingFile, FileTransferComplete, AddedFile, RenamedFile, DeletedFile, SendCurrentFileListRequest, DownloadFileRequest, GetGroups };
     public enum Status { Success, Failed };
 
     class Parser
@@ -15,6 +10,8 @@ namespace Phi_Box
         {
             public Status status {get; set;}
             public string errorInfo { get; set; }
+            public string missingFiles { get; set; }
+            public string fileParts { get; set; }
         }
         public class IdResponse : Response
         {

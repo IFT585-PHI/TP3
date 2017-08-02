@@ -149,6 +149,16 @@ string Server::LookUpClientFunction(string json) {
 			return ReaderFromClient::getDeletedFileResponse(messages);
 			break;
 		}
+		case ClientFunction::SendCurrentFileListRequest:
+		{
+			return ReaderFromClient::synchronizeFilesResponse(messages);
+			break;
+		}
+		case ClientFunction::DownloadFileRequest:
+		{
+			return ReaderFromClient::sendNextFilePartResponse(messages);
+			break;
+		}
         case ClientFunction::Error:
         {
             break;

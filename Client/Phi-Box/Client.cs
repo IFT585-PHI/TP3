@@ -4,6 +4,8 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Windows;
+using System.Linq;
+using System.Text;
 
 namespace Phi_Box 
 {
@@ -35,7 +37,7 @@ namespace Phi_Box
                 TcpClient client = new TcpClient();
                 Console.WriteLine("Connection started...");
 
-                client.Connect("192.168.0.100", 13);
+                client.Connect("192.168.0.113", 13);
                 Console.WriteLine("Connected");
 
                 NetworkStream ns = client.GetStream();
@@ -46,9 +48,9 @@ namespace Phi_Box
                 sw.Flush();
 
                 Console.WriteLine("Reception of the request...");
-                StreamReader sr = new StreamReader(ns);
+                StreamReader sr = new StreamReader(ns, Encoding.Default);
                 response = sr.ReadToEnd();
-
+                Console.WriteLine("Reponse : " + response);
 
                 client.Close();
                 sw.Close();
@@ -505,8 +507,14 @@ namespace Phi_Box
             else
                 Console.WriteLine("ERROR: " + res.errorInfo);
         }
-        
-	    public static void AddedFileRequest(uint groupId, string filePath, string fileName)
+
+        /// <summary>
+        /// Tell the server to add a file to the mentionned directory.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="filePath"></param>
+        /// <param name="fileName"></param>
+        public static void AddedFileRequest(uint groupId, string filePath, string fileName)
         {
             byte[] data = File.ReadAllBytes(filePath);
             int length = data.Length;
@@ -527,6 +535,12 @@ namespace Phi_Box
             SendFileTransferComplete(fileName, groupId);
         }
 
+        /// <summary>
+        /// Tell the server to rename a file in the mentionned directory.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="oldFileName"></param>
+        /// <param name="newFileName"></param>
         public static void RenamedFileRequest(uint groupId, string oldFileName, string newFileName)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -544,6 +558,11 @@ namespace Phi_Box
                 Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
+        /// <summary>
+        /// Tell the server to delete a file in the mentionned directory.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="fileName"></param>
         public static void DeletedFileRequest(uint groupId, string fileName)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -560,5 +579,82 @@ namespace Phi_Box
                 Console.WriteLine("ERROR: " + res.errorInfo);
         }
 
+        /// <summary>
+        /// Ask the server the list of missing files.
+        /// </summary>
+        /// <param name="fileList"></param>
+        public static void SendCurrentFileListRequest(Dictionary<int, List<string>> fileList)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.SendCurrentFileListRequest.ToString());
+            dict.Add("fileList", string.Join(";", fileList.Select(x => x.Key + "=" + string.Join(",", x.Value.ToArray())).ToArray()));
+
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            {
+                List<string> missingFiles = res.missingFiles.Split(',').ToList();
+                int groupId = 0;
+                int test;
+                foreach (string file in missingFiles)
+                {
+                    if (!string.IsNullOrEmpty(file))
+                    {
+                        if (!Int32.TryParse(file, out test))
+                        {
+                            string missingFilePath = groupId + "/" + file;
+                            string lastMessage = "start";
+                            string fileContent = "";
+                            var fs = new FileStream(Group.root + missingFilePath, FileMode.Create, FileAccess.Write);
+                            while (true)
+                            {
+                                lastMessage = DownloadFileRequest(missingFilePath);
+                                if(lastMessage == "EndOfFile")
+                                {
+                                    break;
+                                }
+                                fileContent += lastMessage;
+                            }
+                            byte[] toBytes = Encoding.Default.GetBytes(fileContent);
+                            Encoding.Convert(Encoding.Default, Encoding.UTF8, toBytes);
+                            fs.Write(toBytes, 0, toBytes.Length);
+                            fs.Close();
+                        }
+                        else
+                        {
+                            groupId = Int32.Parse(file);
+                        }
+                    }
+                    
+                }
+
+            }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+        }
+
+        /// <summary>
+        /// Ask the server to send the next part of the mentionned file.
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static string DownloadFileRequest(string filePath)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.DownloadFileRequest.ToString());
+            dict.Add("filePath", filePath);
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            {
+                return res.fileParts;
+            }
+            else
+                Console.WriteLine("ERROR: " + res.errorInfo);
+                return "";  
+        }
     }
 }
