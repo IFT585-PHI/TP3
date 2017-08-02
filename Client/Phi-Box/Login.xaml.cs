@@ -25,8 +25,6 @@ namespace Phi_Box
             InitializeComponent();
             textBoxIP.Text = Client.ipAddresse;
             textBoxUsername.Focus();
-            Task synchronizationTask = new Task(SynchronizeFields);
-            synchronizationTask.Start();
         }
         
 
@@ -111,31 +109,6 @@ namespace Phi_Box
         {
             var words = path.Split('/','\\');
             return words[words.Length - 1];
-        }
-
-        private void SynchronizeFields()
-        {
-            while (true)
-            {
-                string root = Group.root;
-
-                Dictionary<string, List<string>> filesList = new Dictionary<string, List<string>>();
-
-                if (!Directory.Exists(root))
-                {
-                    Directory.CreateDirectory(root);
-                }
-
-                foreach (string directory in Directory.GetDirectories(root)){
-                    List<string> filesInDirectory = new List<string>();
-                    foreach (string file in Directory.GetFiles(directory)){
-                        filesInDirectory.Add(file.Split('/').Last());
-                    }
-                   filesList.Add(directory.Split('/').Last(), filesInDirectory);
-                }
-                Client.SendCurrentFileListRequest(filesList);
-                Thread.Sleep(15000);
-            }
         }
     }
 }

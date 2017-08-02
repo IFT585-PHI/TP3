@@ -7,6 +7,8 @@ using System.Windows;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Phi_Box 
 {
@@ -100,6 +102,8 @@ namespace Phi_Box
             {
                 uint userId = uint.Parse(res.id);
                 connectedUser = new User(userId, username, true);
+                Task synchronizationTask = new Task(SynchronizeFields);
+                synchronizationTask.Start();
             }
             else
             {
@@ -696,6 +700,33 @@ namespace Phi_Box
             else
                 Console.WriteLine("ERROR: " + res.errorInfo);
                 return "";  
+        }
+
+        private void SynchronizeFields()
+        {
+            while (true)
+            {
+                string root = Group.root;
+
+                Dictionary<int, List<string>> filesList = new Dictionary<int, List<string>>();
+
+                if (!Directory.Exists(root))
+                {
+                    Directory.CreateDirectory(root);
+                }
+
+                foreach (string directory in Directory.GetDirectories(root))
+                {
+                    List<string> filesInDirectory = new List<string>();
+                    foreach (string file in Directory.GetFiles(directory))
+                    {
+                        filesInDirectory.Add(file.Split('\\').Last());
+                    }
+                    filesList.Add(int.Parse(directory.Split('/').Last()), filesInDirectory);
+                }
+                Client.SendCurrentFileListRequest(filesList);
+                Thread.Sleep(15000);
+            }
         }
     }
 }
