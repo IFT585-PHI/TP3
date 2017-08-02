@@ -628,7 +628,7 @@ namespace Phi_Box
         /// Ask the server the list of missing files.
         /// </summary>
         /// <param name="fileList"></param>
-        public static void SendCurrentFileListRequest(Dictionary<string, List<string>> fileList)
+        public static void SendCurrentFileListRequest(Dictionary<int, List<string>> fileList)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.SendCurrentFileListRequest.ToString());
