@@ -6,6 +6,7 @@
 #include "File.h"
 #include <set>
 #include <map>
+#include <vector>
 
 class Group : public Entity
 {
@@ -38,6 +39,7 @@ public:
 
     bool addPendingInvitation(unsigned int userId);
     bool removePendingInvitation(unsigned int userId);
+	vector<File> getFiles();
 
     bool doesMemberExists(unsigned int userId);
     bool doesFileExists(unsigned int fileId);

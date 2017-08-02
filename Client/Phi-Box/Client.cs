@@ -460,57 +460,10 @@ namespace Phi_Box
          *          Files REQUESTS SECTION 
          ********************************************/
 
-        public List<string> GetFiles(uint groupId)
-        {
-            return new List<string>();
-        }
-
         /// <summary>
         /// Create the pending file in the server.
         /// </summary>
         /// <param name="fileName"></param>public static void AddedFileRequest(uint groupId, string filePath, string fileName)
-        public static void CreateFile(string fileName)
-        {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            dict.Add("function", ClientFunction.CreatePendingFile.ToString());
-            dict.Add("name", fileName);
-
-            string json = JsonConvert.SerializeObject(dict);
-
-            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
-
-            if (res.status == Status.Success)
-            { }
-            else
-                Console.WriteLine("ERROR: " + res.errorInfo);
-        }
-
-        /// <summary>
-        /// Send a file to the server.
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="content"></param>
-        public static void SendFile(string fileName, byte[] content)
-        {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            dict.Add("function", ClientFunction.SendFile.ToString());
-            dict.Add("name", fileName);
-            dict.Add("content", string.Join(",", content));
-            string json = JsonConvert.SerializeObject(dict);
-
-            Parser.Response res = JsonConvert.DeserializeObject<Parser.Response>(RequestToServer(json));
-
-            if (res.status == Status.Success)
-            { }
-            else
-                Console.WriteLine("ERROR: " + res.errorInfo);
-        }
-
-        /// <summary>
-        /// Create the pending file in the server.
-        /// </summary>
-        /// <param name="fileName"></param>public static void AddedFileRequest(uint groupId, string filePath, string fileName)
-
         public static void CreateFile(string fileName)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -639,6 +592,33 @@ namespace Phi_Box
             else
                 Console.WriteLine("ERROR: " + res.errorInfo);
         }
+
+        public List<string> GetFiles(uint groupId)
+        {
+            string[] filesName = new string[100];
+            List<string> result = new List<string>();
+
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("function", ClientFunction.GetFileNames.ToString());
+            dict.Add("groupId", groupId.ToString());
+
+            string json = JsonConvert.SerializeObject(dict);
+
+            Parser.ArrayStringResponse res = JsonConvert.DeserializeObject<Parser.ArrayStringResponse>(RequestToServer(json));
+
+            if (res.status == Status.Success)
+            {
+                filesName = res.names;
+            }
+            else
+                DisplayError("ERROR: " + res.errorInfo);
+
+            foreach (string s in filesName)
+                result.Add(s);
+
+            return result;
+        }
+
 
         /// <summary>
         /// Ask the server the list of missing files.

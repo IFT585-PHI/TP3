@@ -14,8 +14,8 @@
 using namespace rapidjson;
 using namespace std;
 
-enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, SendFile, CreatePendingFile, FileTransferComplete, AddedFile, RenamedFile, DeletedFile, SendCurrentFileListRequest, DownloadFileRequest, Error };
-static vector<string> ClientFunctionStrings{ "Register", "LogIn", "LogOut", "GetOnlineUsers", "GetGroupUsers", "GetGroupPendingUsers", "GetGroups", "CreateGroup", "JoinGroup", "LeaveGroup", "DeleteGroup", "KickUser", "PromoteUser", "InviteUser", "DeclineRequest", "ApproveRequest", "SendFile","CreatePendingFile","FileTransferComplete", "AddedFile", "RenamedFile", "DeletedFile", "SendCurrentFileListRequest","DownloadFileRequest", "Error" };
+enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGroups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, SendFile, CreatePendingFile, FileTransferComplete, AddedFile, RenamedFile, DeletedFile, SendCurrentFileListRequest, DownloadFileRequest, GetFileNames, Error };
+static vector<string> ClientFunctionStrings{ "Register", "LogIn", "LogOut", "GetOnlineUsers", "GetGroupUsers", "GetGroupPendingUsers", "GetGroups", "CreateGroup", "JoinGroup", "LeaveGroup", "DeleteGroup", "KickUser", "PromoteUser", "InviteUser", "DeclineRequest", "ApproveRequest", "SendFile","CreatePendingFile","FileTransferComplete", "AddedFile", "RenamedFile", "DeletedFile", "SendCurrentFileListRequest","DownloadFileRequest", "GetFileNames", "Error" };
 static std::map<string, vector<char> > PendingFiles = {};
 static std::map<string, int> TransferingFiles = {};
 
@@ -104,6 +104,7 @@ public:
     static string getDeletedFileResponse(MessageMap messages);
 	static string synchronizeFilesResponse(MessageMap messages);
 	static string sendNextFilePartResponse(MessageMap messages);
+	static string getFileNamesResponse(MessageMap messages);
 	static vector<string> get_all_files_names_within_folder(string folder);
 	static bool isInteger(const std::string & s);
     

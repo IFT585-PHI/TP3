@@ -121,12 +121,17 @@ namespace Phi_Box
 
                 Dictionary<int, List<string>> filesList = new Dictionary<int, List<string>>();
 
+                if (!Directory.Exists(root))
+                {
+                    Directory.CreateDirectory(root);
+                }
+
                 foreach (string directory in Directory.GetDirectories(root)){
                     List<string> filesInDirectory = new List<string>();
                     foreach (string file in Directory.GetFiles(directory)){
-                        filesInDirectory.Add(file.Split('\\').Last());
+                        filesInDirectory.Add(file.Split('/').Last());
                     }
-                    filesList.Add(int.Parse(directory.Split('/').Last()), filesInDirectory);
+                   filesList.Add(int.Parse(directory.Split('/').Last()), filesInDirectory);
                 }
                 Client.SendCurrentFileListRequest(filesList);
                 Thread.Sleep(15000);

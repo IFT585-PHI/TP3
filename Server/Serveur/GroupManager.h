@@ -31,6 +31,7 @@ public:
 	unsigned int createNewGroupId();
     bool setNewAdmin(unsigned int groupId, unsigned int userId);
     Group *getGroupById(unsigned int groupId);
+	vector<File> getAllFilesForGroup(unsigned int groupId);
 
     bool doesGroupExists(unsigned int groupId);
 	bool doesUserPendingExists(unsigned int groupId, unsigned int userId);

@@ -73,6 +73,19 @@ Group* GroupManager::getGroupById(unsigned int groupId) {
     return groups[groupId];
 }
 
+vector<File> GroupManager::getAllFilesForGroup(unsigned int groupId) {
+	vector<File> result;
+
+	if (!doesGroupExists(groupId))
+		throw exception{ "No group exist for this id" };
+
+	for (File f : getGroupById(groupId)->getFiles()) {
+		result.push_back(f);
+	}
+
+	return result;
+}
+
 bool GroupManager::doesGroupExists(unsigned int groupId) {
     return groups.count(groupId);
 }

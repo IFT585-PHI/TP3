@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 namespace Phi_Box
 {
-    public enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGropups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles, SendFile, CreatePendingFile, FileTransferComplete, AddedFile, RenamedFile, DeletedFile, SendCurrentFileListRequest, DownloadFileRequest, GetGroups };
+    public enum ClientFunction { Register, LogIn, LogOut, GetOnlineUsers, GetGroupUsers, GetGroupPendingUsers, GetGropups, CreateGroup, JoinGroup, LeaveGroup, DeleteGroup, KickUser, PromoteUser, InviteUser, DeclineRequest, ApproveRequest, GetFiles, SendFile, CreatePendingFile, FileTransferComplete, AddedFile, RenamedFile, DeletedFile, SendCurrentFileListRequest, DownloadFileRequest, GetGroups, GetFileNames };
     public enum Status { Success, Failed };
 
     class Parser
@@ -33,6 +33,11 @@ namespace Phi_Box
             public List<Group> inList { get; set; }
             public List<Group> pendingList { get; set; }
             public List<Group> outList { get; set; }
+        }
+
+        public class ArrayStringResponse : Response
+        {
+            public string[] names { get; set; }
         }
     }
 }

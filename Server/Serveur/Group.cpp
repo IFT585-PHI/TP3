@@ -95,6 +95,14 @@ bool Group::doesPendingInvitationExists(unsigned int userId) {
     return pendingInvitations.count(userId);
 }
 
+vector<File> Group::getFiles() {
+	vector<File> result;
+	for (auto entry : files) {
+		result.push_back((*entry.second));
+	}
+	return result;
+}
+
 void Group::setAdmin(unsigned int userId) {
     admin.SetUserId(userId);
 }

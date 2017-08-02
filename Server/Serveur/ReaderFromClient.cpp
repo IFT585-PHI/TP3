@@ -1200,6 +1200,51 @@ string ReaderFromClient::sendNextFilePartResponse(MessageMap messages) {
 	return sb.GetString();
 }
 
+string ReaderFromClient::getFileNamesResponse(MessageMap messages) {
+	GroupManager* groupMan = GroupManager::getInstance();
+	string errorMsg{};
+	string status{};
+
+	int groupId = (atoi(messages.find("groupId")->second.c_str()));
+
+	if (groupMan->doesGroupExists(groupId)) {
+		status = SUCCESS;
+	} else{
+		status = FAILED;
+		errorMsg = "The group doesnt exists";
+	}
+	rapidjson::StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+
+	writer.StartObject();
+	writer.String("status");
+	writer.String(status.c_str(), static_cast<SizeType>(status.length()));
+
+	writer.String("errorInfo");
+	writer.String(errorMsg.c_str(), static_cast<SizeType>(errorMsg.length()));
+
+	if (status == SUCCESS) {
+		writer.String("names");
+		writer.StartArray();
+
+		for (auto f : groupMan->getGroupById(groupId)->getFiles()) {
+			writer.String(f.getName().c_str(), static_cast<SizeType>(f.getName().length()));
+		}
+		writer.EndArray();
+	}
+	else {
+		writer.String("names");
+		writer.StartArray();
+		writer.EndArray();
+	}
+
+	writer.EndObject();
+
+	puts(sb.GetString());
+
+	return sb.GetString();
+}
+
 vector<string>  ReaderFromClient::get_all_files_names_within_folder(string folder)
 {
 	vector<string> files;
