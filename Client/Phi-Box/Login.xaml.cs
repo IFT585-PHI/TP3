@@ -119,7 +119,7 @@ namespace Phi_Box
             {
                 string root = Group.root;
 
-                Dictionary<int, List<string>> filesList = new Dictionary<int, List<string>>();
+                Dictionary<string, List<string>> filesList = new Dictionary<string, List<string>>();
 
                 if (!Directory.Exists(root))
                 {
@@ -131,7 +131,7 @@ namespace Phi_Box
                     foreach (string file in Directory.GetFiles(directory)){
                         filesInDirectory.Add(file.Split('/').Last());
                     }
-                   filesList.Add(int.Parse(directory.Split('/').Last()), filesInDirectory);
+                   filesList.Add(directory.Split('/').Last(), filesInDirectory);
                 }
                 Client.SendCurrentFileListRequest(filesList);
                 Thread.Sleep(15000);

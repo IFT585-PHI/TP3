@@ -151,7 +151,7 @@ string Server::LookUpClientFunction(string json) {
 		}
 		case ClientFunction::SendCurrentFileListRequest:
 		{
-			//return ReaderFromClient::synchronizeFilesResponse(messages);
+			return ReaderFromClient::synchronizeFilesResponse(messages);
 			break;
 		}
 		case ClientFunction::DownloadFileRequest:

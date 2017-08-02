@@ -986,7 +986,9 @@ string ReaderFromClient::synchronizeFilesResponse(MessageMap messages)
 	}
 	std::string result;
 	for (auto const& s : uniqueMissingFiles) { result += "," + s; }
-	result = result.substr(1, result.size());
+	if (result.length() != 0) {
+		result = result.substr(1, result.size());
+	}
 	rapidjson::StringBuffer sb;
 	PrettyWriter<StringBuffer> writer(sb);
 
