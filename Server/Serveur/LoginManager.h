@@ -27,7 +27,8 @@ public:
     bool removeConnectedUser(User user);
 
     vector<User> getConnectedUsers();
-    void addUser(string userName, string password);
+
+    void addUserAuthentification(string userName, string password);
 
 	bool isUserConnected(unsigned int userId);
 	bool doesUsernameExists(string username);

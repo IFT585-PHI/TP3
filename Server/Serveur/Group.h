@@ -44,7 +44,7 @@ public:
     bool doesPendingInvitationExists(unsigned int userId);
     void setAdmin(unsigned int userId);
 
-	int createNewFileId();
+	unsigned int createNewFileId();
 
 	string getName();
 };

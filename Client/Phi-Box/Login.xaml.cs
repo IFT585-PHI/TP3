@@ -23,6 +23,7 @@ namespace Phi_Box
         {
             mainWindow = m;
             InitializeComponent();
+            textBoxIP.Text = Client.ipAddresse;
             textBoxUsername.Focus();
             Task synchronizationTask = new Task(SynchronizeFields);
             synchronizationTask.Start();
@@ -72,7 +73,15 @@ namespace Phi_Box
                 passwordBox.Focus();
                 return;
             }
-            
+            else if (textBoxIP.Text.Length == 0)
+            {
+                errormessage.Text = "Enter the server Ip address.";
+                passwordBox.Focus();
+                return;
+            }
+
+            Client.ipAddresse = textBoxIP.Text;
+
             if (IsLogging)
             {
                 if (!mainWindow.client.LogIn(username, password)){
