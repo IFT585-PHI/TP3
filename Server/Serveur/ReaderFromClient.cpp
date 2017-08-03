@@ -970,7 +970,7 @@ string ReaderFromClient::synchronizeFilesResponse(MessageMap messages)
 			currentGroup = s;
 			uniqueMissingFiles.push_back(currentGroup);
 		}
-		else if (s.back() == 'd') {
+		else if (s != "" && s.back() == 'd') {
 			currentGroup = s;
 			std::copy(filesPresent.begin(), filesPresent.end(), std::back_inserter(uniqueMissingFiles));
 			uniqueMissingFiles.push_back(currentGroup);
@@ -981,7 +981,7 @@ string ReaderFromClient::synchronizeFilesResponse(MessageMap messages)
 		}
 		last = s;
 	}
-	if (last.back() != 'd') {
+	if (last != "" && last.back() != 'd') {
 		std::copy(filesPresent.begin(), filesPresent.end(), std::back_inserter(uniqueMissingFiles));
 	}
 	std::string result;
