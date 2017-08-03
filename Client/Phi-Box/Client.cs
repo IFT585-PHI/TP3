@@ -628,11 +628,11 @@ namespace Phi_Box
         /// Ask the server the list of missing files.
         /// </summary>
         /// <param name="fileList"></param>
-        public static void SendCurrentFileListRequest(Dictionary<int, List<string>> fileList)
+        public static void SendCurrentFileListRequest(Dictionary<string, List<string>> fileList)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("function", ClientFunction.SendCurrentFileListRequest.ToString());
-            dict.Add("fileList", string.Join(";", fileList.Select(x => x.Key + "=" + string.Join(",", x.Value.ToArray())).ToArray()));
+            dict.Add("fileList", string.Join(";", fileList.Select(x => x.Key + "d" + "=" + string.Join(",", x.Value.ToArray())).ToArray()));
 
             string json = JsonConvert.SerializeObject(dict);
 
@@ -641,13 +641,12 @@ namespace Phi_Box
             if (res.status == Status.Success)
             {
                 List<string> missingFiles = res.missingFiles.Split(',').ToList();
-                int groupId = 0;
-                int test;
+                string groupId = "";
                 foreach (string file in missingFiles)
                 {
                     if (!string.IsNullOrEmpty(file))
                     {
-                        if (!Int32.TryParse(file, out test))
+                        if (file[file.Length - 1] != 'd')
                         {
                             string missingFilePath = groupId + "/" + file;
                             string lastMessage = "start";
@@ -669,7 +668,7 @@ namespace Phi_Box
                         }
                         else
                         {
-                            groupId = Int32.Parse(file);
+                            groupId = file.Substring(0, file.Length - 1);
                         }
                     }
                     
@@ -708,7 +707,7 @@ namespace Phi_Box
             {
                 string root = Group.root;
 
-                Dictionary<int, List<string>> filesList = new Dictionary<int, List<string>>();
+                Dictionary<string, List<string>> filesList = new Dictionary<string, List<string>>();
 
                 if (!Directory.Exists(root))
                 {
@@ -722,7 +721,7 @@ namespace Phi_Box
                     {
                         filesInDirectory.Add(file.Split('\\').Last());
                     }
-                    filesList.Add(int.Parse(directory.Split('/').Last()), filesInDirectory);
+                    filesList.Add(directory.Split('/').Last(), filesInDirectory);
                 }
                 Client.SendCurrentFileListRequest(filesList);
                 Thread.Sleep(15000);
