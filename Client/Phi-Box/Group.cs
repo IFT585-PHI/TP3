@@ -30,7 +30,8 @@ namespace Phi_Box
             status = _status;
             adminId = _adminId;
 
-            initFileWatcher();
+            if (status == GroupStatus.IN)
+                initFileWatcher();
         }
 
         private void initFileWatcher()
