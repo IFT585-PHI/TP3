@@ -927,9 +927,8 @@ string ReaderFromClient::synchronizeFilesResponse(MessageMap messages)
 		boost::split(files, fileList, boost::is_any_of("=;,"));
 		string groupId = "";
 		for (auto &name : files) {
-			try {
+			if(name != "" && name.back() == 'd'){
 				lastName = name;
-				int converted = std::stoi(name);
 				if (groupId != "") {
 					for (auto &fileName : existingFiles) {
 						missingFiles.push_back(fileName);
@@ -937,9 +936,9 @@ string ReaderFromClient::synchronizeFilesResponse(MessageMap messages)
 				}
 				groupId = name;
 				missingFiles.push_back(groupId);
-				existingFiles = get_all_files_names_within_folder(Server::ROOT + '/' + groupId + "/*");
+				existingFiles = get_all_files_names_within_folder(Server::ROOT + '/' + groupId.substr(0, name.size() - 1) + "/*");
 			}
-			catch (exception e) {
+			else {
 				if (name == "") {
 					for (auto &fileName : existingFiles) {
 						missingFiles.push_back(fileName);
@@ -971,17 +970,18 @@ string ReaderFromClient::synchronizeFilesResponse(MessageMap messages)
 			currentGroup = s;
 			uniqueMissingFiles.push_back(currentGroup);
 		}
-		else if (isInteger(s)) {
+		else if (s.back() == 'd') {
 			currentGroup = s;
 			std::copy(filesPresent.begin(), filesPresent.end(), std::back_inserter(uniqueMissingFiles));
 			uniqueMissingFiles.push_back(currentGroup);
+			filesPresent.clear();
 		}
 		else {
 			filesPresent.insert(s);
 		}
 		last = s;
 	}
-	if (!isInteger(last)) {
+	if (last.back() != 'd') {
 		std::copy(filesPresent.begin(), filesPresent.end(), std::back_inserter(uniqueMissingFiles));
 	}
 	std::string result;
